@@ -98,6 +98,18 @@ export class SphericalPlanet {
       house.position.copy(atPos);
       house.scale.setScalar(1.25);
       this.orientToNormal(house, atNorm, 0.2);
+
+      // Atelier Boutique Awning in --accent-petal (#a8505e) & Rose entrance trim
+      const awningGeo = new THREE.BoxGeometry(1.8, 0.08, 0.8);
+      const awningMat = new THREE.MeshStandardMaterial({
+        color: 0xa8505e,
+        roughness: 0.5,
+      });
+      const awning = new THREE.Mesh(awningGeo, awningMat);
+      awning.position.set(0, 2.6, 0.9);
+      awning.rotation.x = 0.22;
+      house.add(awning);
+
       this.root.add(house);
     });
 

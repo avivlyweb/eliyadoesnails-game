@@ -98,6 +98,13 @@ export class SphericalCharacter {
     body.castShadow = true;
     group.add(body);
 
+    // Atelier Petal sash/scarf accent (--accent-petal: #a8505e)
+    const sashGeo = new THREE.CylinderGeometry(0.26, 0.28, 0.08, 16);
+    const sashMat = new THREE.MeshStandardMaterial({ color: 0xa8505e, roughness: 0.5 });
+    const sash = new THREE.Mesh(sashGeo, sashMat);
+    sash.position.y = 1.15;
+    group.add(sash);
+
     const headGeo = new THREE.SphereGeometry(0.18, 16, 16);
     const headMat = new THREE.MeshStandardMaterial({ color: 0xffdfd0, roughness: 0.6 });
     const head = new THREE.Mesh(headGeo, headMat);
@@ -121,6 +128,14 @@ export class SphericalCharacter {
           child.receiveShadow = true;
         }
       });
+
+      // Subtle brand accent bow on the front wicker basket (--accent-petal: #a8505e)
+      const basketAccent = new THREE.Mesh(
+        new THREE.SphereGeometry(0.04, 8, 8),
+        new THREE.MeshStandardMaterial({ color: 0xa8505e, roughness: 0.4 })
+      );
+      basketAccent.position.set(0, 0.82, 0.52);
+      this.bicycle.add(basketAccent);
 
       this.frontWheel = this.bicycle.getObjectByName("bike_Tire_Front") || null;
       this.rearWheel = this.bicycle.getObjectByName("bike_Tire_Rear") || null;
@@ -194,9 +209,14 @@ export class SphericalCharacter {
       roughness: 0.35,
       metalness: 0.1,
     });
+    // Brand token: --accent-petal (#a8505e) for satin ribbon & --accent-rose (#f2c4c4) for bow
     const ribbonMat = new THREE.MeshStandardMaterial({
-      color: 0xf2c4c4,
+      color: 0xa8505e,
       roughness: 0.4,
+    });
+    const bowMat = new THREE.MeshStandardMaterial({
+      color: 0xf2c4c4,
+      roughness: 0.35,
     });
     const goldMat = new THREE.MeshStandardMaterial({
       color: 0xd4af37,
@@ -210,9 +230,14 @@ export class SphericalCharacter {
       box.rotation.y = (i % 2 === 0 ? 1 : -1) * 0.05;
       box.castShadow = true;
 
-      // Blush satin ribbon
+      // Petal satin ribbon
       const rib = new THREE.Mesh(new THREE.BoxGeometry(0.325, 0.084, 0.04), ribbonMat);
       box.add(rib);
+
+      // Rose ribbon knot
+      const bowKnot = new THREE.Mesh(new THREE.SphereGeometry(0.022, 8, 8), bowMat);
+      bowKnot.position.set(0, 0.044, 0);
+      box.add(bowKnot);
 
       // Gold pull tab
       const tab = new THREE.Mesh(new THREE.BoxGeometry(0.04, 0.03, 0.06), goldMat);

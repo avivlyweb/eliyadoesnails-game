@@ -257,7 +257,7 @@ class EliyaCanalWorldGame {
   public showToast(msg: string) {
     const toast = document.createElement("div");
     toast.style.cssText =
-      "position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2d2623;color:white;padding:12px 24px;border-radius:24px;font-size:13px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.2);";
+      "position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#1c1917;color:#faf7f5;padding:12px 24px;border-radius:4px;border:1px solid #e7e1dc;font-size:12px;font-family:var(--font-sans);z-index:9999;box-shadow:0 10px 24px -14px rgba(28,25,23,0.35);";
     toast.textContent = msg;
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 4000);
@@ -318,7 +318,7 @@ class EliyaCanalWorldGame {
         const res = questSystem.deliverToClient(this.pendingDeliveryTicketId);
         const textEl = document.getElementById("dialogue-text");
         if (textEl) {
-          textEl.innerHTML = `${res.dialogue}<br/><br/><strong style="color:#b8623b;">✨ Received Reward: ${res.reward}!</strong>`;
+          textEl.innerHTML = `${res.dialogue}<br/><br/><strong style="color:#a8505e;">✦ Received Reward: ${res.reward}!</strong>`;
         }
         btnDeliver.style.display = "none";
 
