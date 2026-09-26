@@ -1,0 +1,1842 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="theme-color" content="#faf7f5" />
+    <title>Eliya Does Nails — Little Ritual: Amsterdam Canal World</title>
+    
+    <!-- 3D Model Viewer Library -->
+    <script type="module" src="/model-viewer.min.js"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+    <style>
+      :root {
+        --cream-bg: #faf7f5;
+        --blush-tint: #f2c4c4;
+        --blush-hover: #e5b0b0;
+        --espresso: #2d2623;
+        --sage-green: #687e65;
+        --muted-grey: #7a6e69;
+        --glass-bg: rgba(250, 247, 245, 0.94);
+        --glass-border: rgba(45, 38, 35, 0.10);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+
+      body, html {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: var(--cream-bg);
+        font-family: 'Inter', sans-serif;
+        color: var(--espresso);
+      }
+
+      #scene {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 1;
+        outline: none;
+      }
+
+      /* START SCREEN OVERLAY */
+      #eliya-start-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 500;
+        background-color: #faf7f5;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 32px 48px;
+        transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      #eliya-start-screen.hidden {
+        opacity: 0;
+        transform: scale(1.03);
+        pointer-events: none;
+      }
+
+      .start-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+
+      .start-monogram {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 2px;
+        color: #b8623b;
+        text-transform: uppercase;
+      }
+
+      .start-sound-toggle {
+        background: rgba(255, 255, 255, 0.85);
+        border: 1px solid rgba(45, 38, 35, 0.12);
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--espresso);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.2s;
+      }
+
+      .start-main-stage {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1280px;
+        margin: auto;
+        width: 100%;
+        gap: 40px;
+      }
+
+      .start-title-column {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        flex: 1;
+      }
+
+      .start-big-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 88px;
+        line-height: 0.92;
+        font-weight: 400;
+        color: #2e3a2f;
+        letter-spacing: -1px;
+      }
+
+      .start-big-title span {
+        display: block;
+        font-style: italic;
+      }
+
+      .start-big-title .asterisk {
+        color: #b8623b;
+        font-style: normal;
+        font-size: 64px;
+        vertical-align: top;
+        margin-left: 4px;
+      }
+
+      .start-prompt-hint {
+        font-size: 14px;
+        color: var(--muted-grey);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .start-key-badge {
+        background: white;
+        border: 1px solid rgba(45, 38, 35, 0.18);
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--espresso);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      }
+
+      .start-terminal-stage {
+        position: relative;
+        flex: 1.4;
+        display: flex;
+        justify-content: center;
+        align-items: flex-end;
+      }
+
+      .backdrop-window {
+        position: absolute;
+        top: -60px;
+        width: 320px;
+        height: 380px;
+        border: 4px solid #e2d9cd;
+        border-bottom: none;
+        border-radius: 160px 160px 0 0;
+        background: radial-gradient(circle at 60% 40%, #ffdfba 0%, #faede1 60%);
+        z-index: 1;
+        opacity: 0.7;
+      }
+
+      .vintage-crt-monitor {
+        position: relative;
+        z-index: 3;
+        width: 540px;
+        background: #80967d;
+        border-radius: 28px;
+        padding: 16px;
+        box-shadow: 0 24px 60px rgba(45, 58, 47, 0.22), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        cursor: pointer;
+        transition: transform 0.25s ease, box-shadow 0.25s ease;
+      }
+
+      .vintage-crt-monitor:hover {
+        transform: translateY(-4px) scale(1.01);
+        box-shadow: 0 32px 70px rgba(45, 58, 47, 0.28);
+      }
+
+      .crt-screen-bezel {
+        background: #18261b;
+        border-radius: 18px;
+        padding: 24px 28px;
+        color: #e5eedc;
+        font-family: 'JetBrains Mono', monospace;
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        box-shadow: inset 0 4px 18px rgba(0, 0, 0, 0.6);
+      }
+
+      .crt-top-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        opacity: 0.65;
+        border-bottom: 1px solid rgba(229, 238, 220, 0.15);
+        padding-bottom: 8px;
+      }
+
+      .crt-dots {
+        display: flex;
+        gap: 6px;
+      }
+
+      .crt-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #5b755e;
+      }
+
+      .crt-inner-box {
+        border: 1px solid rgba(229, 238, 220, 0.25);
+        border-radius: 8px;
+        padding: 16px;
+        font-size: 13px;
+        line-height: 1.7;
+      }
+
+      .crt-row {
+        display: flex;
+        gap: 20px;
+      }
+
+      .crt-label {
+        width: 90px;
+        opacity: 0.65;
+      }
+
+      .crt-command-line {
+        font-size: 15px;
+        color: #ffffff;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 6px;
+      }
+
+      .crt-cursor {
+        display: inline-block;
+        width: 8px;
+        height: 16px;
+        background: #e5eedc;
+        animation: blinkCursor 0.9s infinite;
+      }
+
+      @keyframes blinkCursor {
+        0%, 50% { opacity: 1; }
+        51%, 100% { opacity: 0; }
+      }
+
+      .desk-props-layer {
+        position: absolute;
+        bottom: -24px;
+        left: 0;
+        right: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        pointer-events: none;
+      }
+
+      .paper-order-receipt {
+        background: #ffffff;
+        border-radius: 4px;
+        padding: 14px 18px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+        transform: rotate(-3deg);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 11px;
+        color: var(--espresso);
+        border-bottom: 3px dashed #e2d9cd;
+        margin-left: 20px;
+      }
+
+      .steaming-matcha-cup {
+        width: 76px;
+        height: 64px;
+        background: #ffffff;
+        border: 2px solid #e0d5c5;
+        border-radius: 12px 12px 30px 30px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+        margin-right: 20px;
+      }
+
+      .matcha-latte-art {
+        width: 52px;
+        height: 16px;
+        background: #95af8d;
+        border-radius: 50%;
+        position: absolute;
+        top: 6px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        color: white;
+      }
+
+      .cup-smile {
+        margin-top: 14px;
+        font-size: 14px;
+        color: #7a6e69;
+      }
+
+      /* IN-GAME HUD */
+      #hud-top {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        right: 20px;
+        z-index: 10;
+        pointer-events: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .hud-brand {
+        background: var(--glass-bg);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        padding: 10px 22px;
+        border-radius: 40px;
+        border: 1px solid var(--glass-border);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        pointer-events: auto;
+      }
+
+      .brand-title {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 20px;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .brand-sub {
+        font-size: 11px;
+        color: var(--muted-grey);
+        display: block;
+      }
+
+      .hud-actions {
+        display: flex;
+        gap: 10px;
+        pointer-events: auto;
+      }
+
+      .btn-dock {
+        background: var(--glass-bg);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        padding: 9px 18px;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--espresso);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease;
+      }
+
+      .btn-dock:hover {
+        background: var(--blush-tint);
+        border-color: var(--blush-hover);
+        transform: translateY(-1px);
+      }
+
+      .btn-dock.active {
+        background: var(--espresso);
+        color: white;
+      }
+
+      #interaction-prompt {
+        position: fixed;
+        top: 24%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: var(--espresso);
+        color: white;
+        padding: 12px 26px;
+        border-radius: 30px;
+        font-size: 13px;
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+        z-index: 20;
+        display: none;
+        cursor: pointer;
+        animation: toastFade 0.3s ease-out;
+      }
+
+      @keyframes toastFade {
+        from { opacity: 0; transform: translate(-50%, -40%); }
+        to { opacity: 1; transform: translate(-50%, -50%); }
+      }
+
+      #dialogue-box {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        max-width: 600px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border: 1px solid var(--glass-border);
+        border-radius: 24px;
+        padding: 22px 28px;
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+        z-index: 30;
+        display: none;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      #dialogue-speaker {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 18px;
+        font-weight: 600;
+        color: var(--espresso);
+      }
+
+      #dialogue-text {
+        font-size: 14px;
+        line-height: 1.5;
+        color: #4a3e39;
+      }
+
+      #btn-close-dialogue {
+        align-self: flex-end;
+        background: var(--espresso);
+        color: white;
+        border: none;
+        padding: 6px 16px;
+        border-radius: 16px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      /* ======================================================== */
+      /* MASTER 3D MANICURE STUDIO MODAL                          */
+      /* ======================================================== */
+      #eliya-modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(45, 38, 35, 0.55);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        z-index: 100;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+      }
+
+      .eliya-modal-card {
+        background: #faf7f5;
+        border-radius: 32px;
+        padding: 28px 32px;
+        width: 100%;
+        max-width: 960px;
+        height: 88vh;
+        box-shadow: 0 28px 70px rgba(0, 0, 0, 0.28);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .eliya-modal-close {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        background: white;
+        border: 1px solid rgba(45, 38, 35, 0.12);
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        transition: all 0.2s;
+        z-index: 10;
+      }
+
+      .eliya-modal-close:hover {
+        background: var(--blush-tint);
+      }
+
+      .studio-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .studio-title-box h2 {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 28px;
+        font-weight: 600;
+        color: var(--espresso);
+      }
+
+      .studio-title-box p {
+        font-size: 12px;
+        color: var(--muted-grey);
+      }
+
+      /* Split View: 3D Model Viewer on Left, Controls & List on Right */
+      .studio-split-body {
+        display: flex;
+        flex: 1;
+        gap: 20px;
+        overflow: hidden;
+      }
+
+      .studio-3d-stage {
+        flex: 1.1;
+        background: radial-gradient(circle at 50% 50%, #fdfbf9 0%, #ede6de 100%);
+        border-radius: 20px;
+        border: 1px solid var(--glass-border);
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      model-viewer#studio-viewer {
+        width: 100%;
+        height: 100%;
+        --poster-color: transparent;
+        outline: none;
+      }
+
+      .model-info-tag {
+        position: absolute;
+        bottom: 14px;
+        left: 14px;
+        right: 14px;
+        background: rgba(250, 247, 245, 0.88);
+        backdrop-filter: blur(12px);
+        padding: 10px 14px;
+        border-radius: 12px;
+        border: 1px solid var(--glass-border);
+        pointer-events: none;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .model-tag-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--espresso);
+      }
+
+      .model-tag-cat {
+        font-size: 10px;
+        color: #b8623b;
+        text-transform: uppercase;
+        font-weight: 600;
+      }
+
+      .studio-sidebar {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+
+      /* Category Switcher Tabs */
+      .studio-cat-tabs {
+        display: flex;
+        gap: 6px;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .studio-cat-btn {
+        background: white;
+        border: 1px solid var(--glass-border);
+        padding: 6px 12px;
+        border-radius: 14px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--muted-grey);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.2s;
+      }
+
+      .studio-cat-btn:hover {
+        background: #fdf5f3;
+        color: var(--espresso);
+      }
+
+      .studio-cat-btn.active {
+        background: var(--espresso);
+        color: white;
+      }
+
+      /* Asset Cards List */
+      .asset-cards-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        overflow-y: auto;
+        flex: 1;
+      }
+
+      .asset-card {
+        background: white;
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        padding: 10px 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        transition: all 0.18s ease;
+      }
+
+      .asset-card:hover {
+        border-color: var(--blush-tint);
+        background: #fefcfb;
+        transform: translateX(2px);
+      }
+
+      .asset-card.active {
+        border-color: #b8623b;
+        background: #fdf6f2;
+      }
+
+      .card-text-group {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+
+      .card-title {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--espresso);
+      }
+
+      .card-desc {
+        font-size: 10px;
+        color: var(--muted-grey);
+        max-width: 240px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .card-action-badge {
+        font-size: 10px;
+        padding: 4px 8px;
+        border-radius: 8px;
+        background: #f3ece6;
+        color: var(--espresso);
+        font-weight: 600;
+      }
+
+      /* Integrated ASMR Soundboard Bar */
+      .studio-soundboard {
+        background: white;
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 10px 14px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+      }
+
+      .sb-label {
+        font-size: 11px;
+        font-weight: 700;
+        color: #b8623b;
+        white-space: nowrap;
+      }
+
+      .sb-pill {
+        background: #faf7f5;
+        border: 1px solid var(--glass-border);
+        padding: 5px 10px;
+        border-radius: 10px;
+        font-size: 11px;
+        font-weight: 500;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: all 0.15s;
+      }
+
+      .sb-pill:hover {
+        background: var(--blush-tint);
+      }
+
+      #controls-hint {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(12px);
+        padding: 8px 18px;
+        border-radius: 20px;
+        font-size: 12px;
+        color: var(--muted-grey);
+        z-index: 10;
+        pointer-events: none;
+      }
+
+      @media (max-width: 900px) {
+        .start-main-stage { flex-direction: column; align-items: center; }
+        .start-big-title { font-size: 54px; }
+        .vintage-crt-monitor { width: 90vw; }
+        .studio-split-body { flex-direction: column; }
+        .studio-3d-stage { height: 260px; }
+      }
+    
+      /* ======================================================== */
+      /* INTERACTIVE CUSTOM NAIL CREATOR MODE                     */
+      /* ======================================================== */
+      .creator-container {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        overflow-y: auto;
+        flex: 1;
+        padding-right: 4px;
+      }
+
+      .creator-card {
+        background: white;
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 12px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.02);
+      }
+
+      .creator-step-label {
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: #b8623b;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+
+      .creator-chips-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .creator-chip {
+        background: #faf7f5;
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        padding: 6px 10px;
+        font-size: 11px;
+        font-weight: 500;
+        color: var(--espresso);
+        cursor: pointer;
+        transition: all 0.15s ease;
+        display: flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .creator-chip:hover {
+        background: var(--blush-tint);
+        border-color: var(--blush-hover);
+        transform: translateY(-1px);
+      }
+
+      .creator-chip.active {
+        background: var(--espresso);
+        color: white;
+        border-color: var(--espresso);
+      }
+
+      .creator-status-banner {
+        background: #fdf5f0;
+        border: 1px dashed #e6c5b8;
+        border-radius: 12px;
+        padding: 8px 12px;
+        font-size: 11px;
+        color: #7a3e23;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .creator-uv-btn {
+        background: linear-gradient(135deg, #7048e8, #9775fa);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        padding: 11px 16px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 4px 14px rgba(112, 72, 232, 0.35);
+        transition: all 0.2s ease;
+      }
+
+      .creator-uv-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 20px rgba(112, 72, 232, 0.45);
+      }
+
+      .model-specs-badge {
+        font-size: 10px;
+        background: rgba(45, 38, 35, 0.08);
+        padding: 2px 6px;
+        border-radius: 6px;
+        color: #665b55;
+        font-weight: 500;
+      }
+
+    
+      /* ======================================================== */
+      /* LITTLE RITUAL GAMEPLAY SYSTEMS & HUD                     */
+      /* ======================================================== */
+      .journal-button {
+        background: var(--glass-bg);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        border: 1px solid var(--glass-border);
+        border-radius: 30px;
+        padding: 9px 18px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--espresso);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+        transition: all 0.2s ease;
+      }
+
+      .journal-button:hover {
+        background: var(--blush-tint);
+        border-color: var(--blush-hover);
+        transform: translateY(-1px);
+      }
+
+      /* Slide-down Order Card / Atelier Ledger */
+      .order-card {
+        position: fixed;
+        top: 76px;
+        left: 24px;
+        width: 340px;
+        background: rgba(250, 247, 245, 0.94);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(230, 222, 214, 0.9);
+        border-radius: 24px;
+        padding: 18px 22px;
+        box-shadow: 0 16px 40px rgba(45, 38, 35, 0.12);
+        z-index: 40;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        animation: cardSlide 0.25s ease-out;
+      }
+
+      @keyframes cardSlide {
+        from { opacity: 0; transform: translateY(-10px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      .collection-heading {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+      }
+
+      .collection-heading .eyebrow {
+        font-size: 9px;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: #b8623b;
+        font-weight: 700;
+      }
+
+      .collection-heading h2 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 20px;
+        font-weight: 600;
+        color: var(--espresso);
+        margin-top: 2px;
+      }
+
+      .round-progress-badge {
+        background: #2d2623;
+        color: white;
+        padding: 4px 10px;
+        border-radius: 12px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+
+      .inventory-tray {
+        background: white;
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        padding: 10px 14px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .cup-slots {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 8px;
+      }
+
+      .cup-slot {
+        background: #faf7f5;
+        border: 1px dashed #d9cec5;
+        border-radius: 12px;
+        height: 52px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+      }
+
+      .cup-slot .slot-status {
+        font-size: 9px;
+        font-weight: 600;
+        color: var(--muted-grey);
+        margin-top: 2px;
+      }
+
+      .cup-slot.is-packed {
+        background: #fff4f0;
+        border: 1px solid #b8623b;
+        box-shadow: 0 2px 8px rgba(184, 98, 59, 0.2);
+      }
+
+      .cup-slot.is-packed .slot-status {
+        color: #b8623b;
+        font-weight: 700;
+      }
+
+      .cup-slot.is-delivered {
+        background: #f0f7f0;
+        border: 1px solid #4a7c59;
+      }
+
+      .cup-slot.is-delivered .slot-status {
+        color: #4a7c59;
+      }
+
+      .order-description-hint {
+        font-size: 11px;
+        line-height: 1.5;
+        color: #635750;
+        margin: 0;
+      }
+
+      /* Floating Context Action Dock at Bottom Center */
+      #interact-dock {
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 25;
+        display: flex;
+        justify-content: center;
+        pointer-events: none;
+      }
+
+      .interact-action-pill {
+        pointer-events: auto;
+        background: #2d2623;
+        color: #FAF7F5;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 30px;
+        padding: 14px 28px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        animation: pulseReady 2s infinite ease-in-out;
+      }
+
+      @keyframes pulseReady {
+        0%, 100% { transform: translateY(0); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); }
+        50% { transform: translateY(-3px); box-shadow: 0 14px 38px rgba(184, 98, 59, 0.35); }
+      }
+
+      .interact-action-pill:hover {
+        background: #3e332e;
+        transform: translateY(-2px);
+      }
+
+      /* Client Ticket Pills in Creator Studio */
+      .client-tickets-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .client-ticket-card {
+        background: white;
+        border: 1px solid var(--glass-border);
+        border-radius: 14px;
+        padding: 10px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: left;
+      }
+
+      .client-ticket-card:hover {
+        border-color: #b8623b;
+        background: #fffdfb;
+        transform: translateY(-1px);
+      }
+
+      .client-ticket-card.active {
+        border-color: #b8623b;
+        background: #fff4ef;
+        box-shadow: 0 4px 12px rgba(184, 98, 59, 0.15);
+      }
+
+      .ticket-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .ticket-name {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--espresso);
+      }
+
+      .ticket-badge {
+        font-size: 9px;
+        padding: 2px 6px;
+        border-radius: 6px;
+        font-weight: 600;
+        background: #f0ebe5;
+        color: var(--espresso);
+      }
+
+      .ticket-badge.packed {
+        background: #ffebe3;
+        color: #b8623b;
+      }
+
+      .ticket-badge.delivered {
+        background: #e3f2e6;
+        color: #3b824b;
+      }
+
+      .ticket-request {
+        font-size: 10px;
+        color: #7a6e67;
+        line-height: 1.3;
+      }
+
+      /* Grand Completion Celebration Modal */
+      #game-completion-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(45, 38, 35, 0.7);
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+        z-index: 200;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        padding: 24px;
+      }
+
+      .completion-card {
+        background: #faf7f5;
+        border-radius: 28px;
+        padding: 32px;
+        width: 100%;
+        max-width: 580px;
+        box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+        text-align: center;
+      }
+
+      .completion-card h2 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-size: 36px;
+        color: var(--espresso);
+        margin: 0;
+      }
+
+      .completion-strip-img {
+        width: 100%;
+        max-height: 280px;
+        object-fit: contain;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      }
+
+    </style>
+  </head>
+  <body>
+    <!-- 3D WebGL Canvas -->
+    <canvas id="scene"></canvas>
+
+    <!-- ELIYA DOES NAILS START SCREEN -->
+    <div id="eliya-start-screen">
+      <header class="start-header">
+        <div class="start-monogram">
+          <span>✻</span>
+          <span>ELIYA DOES NAILS ATELIER.</span>
+        </div>
+        <button id="btn-start-sound" class="start-sound-toggle">
+          🎵 <span>Sound on •</span>
+        </button>
+      </header>
+
+      <main class="start-main-stage">
+        <div class="start-title-column">
+          <h1 class="start-big-title">
+            eliya<br />
+            <span>does nails</span><span class="asterisk">✻</span>
+          </h1>
+          <div class="start-prompt-hint">
+            <span>Click the terminal or press</span>
+            <span class="start-key-badge">Enter ↵</span>
+          </div>
+        </div>
+
+        <div class="start-terminal-stage">
+          <div class="backdrop-window"></div>
+          
+          <div class="vintage-crt-monitor" id="start-terminal-box" title="Click to Enter Atelier Gloss">
+            <div class="crt-screen-bezel">
+              <div class="crt-top-bar">
+                <div class="crt-dots">
+                  <div class="crt-dot"></div>
+                  <div class="crt-dot"></div>
+                  <div class="crt-dot"></div>
+                </div>
+                <span>atelier / terminal</span>
+                <span>⌁</span>
+              </div>
+
+              <div class="crt-inner-box">
+                <div style="font-weight: 500; margin-bottom: 8px;">
+                  &gt;_ Eliya Does Nails <span style="opacity: 0.6; font-size: 11px;">atelier edition</span>
+                </div>
+                <div class="crt-row">
+                  <span class="crt-label">directory</span>
+                  <span>~/atelier-gloss</span>
+                </div>
+                <div class="crt-row">
+                  <span class="crt-label">mode</span>
+                  <span>slow beauty</span>
+                </div>
+              </div>
+
+              <div class="crt-command-line">
+                <span>&gt; eliya craft bespoke glass nails</span>
+                <span class="crt-cursor"></span>
+              </div>
+
+              <div style="display: flex; justify-content: flex-end; font-size: 11px; opacity: 0.5;">
+                <span>local · single player</span>
+              </div>
+            </div>
+
+            <div class="desk-props-layer">
+              <div class="paper-order-receipt">
+                <div style="font-weight: 600; margin-bottom: 4px;">ORDER No. 001</div>
+                <div style="border-top: 1px dashed #ccc; margin-bottom: 4px;"></div>
+                <div>1 × bespoke glass nails <span style="color: #b8623b;">♡</span></div>
+              </div>
+
+              <div class="steaming-matcha-cup">
+                <div class="matcha-latte-art">♡</div>
+                <div class="cup-smile">◡̈</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <footer style="opacity: 0.5; font-size: 11px; text-align: center;">
+        A slow afternoon, bespoke glass nails, a little canal world.
+      </footer>
+    </div>
+
+    <!-- IN-GAME HUD -->
+    <div id="hud-top">
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <button id="journal-button" class="journal-button" title="View Atelier Client Ledger [J]">
+          <span style="font-size: 14px;">☷</span>
+          <span>Atelier Book</span>
+          <span id="book-summary" style="font-weight: 400; opacity: 0.8;">0 / 4 delivered</span>
+          <span style="font-size: 10px; opacity: 0.6;">⌄</span>
+        </button>
+
+        <div class="hud-brand">
+          <span class="brand-title">Eliya Does Nails</span>
+          <span class="brand-sub">Atelier Gloss • Amsterdam Canal Diorama</span>
+        </div>
+      </div>
+
+      <div class="hud-actions">
+        <button id="btn-toggle-bike" class="btn-dock" title="Ride Omafiets Vintage Bicycle [B]">
+          🚲 <span>Ride Bike [B]</span>
+        </button>
+        <button id="btn-open-station" class="btn-dock active" title="Open Master 3D Manicure Studio">
+          💅 <span>Manicure Studio</span>
+        </button>
+        <button id="btn-open-booth" class="btn-dock" title="Hongdae Life4Cuts Photobooth">
+          📸 <span>Life4Cuts</span>
+        </button>
+        <button id="btn-toggle-sound" class="btn-dock active" title="Toggle Lo-Fi Piano & ASMR">
+          🎵 <span>Music</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Atelier Client Ledger / Order Card (Little Ritual Style) -->
+    <aside id="order-card" class="order-card" style="display: none;">
+      <div class="collection-heading">
+        <div>
+          <div class="eyebrow">THE SLOW BEAUTY ROUND</div>
+          <h2 id="order-title">Today's Atelier Round</h2>
+        </div>
+        <span id="round-progress" class="round-progress-badge">0 / 4</span>
+      </div>
+
+      <div class="inventory-tray">
+        <div class="eyebrow" style="font-size: 8px;">COURIER INVENTORY TRAY</div>
+        <div id="cup-slots" class="cup-slots">
+          <div class="cup-slot" data-slot="0">🌸 <span class="slot-status">Needed</span></div>
+          <div class="cup-slot" data-slot="1">🏺 <span class="slot-status">Needed</span></div>
+          <div class="cup-slot" data-slot="2">⛵ <span class="slot-status">Needed</span></div>
+          <div class="cup-slot" data-slot="3">📸 <span class="slot-status">Needed</span></div>
+        </div>
+        <span id="cup-count" style="font-size: 10px; color: #7a6e67; text-align: center;">0 / 4 boxes packed</span>
+      </div>
+
+      <p id="order-description" class="order-description-hint">
+        Step up to the Manicure Desk at Atelier Gloss to craft custom sets for your canal neighbors!
+      </p>
+    </aside>
+
+    <!-- Floating Context Action Pill at Bottom Center -->
+    <div id="interact-dock">
+      <button id="btn-context-interact" class="interact-action-pill" style="display: flex;">
+        <span id="interaction-action-text">✦ Press [E] or Click to Craft at Atelier Gloss</span>
+      </button>
+    </div>
+
+    <div id="interaction-prompt">✦ Press [E] or Click to visit</div>
+
+    <!-- Dialogue Box -->
+    <div id="dialogue-box">
+      <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div id="dialogue-speaker">Neighbor</div>
+        <span id="dialogue-role" style="font-size: 11px; color: #b8623b; font-weight: 600;">Canal Neighbor</span>
+      </div>
+      <div id="dialogue-text">Dialogue message...</div>
+      <div style="display: flex; gap: 8px; justify-content: flex-end; margin-top: 4px;">
+        <button id="btn-deliver-order" class="btn-dock active" style="display: none; padding: 6px 14px; font-size: 11px;">
+          🎁 Deliver Couture Box
+        </button>
+        <button id="btn-close-dialogue" class="btn-dock" style="padding: 6px 14px; font-size: 11px;">
+          Continue
+        </button>
+      </div>
+    </div>
+
+    <!-- Grand Completion Celebration Dialog -->
+    <div id="game-completion-overlay">
+      <div class="completion-card">
+        <div class="eyebrow" style="font-size: 10px; letter-spacing: 2px; color: #b8623b; font-weight: 700;">ROUND COMPLETED · ATELIER GLOSS</div>
+        <h2>Everyone's Been Served. ♡</h2>
+        <p style="font-size: 13px; color: #635750; line-height: 1.6; margin: 0;">
+          A slow afternoon, bespoke glass nails, and happy neighbors all along the Amsterdam canal. You have unlocked unlimited free-styling and golden hour sunset lighting!
+        </p>
+        <div style="background: white; padding: 12px; border-radius: 16px; border: 1px solid var(--glass-border);">
+          <img id="completion-photostrip" class="completion-strip-img" src="/title-card.png" alt="Life4Cuts Keepsake" />
+        </div>
+        <button id="btn-completion-continue" class="btn-dock active" style="justify-content: center; padding: 12px; font-size: 13px;">
+          ✨ Continue Playing & Freestyling
+        </button>
+      </div>
+    </div>
+
+    <!-- Controls Key Hint -->
+    <div id="controls-hint">
+      WASD to walk · Space to jump · B to ride bicycle · E or Click to interact
+    </div>
+
+    <!-- MASTER 3D MANICURE STUDIO MODAL -->
+    <div id="eliya-modal-overlay">
+      <div class="eliya-modal-card">
+        <button id="btn-modal-close" class="eliya-modal-close" title="Return to Canal World">✕</button>
+
+        <div class="studio-header">
+          <div class="studio-title-box">
+            <h2>Atelier Gloss — 3D Manicure Studio & Custom Atelier</h2>
+            <p>Craft bespoke glass nails, test tactile ASMR tools, and inspect all 56 master assets from the atelier</p>
+          </div>
+        </div>
+
+        <!-- Split 3D Model Viewer & Control Sidebar -->
+        <div class="studio-split-body">
+          <!-- 3D Interactive Stage -->
+          <div class="studio-3d-stage">
+            <model-viewer
+              id="studio-viewer"
+              src="/models/sets/blush-glaze-coquette-set.glb"
+              alt="Atelier Gloss 3D Asset"
+              auto-rotate
+              camera-controls
+              shadow-intensity="1.5"
+              exposure="1.1"
+              camera-orbit="45deg 65deg auto"
+            ></model-viewer>
+            <div class="model-info-tag">
+              <span class="model-tag-name" id="viewer-model-name">Blush Glaze Coquette Set</span>
+              <span class="model-tag-cat" id="viewer-model-cat">Signature Set</span>
+            </div>
+          </div>
+
+          <!-- Studio Sidebar -->
+          <div class="studio-sidebar">
+            <!-- Category Tabs -->
+            <!-- Category Tabs -->
+            <div class="studio-cat-tabs">
+              <button class="studio-cat-btn active" data-cat="creator">🎨 Create Your Nails</button>
+              <button class="studio-cat-btn" data-cat="sets">💅 Signature Sets</button>
+              <button class="studio-cat-btn" data-cat="tools">✨ Atelier Tools</button>
+              <button class="studio-cat-btn" data-cat="charms">🎀 3D Charms</button>
+              <button class="studio-cat-btn" data-cat="station">🏛️ Station Clutter</button>
+              <button class="studio-cat-btn" data-cat="furniture">🪑 Salon Decor</button>
+              <button class="studio-cat-btn" data-cat="architecture">🏘️ Canal Diorama</button>
+            </div>
+
+            <!-- Custom Nail Creator UI Panel -->
+            <div id="creator-panel" class="creator-container">
+              <!-- Step 1: Base Syrup & Shape -->
+              
+              <!-- Active Client Tickets -->
+              <div class="creator-card" style="border: 1px solid #e2cbba; background: #fffdfb;">
+                <span class="creator-step-label" style="color: #995533;">📋 Today's Client Tickets (Click to Auto-Load & Craft)</span>
+                <div class="client-tickets-grid" id="client-tickets-container">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+
+              <div class="creator-card">
+                <span class="creator-step-label">Step 1 · Choose Base Set & Gel Syrup</span>
+                <div class="creator-chips-grid" id="creator-base-chips">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+
+              <!-- Step 2: ASMR Atelier Tools -->
+              <div class="creator-card">
+                <span class="creator-step-label">Step 2 · Apply Atelier Treatments (Tactile ASMR)</span>
+                <div class="creator-chips-grid" id="creator-tool-chips">
+                  <button class="creator-chip" data-tool="file">💎 Shape Edge (Czech Glass File)</button>
+                  <button class="creator-chip" data-tool="airbrush">💨 Spray Soft Aura Mist</button>
+                  <button class="creator-chip" data-tool="cateye">✨ Sweep Magnetic Cat-Eye Wand</button>
+                  <button class="creator-chip" data-tool="burnish">⚡ Burnish Mirror Chrome</button>
+                  <button class="creator-chip" data-tool="serum">💧 Drop Cuticle Serum</button>
+                </div>
+              </div>
+
+              <!-- Step 3: 3D Korean & Y2K Charms -->
+              <div class="creator-card">
+                <span class="creator-step-label">Step 3 · Attach 3D Korean & Y2K Charms</span>
+                <div class="creator-chips-grid" id="creator-charm-chips">
+                  <!-- Rendered dynamically -->
+                </div>
+              </div>
+
+              <!-- Step 4: UV Halo Cure -->
+              <div class="creator-card">
+                <span class="creator-step-label">Step 4 · Desktop UV Tunnel Cure (432Hz)</span>
+                <button id="btn-creator-uv-cure" class="creator-uv-btn">
+                  💡 Cure Under "The Halo" Lamp (432Hz)
+                </button>
+              </div>
+
+              <!-- Real-time Recipe Status -->
+              <div class="creator-status-banner" id="creator-status-banner">
+                ✦ Current Creation: <strong id="creator-status-name">Blush Glaze Coquette Set</strong>
+              </div>
+            </div>
+
+            <!-- Asset Cards List (for other tabs) -->
+            <div class="asset-cards-grid" id="asset-cards-container" style="display: none;">
+              <!-- Rendered by JS -->
+            </div>
+
+            <!-- Action Button for Selected Asset -->
+            <button id="btn-studio-primary-action" class="btn-dock active" style="justify-content: center; padding: 12px; margin-top: 4px;">
+              🎁 Equip Set & Pack into Couture Box
+            </button>
+          </div>
+        </div>
+
+        <!-- Integrated ASMR Soundboard -->
+        <div class="studio-soundboard">
+          <span class="sb-label">🎧 ASMR Tactile Tools:</span>
+          <button class="sb-pill" id="sb-tea">🍵 Celadon Tea Pour</button>
+          <button class="sb-pill" id="sb-file">💎 Czech Glass File</button>
+          <button class="sb-pill" id="sb-airbrush">💨 Airbrush Mist</button>
+          <button class="sb-pill" id="sb-wand">✨ Magnetic Cat-Eye</button>
+          <button class="sb-pill" id="sb-cure">💡 UV Halo Cure (432Hz)</button>
+          <button class="sb-pill" id="sb-bell">🚲 Amsterdam Bike Bell</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module">
+
+      import { sound } from '/src/engine/audio.ts';
+      import { questSystem } from '/src/engine/game-quest.ts';
+
+      // 1. Start Screen
+      const startScreen = document.getElementById('eliya-start-screen');
+      const terminalBox = document.getElementById('start-terminal-box');
+      const btnSound = document.getElementById('btn-start-sound');
+
+      const enterGame = () => {
+        if (!startScreen || startScreen.classList.contains('hidden')) return;
+        sound.playTeaPour();
+        sound.startLoFiMusic();
+        startScreen.classList.add('hidden');
+      };
+
+      terminalBox?.addEventListener('click', enterGame);
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') enterGame();
+      });
+
+      btnSound?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        sound.isMuted = !sound.isMuted;
+        btnSound.textContent = sound.isMuted ? '🔇 Sound off' : '🎵 Sound on •';
+      });
+
+      // 2. Soundboard Event Listeners
+      document.getElementById('sb-tea')?.addEventListener('click', () => sound.playTeaPour());
+      document.getElementById('sb-file')?.addEventListener('click', () => sound.playGlassFile());
+      document.getElementById('sb-airbrush')?.addEventListener('click', () => sound.playAirbrushHiss(1.2));
+      document.getElementById('sb-wand')?.addEventListener('click', () => sound.playMagneticShimmer());
+      document.getElementById('sb-cure')?.addEventListener('click', () => sound.playUVLampCure());
+      document.getElementById('sb-bell')?.addEventListener('click', () => sound.playBicycleBell());
+
+      // 3. MASTER 56 ASSETS CATALOG (From showcase.html)
+      const ALL_ASSETS = [{"id":"magnetic-cat-eye-wand","title":"Magnetic Cat-Eye Wand","cat":"tools","src":"/models/high-detail/tools/magnetic-cat-eye-wand.glb","desc":"Matte-black dual-ended wand with a cylindrical polarity tip on one side and a rectangular sweep bar on the other; brushed gunmetal ferrule. Pulls magnetic mica flakes into crisp cosmic lines.","polys":"1,788","verts":"1,191","mats":"4 PBR"},{"id":"cuticle-serum-dropper","title":"Cuticle Serum Dropper","cat":"tools","src":"/models/high-detail/tools/cuticle-serum-dropper.glb","desc":"Thick-walled fluted amber glass dropper bottle with a threaded brass collar and ribbed rubber pipette; contains floating dried lavender sprigs, suspended gold flecks, and hanging oil droplet.","polys":"1,996","verts":"1,341","mats":"5 PBR"},{"id":"czech-glass-nail-file","title":"Czech Frosted Glass File","cat":"tools","src":"/models/high-detail/tools/czech-glass-nail-file.glb","desc":"Etched tempered glass file with a soft pastel peach-to-lavender gradient finish, rounded safety tip, and a debossed atelier monogram. Slides with tactile scraping friction ASMR.","polys":"244","verts":"220","mats":"3 PBR"},{"id":"precision-angled-tweezers","title":"Precision Angled Tweezers","cat":"tools","src":"/models/high-detail/tools/precision-angled-tweezers.glb","desc":"Surgical-grade titanium tweezers with rainbow oil-slick anodized sheen and 45° ultra-fine needle tips. Locks micro-charms to nail surface normals.","polys":"1,310","verts":"1,048","mats":"2 PBR"},{"id":"micro-liner-brush","title":"Micro Liner Brush (000 Fine)","cat":"tools","src":"/models/high-detail/tools/micro-liner-brush.glb","desc":"Rose-gold tapered aluminum body with balanced ergonomic thumb grip and ultra-slender synthetic sable hairs dipped in micro-gel for smile lines and starbursts.","polys":"1,888","verts":"1,296","mats":"4 PBR"},{"id":"chrome-burnishing-sponge-pen","title":"Chrome Burnishing Pen","cat":"tools","src":"/models/high-detail/tools/chrome-burnishing-sponge-pen.glb","desc":"Dual-ended applicator pen with a dome silicone tip on one end and a teardrop micro-cell sponge on the other. Shifts surface roughness dynamically from 0.8 to 0.02.","polys":"1,828","verts":"1,154","mats":"4 PBR"},{"id":"manicure-station-deluxe","title":"Manicure Station Deluxe","cat":"station","src":"/models/high-detail/furniture/manicure-station-deluxe.glb","desc":"Curved asymmetric tabletop of warm travertine with chamfered edges on two fluted blond-oak cylindrical pillars with recessed brass kickplates. Inset circular dust extraction vent with brass honeycomb mesh, bouclé armrest, and UV tunnel chamber.","polys":"4,196","verts":"3,617","mats":"11 PBR"},{"id":"desktop-uv-tunnel-lamp","title":"Desktop UV Lamp ('The Halo')","cat":"station","src":"/models/high-detail/station/desktop-uv-tunnel-lamp.glb","desc":"Minimalist arch tunnel in matte porcelain-white resin with polished rose-gold interior reflector shield and embedded digital countdown display on top. Glowing violet-blue LED array.","polys":"3,536","verts":"2,260","mats":"4 PBR"},{"id":"linen-velvet-hand-pillow","title":"Linen Velvet Hand Pillow","cat":"station","src":"/models/high-detail/station/linen-velvet-hand-pillow.glb","desc":"Sloped ergonomic wrist support cushion upholstered in cream bouclé fabric with a subtle sunken indentation where the client's forearm rests, trimmed with brass perimeter tacks.","polys":"4,240","verts":"2,464","mats":"2 PBR"},{"id":"scalloped-ceramic-charm-palette","title":"Scalloped Ceramic Palette","cat":"station","src":"/models/high-detail/station/scalloped-ceramic-charm-palette.glb","desc":"Hand-thrown glazed ceramic dish in the shape of a ruffled seashell with gilded rim and seven concave wells organizing pearls, gems, and metallic charms.","polys":"4,144","verts":"2,842","mats":"4 PBR"},{"id":"heavy-glass-dappen-dish","title":"Heavy Glass Dappen Dish","cat":"station","src":"/models/high-detail/station/heavy-glass-dappen-dish.glb","desc":"Thick octagonal crystal jar with diamond-faceted light refractions and a fitted heavyweight lid with a teardrop finial (holds monomer/slip solution).","polys":"384","verts":"338","mats":"2 PBR"},{"id":"steaming-ceramic-matcha-mug","title":"Ceramic Matcha Latte Mug","cat":"station","src":"/models/high-detail/station/steaming-ceramic-matcha-mug.glb","desc":"Earthy stoneware mug with visible clay speckles and an unglazed base, filled with frothy green matcha latte art and accompanied by a ribbed saucer.","polys":"2,560","verts":"1,556","mats":"4 PBR"},{"id":"sculpted-ribbon-bow","title":"Sculpted Ribbon Bow","cat":"charms","src":"/models/high-detail/charms/sculpted-ribbon-bow.glb","desc":"Softly billowing Japanese coquette satin bow with realistic fabric folds, a gathered central knot, and two cascading swallowtail ribbons in iridescent pearl pink with chrome knot.","polys":"3,384","verts":"2,179","mats":"2 PBR"},{"id":"molten-chrome-drops","title":"Molten Chrome Drops","cat":"charms","src":"/models/high-detail/charms/molten-chrome-drops.glb","desc":"Organic, asymmetrical liquid-metal puddles and conjoined droplets that seem to melt and drip down the lateral nail wall with hyper-reflective silver chrome.","polys":"3,840","verts":"2,236","mats":"1 Mirror"},{"id":"baroque-nacre-pearl","title":"Baroque Nacre Pearl","cat":"charms","src":"/models/high-detail/charms/baroque-nacre-pearl.glb","desc":"Natural irregular baroque pearl with textured bumps, an organic flat contact base, and an iridescent nacre shader reflecting rainbow hues.","polys":"2,240","verts":"1,274","mats":"1 PBR"},{"id":"barbed-wire-cyber-heart","title":"Barbed Wire Cyber Heart","cat":"charms","src":"/models/high-detail/charms/barbed-wire-cyber-heart.glb","desc":"Puffy beveled Y2K chrome heart wrapped tightly in three twists of spiked silver barbed wire with razor needle cones.","polys":"3,756","verts":"2,504","mats":"2 PBR"},{"id":"faceted-aurora-teardrop-gem","title":"Aurora Teardrop Gem","cat":"charms","src":"/models/high-detail/charms/faceted-aurora-teardrop-gem.glb","desc":"Pear-shaped multifaceted crystal with 32 brilliant facets and an internal iridescent refraction prism backed by holographic foil.","polys":"288","verts":"244","mats":"2 PBR"},{"id":"saturn-orbital-charm","title":"Saturn Orbital Charm","cat":"charms","src":"/models/high-detail/charms/saturn-orbital-charm.glb","desc":"Smooth center planet sphere surrounded by a tilted, thin, floating metallic ring with embedded micro-crystals.","polys":"3,280","verts":"1,980","mats":"3 PBR"},{"id":"set-moonlight-cateye","title":"Moonlight Cat-Eye Set","cat":"sets","src":"/models/high-detail/sets/set-moonlight-cateye.glb","desc":"Full five-finger almond tip set featuring deep celestial navy jelly base with a bright silver magnetic cat-eye slash and micro silver starbursts on velvet stand.","polys":"2,580","verts":"1,679","mats":"4 PBR"},{"id":"blush-glaze-coquette-set","title":"Blush Glaze Coquette Set","cat":"sets","src":"/models/high-detail/sets/blush-glaze-coquette-set.glb","desc":"Milky translucent pink syrup nails with soft airbrushed aura centers, micro pearl cuticles, and 3D sculpted bows on the ring fingers.","polys":"4,196","verts":"2,639","mats":"5 PBR"},{"id":"cyberpunk-liquid-chrome-set","title":"Cyberpunk Liquid Chrome Set","cat":"sets","src":"/models/high-detail/sets/cyberpunk-liquid-chrome-set.glb","desc":"Long XXL stiletto silhouettes coated in molten mirror chrome with protruding geometric spikes and a dangling free-edge chain hoop.","polys":"1,452","verts":"1,039","mats":"4 PBR"},{"id":"client-boucle-tub-chair","title":"Client Bouclé Tub Chair","cat":"furniture","src":"/models/high-detail/furniture/client-boucle-tub-chair.glb","desc":"Low-profile curved tub armchair upholstered in warm textured off-white bouclé fabric with a rounded seat cushion and four splayed conical brass legs.","polys":"1,448","verts":"1,032","mats":"2 PBR"},{"id":"stylist-swivel-stool","title":"Stylist Swivel Stool","cat":"furniture","src":"/models/high-detail/furniture/stylist-swivel-stool.glb","desc":"Backless circular pneumatic stool with a caramel saddle-leather padded cushion, brass hydraulic piston, and 5-spoke caster base.","polys":"1,272","verts":"998","mats":"3 PBR"},{"id":"floating-lacquer-display","title":"4-Tier Lacquer Display","cat":"furniture","src":"/models/high-detail/furniture/floating-lacquer-display.glb","desc":"Arched blonde-wood wall niche with four brass-railed floating glass shelves holding luxury gel polish bottles arranged in chromatic gradients.","polys":"3,304","verts":"3,694","mats":"7 PBR"},{"id":"rolling-treatment-cart","title":"Rolling 3-Tier Treatment Cart","cat":"furniture","src":"/models/high-detail/furniture/rolling-treatment-cart.glb","desc":"Powder-coated dusty rose steel trolley with three lipped trays, clear acrylic organizers for cotton pads, rolled linen towels, and gold swiveling wheels.","polys":"1,056","verts":"860","mats":"4 PBR"},{"id":"brass-arc-floor-lamp","title":"Brass Arc Floor Lamp","cat":"furniture","src":"/models/high-detail/furniture/brass-arc-floor-lamp.glb","desc":"Heavy cylindrical Carrara marble base supporting an expansive curved brass tubular arm that suspends an oversized spun-brass dome shade with warm bulb.","polys":"2,388","verts":"1,496","mats":"3 PBR"},{"id":"potted-fiddle-leaf-fig","title":"Potted Fiddle-Leaf Fig","cat":"furniture","src":"/models/high-detail/furniture/potted-fiddle-leaf-fig.glb","desc":"Tall sculptural tree with glossy veined fiddle-shaped leaves in a ridged terracotta planter sitting on a brass plant trivet.","polys":"1,148","verts":"928","mats":"5 PBR"},{"id":"canal-house-stepped-gable","title":"Canal House (Stepped Gable)","cat":"architecture","src":"/models/high-detail/architecture/canal-house-stepped-gable.glb","desc":"17th-century narrow Dutch canal house with dark red brickwork, cream sandstone cornices, traditional stepped gable crest with hoist beam, and sash windows.","polys":"2,352","verts":"1,969","mats":"5 PBR"},{"id":"canal-house-neck-gable","title":"Canal House (Neck Gable)","cat":"architecture","src":"/models/high-detail/architecture/canal-house-neck-gable.glb","desc":"Elegant canal residence featuring a decorative curved neck gable with carved stone acanthus scrolls, decorative brick architraves, and a dark slate roof.","polys":"3,012","verts":"2,240","mats":"4 PBR"},{"id":"canal-house-bell-gable","title":"Canal House (Bell Gable)","cat":"architecture","src":"/models/high-detail/architecture/canal-house-bell-gable.glb","desc":"Warm ochre-brick canal facade with a flowing baroque bell gable, decorative oval attic window (oeil-de-boeuf), and twin stone lion crests.","polys":"3,700","verts":"2,266","mats":"4 PBR"},{"id":"arched-brick-canal-bridge","title":"Arched Brick Canal Bridge","cat":"architecture","src":"/models/high-detail/architecture/arched-brick-canal-bridge.glb","desc":"Traditional humped masonry bridge crossing canal water with weathered pavers, limestone keystone arches, and cast-iron balustrades.","polys":"1,244","verts":"1,273","mats":"3 PBR"},{"id":"moored-wooden-salon-boat","title":"Moored Wooden Salon Boat","cat":"architecture","src":"/models/high-detail/architecture/moored-wooden-salon-boat.glb","desc":"Classic vintage Dutch canal cruiser with varnished mahogany cabin, brass portholes, cream canvas canopy, and white mooring ropes tied to bollards.","polys":"11,172","verts":"6,270","mats":"5 PBR"},{"id":"vintage-bicycle-eliya","title":"Vintage Amsterdam Bicycle","cat":"architecture","src":"/models/high-detail/street/vintage-bicycle-eliya.glb","desc":"Classic Dutch step-through town bicycle with a gloss enamel frame, chrome handlebars, bell, rear luggage rack, leather saddle, and front wicker basket.","polys":"3,088","verts":"2,009","mats":"5 PBR"},{"id":"amsterdam-lantern-post","title":"Amsterdam Lantern Post","cat":"architecture","src":"/models/high-detail/street/amsterdam-lantern-post.glb","desc":"Ornate cast-iron street lamppost in dark canal green with the triple Amsterdam St. Andrew’s Cross emblem, crowned by a four-sided glass gas lantern.","polys":"1,692","verts":"1,143","mats":"4 PBR"},{"id":"cast-iron-mooring-bollard","title":"Cast-Iron Mooring Bollard","cat":"architecture","src":"/models/high-detail/street/cast-iron-mooring-bollard.glb","desc":"Heavy mushroom-headed iron bollard embedded in the canal quay stones with weathered rust patina and coiled hemp nautical rope.","polys":"2,488","verts":"1,490","mats":"3 PBR"},{"id":"cobblestone-quay-tree-grate","title":"Cobblestone Quay Tree Grate","cat":"architecture","src":"/models/high-detail/street/cobblestone-quay-tree-grate.glb","desc":"Textured canal street segment with basalt cobblestone pattern, granite curb stones, and a decorative circular cast-iron root grate encircling an elm tree.","polys":"416","verts":"404","mats":"4 PBR"},{"id":"florist-flower-cart","title":"Florist Vendor Cart","cat":"architecture","src":"/models/high-detail/street/florist-flower-cart.glb","desc":"Wooden two-wheeled vendor pushcart with a striped canvas awning, holding zinc flower buckets filled with ranunculus, peonies, and hydrangeas.","polys":"5,344","verts":"3,495","mats":"5 PBR"},{"id":"couture-press-on-drawer-box","title":"Couture Press-On Drawer Box","cat":"station","src":"/models/high-detail/station/couture-press-on-drawer-box.glb","desc":"Custom branded slide-out rigid drawer box in warm ecru (#FAF7F5) with gold debossed logo, blush satin pull ribbon, and black velvet insert holding 10 press-ons.","polys":"416","verts":"404","mats":"4 PBR"},{"id":"life4cuts-photo-strip","title":"Life4Cuts Printed Photo Strip","cat":"station","src":"/models/high-detail/station/life4cuts-photo-strip.glb","desc":"Vertical 4-cut glossy paper strip with printed hand poses, signature peach border frame, and gold star sticker decal from the /photobooth experience.","polys":"416","verts":"404","mats":"4 PBR"},{"id":"photobooth-kiosk","title":"Hongdae Photo Booth Kiosk","cat":"station","src":"/models/high-detail/architecture/photobooth-kiosk.glb","desc":"Standalone Hongdae Life4Cuts arcade photo booth with glowing pink neon sign, velvet privacy curtain, camera flash lens, and photo print dispenser slot.","polys":"1,244","verts":"1,273","mats":"5 PBR"},{"id":"ar-hand-mannequin-pedestal","title":"AR Hand Mannequin Pedestal","cat":"furniture","src":"/models/high-detail/furniture/ar-hand-mannequin-pedestal.glb","desc":"Fluted plaster display column with brass swivel mount, poseable silicone hand mannequin, and 5 finished press-on tips for the /ar-tryon studio.","polys":"1,672","verts":"1,220","mats":"4 PBR"},{"id":"nail-sizing-kit-wheel","title":"Nail Sizing Kit Ring","cat":"tools","src":"/models/high-detail/tools/nail-sizing-kit-wheel.glb","desc":"Clear acrylic sizing wheel on a brass center rivet, containing sizes 0 to 9 clear almond tips with millimeter gradients for custom client sizing.","polys":"1,672","verts":"1,220","mats":"3 PBR"},{"id":"artist-lookbook-catalog","title":"Atelier Reception Lookbook","cat":"station","src":"/models/high-detail/station/artist-lookbook-catalog.glb","desc":"Hardcover blush linen catalog with protective brass corner tabs, open showing seasonal nail art swatches and syrup gel formulas.","polys":"188","verts":"220","mats":"4 PBR"},{"id":"set-rose-quartz-french","title":"Rose Quartz French Set","cat":"sets","src":"/models/high-detail/sets/set-rose-quartz-french.glb","desc":"5 almond tips in translucent rose quartz syrup jelly with micro French white smile lines and gold branding bar on mauve velvet card.","polys":"1,452","verts":"1,039","mats":"5 PBR"},{"id":"set-matcha-glaze","title":"Matcha Glaze Donut Set","cat":"sets","src":"/models/high-detail/sets/set-matcha-glaze.glb","desc":"5 squoval tips in chrome matcha glaze with 3D crystal dew droplets, displayed on matcha green velvet card.","polys":"2,580","verts":"1,679","mats":"4 PBR"},{"id":"set-cherry-blossom","title":"Cherry Blossom Sakura Set","cat":"sets","src":"/models/high-detail/sets/set-cherry-blossom.glb","desc":"5 almond tips in sheer cherry syrup with sculpted 3D sakura blossom petals and golden pistil centers.","polys":"2,580","verts":"1,679","mats":"4 PBR"},{"id":"set-apricot-pearl","title":"Apricot Pearl Velvet Set","cat":"sets","src":"/models/high-detail/sets/set-apricot-pearl.glb","desc":"5 almond tips in shimmering apricot velvet cat-eye lacquer with freshwater seed pearls at cuticles.","polys":"2,580","verts":"1,679","mats":"4 PBR"},{"id":"charm-chrome-monkey","title":"Playful Chrome Monkey Charm","cat":"charms","src":"/models/high-detail/charms/charm-chrome-monkey.glb","desc":"Y2K liquid mirror chrome monkey charm sculpted with cute proportions, round ears, and clinging arms that wrap around the nail.","polys":"2,560","verts":"1,820","mats":"1 Mirror"},{"id":"charm-y2k-cyber-stars","title":"Y2K Cyber 4-Point Stars","cat":"charms","src":"/models/high-detail/charms/charm-y2k-cyber-stars.glb","desc":"Futuristic 4-point beveled chrome starburst charm with center diamond facet and mini floating starlet.","polys":"840","verts":"620","mats":"2 PBR"},{"id":"aura-micro-diffusion-airbrush","title":"Aura Micro-Diffusion Airbrush","cat":"station","src":"/models/high-detail/tools/aura-micro-diffusion-airbrush.glb","desc":"Precision chrome airbrush pen with top syrup reservoir and dual-action trigger, used for spraying soft blushing aura ombre centers with particle mist.","polys":"1,148","verts":"860","mats":"4 PBR"},{"id":"cloud-ergonomic-hand-rest","title":"Cloud Ergonomic Hand Rest","cat":"station","src":"/models/high-detail/station/cloud-ergonomic-hand-rest.glb","desc":"Sculpted three-lobe cloud hand rest upholstered in soft bouclé fabric on a brushed gold plinth, supporting client's hand during 2-3 hour slow sessions.","polys":"1,672","verts":"1,220","mats":"2 PBR"},{"id":"celadon-tea-ceremony-set","title":"Celadon Welcome Tea Set","cat":"station","src":"/models/high-detail/station/celadon-tea-ceremony-set.glb","desc":"Handcrafted jade celadon teapot and two matching tasting cups on a bamboo tray, serving hot yuzu and roasted barley tea at the start of each appointment.","polys":"2,560","verts":"1,680","mats":"3 PBR"},{"id":"hinoki-incense-burner","title":"Hinoki Incense & Cedar Block","cat":"station","src":"/models/high-detail/station/hinoki-incense-burner.glb","desc":"Spun brass incense bowl resting on an aromatic hinoki cypress block, holding a burning sandalwood stick with glowing ember and white ash bed.","polys":"1,448","verts":"1,032","mats":"5 PBR"},{"id":"washi-folding-screen","title":"Washi Folding Privacy Screen","cat":"station","src":"/models/high-detail/furniture/washi-folding-screen.glb","desc":"Three-panel blonde oak and translucent washi paper folding screen, diffusing natural canal light and creating a meditative retreat from Amsterdam outside.","polys":"416","verts":"404","mats":"3 PBR"},{"id":"glass-syrup-swatch-discs","title":"Glass Syrup Swatch Discs","cat":"station","src":"/models/high-detail/tools/glass-syrup-swatch-discs.glb","desc":"Fan of five crystal glass teardrop discs with sheer watercolor syrup gel swatches (Rose Quartz, Apricot Jelly, Aurora Glass, Pistachio, Lilac Haze).","polys":"1,888","verts":"1,450","mats":"7 PBR"},{"id":"client-wish-journal","title":"Client Intention & Wish Journal","cat":"station","src":"/models/high-detail/station/client-wish-journal.glb","desc":"Linen-bound atelier ledger with silk ribbon bookmark and brass fountain pen, where clients write down their intention before their slow styling session.","polys":"244","verts":"220","mats":"4 PBR"}];
+
+      const viewer = document.getElementById('studio-viewer');
+      const modelNameTag = document.getElementById('viewer-model-name');
+      const modelCatTag = document.getElementById('viewer-model-cat');
+      const cardsContainer = document.getElementById('asset-cards-container');
+      const creatorPanel = document.getElementById('creator-panel');
+      const primaryActionBtn = document.getElementById('btn-studio-primary-action');
+
+      // State
+      let currentSelectedAsset = ALL_ASSETS[0];
+      let customBaseSet = ALL_ASSETS.find(a => a.id === 'blush-glaze-coquette-set') || ALL_ASSETS[0];
+      let customCharms = ['Ribbon Bow'];
+      let customTreatments = ['Russian Almond Shape', 'Airbrushed Aura'];
+      let isCured = false;
+      let activeClientTicketId = null;
+
+      // Update Viewer Helper
+      const updateViewer = (asset) => {
+        if (!viewer || !asset) return;
+        viewer.src = asset.src;
+        if (modelNameTag) {
+          modelNameTag.innerHTML = asset.title + ' <span class="model-specs-badge">📐 ' + (asset.polys || 'PBR') + '</span>';
+        }
+        if (modelCatTag) modelCatTag.textContent = asset.cat.toUpperCase();
+        if (primaryActionBtn) {
+          if (activeClientTicketId) {
+            const t = questSystem.getTicket(activeClientTicketId);
+            primaryActionBtn.textContent = '🎁 Pack Couture Box for ' + (t ? t.clientName : 'Client');
+          } else if (asset.cat === 'sets') {
+            primaryActionBtn.textContent = '🎁 Equip Set & Pack into Couture Box';
+          } else if (asset.cat === 'tools') {
+            primaryActionBtn.textContent = '✨ Use Tool in Atelier';
+          } else if (asset.cat === 'charms') {
+            primaryActionBtn.textContent = '🎀 Attach Charm to Custom Nails';
+          } else {
+            primaryActionBtn.textContent = '🔍 Inspect Atelier Asset';
+          }
+        }
+      };
+
+      // Render Client Tickets in Creator Studio
+      const renderClientTickets = () => {
+        const container = document.getElementById('client-tickets-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        Object.values(questSystem.tickets).forEach(ticket => {
+          const card = document.createElement('div');
+          card.className = 'client-ticket-card ' + (activeClientTicketId === ticket.id ? 'active' : '');
+
+          let statusText = 'Needs Set';
+          let badgeClass = '';
+          if (ticket.status === 'packed') {
+            statusText = 'Packed 🎁';
+            badgeClass = 'packed';
+          } else if (ticket.status === 'delivered') {
+            statusText = 'Delivered ♡';
+            badgeClass = 'delivered';
+          }
+
+          card.innerHTML = `
+            <div class="ticket-header">
+              <span class="ticket-name">${ticket.icon} ${ticket.clientName}</span>
+              <span class="ticket-badge ${badgeClass}">${statusText}</span>
+            </div>
+            <div class="ticket-request">
+              <strong>${ticket.setDesignName}</strong><br/>
+              <span style="opacity: 0.85;">+ ${ticket.requestedCharm}</span><br/>
+              <span style="opacity: 0.65; font-size: 9px;">📍 ${ticket.locationName}</span>
+            </div>
+          `;
+
+          card.addEventListener('click', () => {
+            document.querySelectorAll('.client-ticket-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            activeClientTicketId = ticket.id;
+
+            // Auto-load requested set
+            const matchingSet = ALL_ASSETS.find(a => 
+              a.src === ticket.baseModelPath || 
+              a.title.toLowerCase().includes(ticket.setDesignName.toLowerCase().slice(0, 7))
+            ) || ALL_ASSETS.find(a => a.cat === 'sets');
+
+            if (matchingSet) {
+              customBaseSet = matchingSet;
+              updateViewer(matchingSet);
+              document.querySelectorAll('#creator-base-chips .creator-chip').forEach(ch => {
+                ch.classList.toggle('active', ch.textContent.trim() === matchingSet.title);
+              });
+            }
+
+            // Auto-load requested charm
+            customCharms = [ticket.requestedCharm];
+            document.querySelectorAll('#creator-charm-chips .creator-chip').forEach(ch => {
+              ch.classList.toggle('active', ch.textContent.includes(ticket.requestedCharm));
+            });
+
+            const statusName = document.getElementById('creator-status-name');
+            if (statusName) {
+              statusName.textContent = `Order for ${ticket.clientName}: ${ticket.setDesignName} + ${ticket.requestedCharm}`;
+            }
+
+            if (primaryActionBtn) {
+              primaryActionBtn.textContent = `🎁 Pack Couture Box for ${ticket.clientName}`;
+            }
+
+            sound.playTeaPour();
+          });
+
+          container.appendChild(card);
+        });
+      };
+
+      // 4. CUSTOM NAIL CREATOR INITIALIZATION
+      const initCreatorUI = () => {
+        const baseGrid = document.getElementById('creator-base-chips');
+        const charmGrid = document.getElementById('creator-charm-chips');
+        const statusName = document.getElementById('creator-status-name');
+
+        renderClientTickets();
+
+        const baseSets = ALL_ASSETS.filter(a => a.cat === 'sets');
+        const charms = ALL_ASSETS.filter(a => a.cat === 'charms');
+
+        if (baseGrid) {
+          baseGrid.innerHTML = '';
+          baseSets.forEach((set) => {
+            const btn = document.createElement('button');
+            btn.className = 'creator-chip ' + (set.id === customBaseSet.id ? 'active' : '');
+            btn.textContent = set.title;
+            btn.addEventListener('click', () => {
+              baseGrid.querySelectorAll('.creator-chip').forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              customBaseSet = set;
+              updateViewer(set);
+              sound.playTeaPour();
+              if (statusName) statusName.textContent = set.title + (customCharms.length ? ' + ' + customCharms.join(', ') : '');
+            });
+            baseGrid.appendChild(btn);
+          });
+        }
+
+        if (charmGrid) {
+          charmGrid.innerHTML = '';
+          charms.forEach((ch, idx) => {
+            const btn = document.createElement('button');
+            btn.className = 'creator-chip ' + (idx === 0 ? 'active' : '');
+            btn.textContent = ch.title;
+            btn.addEventListener('click', () => {
+              btn.classList.toggle('active');
+              if (btn.classList.contains('active')) {
+                if (!customCharms.includes(ch.title)) customCharms.push(ch.title);
+              } else {
+                customCharms = customCharms.filter(c => c !== ch.title);
+              }
+              sound.playMagneticShimmer();
+              updateViewer(ch);
+              if (statusName) statusName.textContent = customBaseSet.title + (customCharms.length ? ' + ' + customCharms.join(', ') : '');
+            });
+            charmGrid.appendChild(btn);
+          });
+        }
+
+        // Tools in Creator
+        document.querySelectorAll('#creator-tool-chips .creator-chip').forEach(btn => {
+          btn.addEventListener('click', () => {
+            btn.classList.toggle('active');
+            const tool = btn.getAttribute('data-tool');
+            if (tool === 'file') sound.playGlassFile();
+            else if (tool === 'airbrush') sound.playAirbrushHiss(1.2);
+            else if (tool === 'cateye') sound.playMagneticShimmer();
+            else if (tool === 'burnish') sound.playGlassFile();
+            else if (tool === 'serum') sound.playTeaPour();
+          });
+        });
+
+        // UV Cure Button
+        document.getElementById('btn-creator-uv-cure')?.addEventListener('click', () => {
+          isCured = true;
+          sound.playUVLampCure();
+          const card = document.querySelector('.eliya-modal-card');
+          if (card) {
+            card.style.boxShadow = '0 0 60px rgba(151, 117, 250, 0.6)';
+            setTimeout(() => {
+              card.style.boxShadow = '';
+            }, 1200);
+          }
+          if (statusName) {
+            statusName.innerHTML = '<span style="color:#7048e8;font-weight:700;">✓ Cured to Glass Sheen (432Hz)!</span> ' + customBaseSet.title;
+          }
+        });
+      };
+
+      // 5. ASSET CATALOG CARDS RENDERING
+      const renderCatalog = (category) => {
+        if (!cardsContainer) return;
+        cardsContainer.innerHTML = '';
+        const filtered = ALL_ASSETS.filter(a => a.cat === category);
+
+        filtered.forEach(asset => {
+          const card = document.createElement('div');
+          card.className = 'asset-card ' + (asset.id === currentSelectedAsset.id ? 'active' : '');
+          card.innerHTML = 
+            '<div class="card-text-group">' +
+              '<span class="card-title">' + asset.title + '</span>' +
+              '<span class="card-desc">' + asset.desc + '</span>' +
+            '</div>' +
+            '<span class="card-action-badge">View 3D</span>';
+
+          card.addEventListener('click', () => {
+            document.querySelectorAll('.asset-card').forEach(c => c.classList.remove('active'));
+            card.classList.add('active');
+            currentSelectedAsset = asset;
+            activeClientTicketId = null;
+            updateViewer(asset);
+
+            if (asset.cat === 'tools') {
+              if (asset.id.includes('file')) sound.playGlassFile();
+              else if (asset.id.includes('airbrush')) sound.playAirbrushHiss(1.2);
+              else if (asset.id.includes('wand')) sound.playMagneticShimmer();
+              else sound.playTeaPour();
+            } else if (asset.cat === 'charms') {
+              sound.playMagneticShimmer();
+            }
+          });
+
+          cardsContainer.appendChild(card);
+        });
+      };
+
+      // 6. TAB SWITCHING
+      document.querySelectorAll('.studio-cat-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.studio-cat-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const cat = btn.getAttribute('data-cat');
+
+          if (cat === 'creator') {
+            if (creatorPanel) creatorPanel.style.display = 'flex';
+            if (cardsContainer) cardsContainer.style.display = 'none';
+            renderClientTickets();
+            updateViewer(customBaseSet);
+            if (primaryActionBtn) {
+              if (activeClientTicketId) {
+                const t = questSystem.getTicket(activeClientTicketId);
+                primaryActionBtn.textContent = '🎁 Pack Couture Box for ' + (t ? t.clientName : 'Client');
+              } else {
+                primaryActionBtn.textContent = '🎁 Pack Custom Set into Box & Deliver on Bike';
+              }
+            }
+          } else {
+            if (creatorPanel) creatorPanel.style.display = 'none';
+            if (cardsContainer) cardsContainer.style.display = 'flex';
+            renderCatalog(cat);
+            const first = ALL_ASSETS.find(a => a.cat === cat);
+            if (first) updateViewer(first);
+          }
+        });
+      });
+
+      // Initial Setup
+      initCreatorUI();
+      updateViewer(customBaseSet);
+
+      // Refresh ticket statuses whenever modal opens
+      const studioObserver = new MutationObserver(() => {
+        const modal = document.getElementById('eliya-modal-overlay');
+        if (modal && modal.style.display !== 'none') {
+          renderClientTickets();
+        }
+      });
+      const modalEl = document.getElementById('eliya-modal-overlay');
+      if (modalEl) {
+        studioObserver.observe(modalEl, { attributes: true, attributeFilter: ['style'] });
+      }
+
+      // Primary Action Button (Equip / Use / Deliver)
+      primaryActionBtn?.addEventListener('click', () => {
+        sound.playBicycleBell();
+        const modal = document.getElementById('eliya-modal-overlay');
+        if (modal) modal.style.display = 'none';
+
+        if (activeClientTicketId) {
+          questSystem.craftAndPackTicket(activeClientTicketId);
+          const ticket = questSystem.getTicket(activeClientTicketId);
+          renderClientTickets();
+
+          const packedCount = Object.values(questSystem.tickets).filter(t => t.status === 'packed').length;
+          window.dispatchEvent(new CustomEvent('box-packed', { detail: { count: packedCount } }));
+
+          const toast = document.createElement('div');
+          toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2d2623;color:white;padding:12px 24px;border-radius:24px;font-size:13px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.2);';
+          toast.textContent = '🎁 Packed bespoke ' + (ticket ? ticket.setDesignName : 'Set') + ' into Couture Box for ' + (ticket ? ticket.clientName : 'Client') + '! Ride your Omafiets bike along the canal to deliver.';
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 4800);
+        } else {
+          const designTitle = (creatorPanel && creatorPanel.style.display !== 'none')
+            ? ('Custom ' + customBaseSet.title + (customCharms.length ? ' with ' + customCharms.join(' & ') : ''))
+            : currentSelectedAsset.title;
+
+          window.dispatchEvent(new CustomEvent('box-packed', { detail: { count: 1 } }));
+
+          const toast = document.createElement('div');
+          toast.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);background:#2d2623;color:white;padding:12px 24px;border-radius:24px;font-size:13px;z-index:9999;box-shadow:0 8px 30px rgba(0,0,0,0.2);';
+          toast.textContent = '✦ Packed "' + designTitle + '" into Couture Drawer Box! Ready for canal delivery on your Omafiets bike.';
+          document.body.appendChild(toast);
+          setTimeout(() => toast.remove(), 4500);
+        }
+      });
+
+    </script>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
