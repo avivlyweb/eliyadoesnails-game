@@ -1,0 +1,47 @@
+[
+  {
+    "key": "canal",
+    "name": "Canal Street",
+    "nameKo": "커낼 스트리트",
+    "centerTheta": 0.8,
+    "centerPhi": 0.8,
+    "radius": 0.35,
+    "unlockLevel": 1
+  },
+  {
+    "key": "market",
+    "name": "Market Square",
+    "nameKo": "마켓 스퀘어",
+    "centerTheta": 2.1,
+    "centerPhi": 0.8,
+    "radius": 0.30,
+    "unlockLevel": 2
+  },
+  {
+    "key": "meadow",
+    "name": "Tulip Meadow",
+    "nameKo": "튤립 메도우",
+    "centerTheta": 3.4,
+    "centerPhi": 0.8,
+    "radius": 0.35,
+    "unlockLevel": 3
+  },
+  {
+    "key": "windmill",
+    "name": "Windmill Hill",
+    "nameKo": "풍차 언덕",
+    "centerTheta": 4.7,
+    "centerPhi": 0.8,
+    "radius": 0.30,
+    "unlockLevel": 5
+  },
+  {
+    "key": "harbour",
+    "name": "Harbour",
+    "nameKo": "하버",
+    "centerTheta": 5.9,
+    "centerPhi": 1.05,
+    "radius": 0.30,
+    "unlockLevel": 8
+  }
+]

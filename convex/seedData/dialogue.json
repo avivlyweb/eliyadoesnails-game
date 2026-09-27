@@ -1,0 +1,330 @@
+[
+  {
+    "npcKey": "mira",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Good morning, Eliya! The cherry blossoms by the canal are in full bloom.",
+      "Hello Eliya! Look at how fresh the morning dew is."
+    ]
+  },
+  {
+    "npcKey": "mira",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "Eliya! My hands feel so bare… could you make me Cherry Blossom French with a little ribbon bow?"
+    ]
+  },
+  {
+    "npcKey": "mira",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "Thank you, Eliya! These will brighten my whole day at the flower cart."
+    ]
+  },
+  {
+    "npcKey": "mira",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "Eliya, this is stunning! Like real cherry petals captured on my fingertips. Absolutely wonderful!"
+    ]
+  },
+  {
+    "npcKey": "mira",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "Better late than never! They still look lovely, thank you Eliya."
+    ]
+  },
+  {
+    "npcKey": "nell",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Eliya. Clay on the wheel, tea in the mug. Good day for creating.",
+      "Just trimming a new vase. How are the brushes today?"
+    ]
+  },
+  {
+    "npcKey": "nell",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "I need a set that can handle clay but still look refined. How about Rose Quartz French?"
+    ]
+  },
+  {
+    "npcKey": "nell",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "Nice work. Solid lines, smooth finish."
+    ]
+  },
+  {
+    "npcKey": "nell",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "Now that is artisan craft. The glaze and bevel are impeccable. Outstanding work, Eliya."
+    ]
+  },
+  {
+    "npcKey": "nell",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "Took your time, didn't you? At least the finish didn't crack."
+    ]
+  },
+  {
+    "npcKey": "pip",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Eliya!! Look at this light today, perfect for Life4Cuts!",
+      "Heeey Eliya! Did you bring new nail art today? I need photos!"
+    ]
+  },
+  {
+    "npcKey": "pip",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "Eliya!! Could you do Apricot Pearl? The pearlescent sheen will look SO cute in the photobooth flash!"
+    ]
+  },
+  {
+    "npcKey": "pip",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "Cute! Going straight into the photo strip album!"
+    ]
+  },
+  {
+    "npcKey": "pip",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "KYAAA!! This is literally perfection!! Look at that shine! We HAVE to do a photoshoot right now!"
+    ]
+  },
+  {
+    "npcKey": "pip",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "Aww, almost missed the golden hour! But still so so cute!"
+    ]
+  },
+  {
+    "npcKey": "joon",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "안녕하세요, Eliya. Fresh matcha latte is ready whenever you need a break.",
+      "The morning rush is calm today. Care for some steamed tea?"
+    ]
+  },
+  {
+    "npcKey": "joon",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "A quiet matcha glaze set would soothe the eyes while pouring espresso. What do you say?"
+    ]
+  },
+  {
+    "npcKey": "joon",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "고마워요, Eliya. Very soothing and subtle."
+    ]
+  },
+  {
+    "npcKey": "joon",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "대단해요! The color gradient is poetic. It captures the spirit of our market café beautifully."
+    ]
+  },
+  {
+    "npcKey": "joon",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "The latte got cold, but the nails are still warm and sweet."
+    ]
+  },
+  {
+    "npcKey": "sanne",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Welcome to the market! Looking for ribbons, vials, or a good trade today?",
+      "Good to see you Eliya! Fresh goods just arrived at the stall."
+    ]
+  },
+  {
+    "npcKey": "sanne",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "I've got a busy market day ahead. Can you craft me an Apricot Pearl set? I'll trade you some ribbon for it!"
+    ]
+  },
+  {
+    "npcKey": "sanne",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "A deal is a deal! Looks very practical and pretty."
+    ]
+  },
+  {
+    "npcKey": "sanne",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "Top quality! You really know how to deliver premium atelier craftsmanship. Worth every single coin!"
+    ]
+  },
+  {
+    "npcKey": "sanne",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "Time is money in the market, Eliya! But fine, I can't stay mad with nails this pretty."
+    ]
+  },
+  {
+    "npcKey": "truus",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Dag lieverd! Come sit by the greenhouse. The tulips are listening to the breeze.",
+      "Hello little Eliya! Take your time, there is no hurry in the meadow."
+    ]
+  },
+  {
+    "npcKey": "truus",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "My old gardening hands would love some gentle blossom petals, dear. Could you paint me some?"
+    ]
+  },
+  {
+    "npcKey": "truus",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "Dank je wel, Eliya. My hands feel like young tulip stems again."
+    ]
+  },
+  {
+    "npcKey": "truus",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "Prachtig! Truly magnificent, my dear. The flowers in the meadow will be envious!"
+    ]
+  },
+  {
+    "npcKey": "truus",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "No rush at all, child. Flowers take time to bloom too."
+    ]
+  },
+  {
+    "npcKey": "lotte",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Eliya!! Look at this bug I found in the tulips!",
+      "Eliya Eliya! Did you bring sparkly things from the studio?"
+    ]
+  },
+  {
+    "npcKey": "lotte",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "Can I have sparkly apricot pearl nails with cute polka dots please please please?!"
+    ]
+  },
+  {
+    "npcKey": "lotte",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "Yaaaay!! Look how shiny they are! Thank you Eliya!"
+    ]
+  },
+  {
+    "npcKey": "lotte",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "WOOOOOW!! Three whole stars!! I'm gonna show everybody at school!"
+    ]
+  },
+  {
+    "npcKey": "lotte",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "I waited so long! But yay, sparkly nails are here!"
+    ]
+  },
+  {
+    "npcKey": "bea",
+    "trigger": "greet",
+    "minFriendship": 0,
+    "lines": [
+      "Ah, the water ripples softly tonight... Hello, quiet artisan.",
+      "The harbour moon is high, Eliya. A serene night for gentle inspiration."
+    ]
+  },
+  {
+    "npcKey": "bea",
+    "trigger": "request",
+    "minFriendship": 0,
+    "lines": [
+      "The moonlight reflecting on the waves inspires me... Could you craft Moonlight Cat-Eye for my evening salon?"
+    ]
+  },
+  {
+    "npcKey": "bea",
+    "trigger": "deliver_1",
+    "minFriendship": 0,
+    "lines": [
+      "A quiet shimmer for the quiet night. Thank you, Eliya."
+    ]
+  },
+  {
+    "npcKey": "bea",
+    "trigger": "deliver_3",
+    "minFriendship": 0,
+    "lines": [
+      "Sublime. The velvet magnetic beam dances like silver ripples across the canal at midnight. Extraordinary."
+    ]
+  },
+  {
+    "npcKey": "bea",
+    "trigger": "late",
+    "minFriendship": 0,
+    "lines": [
+      "The night is still young, Eliya. Thank you for making the journey."
+    ]
+  }
+]

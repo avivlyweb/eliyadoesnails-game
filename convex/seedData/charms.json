@@ -1,0 +1,83 @@
+[
+  {
+    "key": "ribbon_bow",
+    "name": "Ribbon Bow",
+    "modelId": "sculpted-ribbon-bow",
+    "recipe": [
+      { "materialKey": "silk_ribbon", "qty": 2 },
+      { "materialKey": "sakura_petal", "qty": 1 }
+    ],
+    "unlockLevel": 1
+  },
+  {
+    "key": "baroque_pearl",
+    "name": "Baroque Pearl",
+    "modelId": "baroque-nacre-pearl",
+    "recipe": [
+      { "materialKey": "freshwater_pearl", "qty": 3 }
+    ],
+    "unlockLevel": 1
+  },
+  {
+    "key": "molten_chrome_drops",
+    "name": "Molten Chrome Drops",
+    "modelId": "molten-chrome-drops",
+    "recipe": [
+      { "materialKey": "chrome_drop", "qty": 3 },
+      { "materialKey": "syrup_base", "qty": 1 }
+    ],
+    "unlockLevel": 5
+  },
+  {
+    "key": "cyber_heart",
+    "name": "Cyber Heart",
+    "modelId": "barbed-wire-cyber-heart",
+    "recipe": [
+      { "materialKey": "chrome_drop", "qty": 2 },
+      { "materialKey": "silk_ribbon", "qty": 1 }
+    ],
+    "unlockLevel": 6
+  },
+  {
+    "key": "aurora_teardrop",
+    "name": "Aurora Teardrop",
+    "modelId": "faceted-aurora-teardrop-gem",
+    "recipe": [
+      { "materialKey": "aurora_crystal", "qty": 2 },
+      { "materialKey": "freshwater_pearl", "qty": 1 }
+    ],
+    "unlockLevel": 6
+  },
+  {
+    "key": "y2k_stars",
+    "name": "Y2K Stars",
+    "modelId": "charm-y2k-cyber-stars",
+    "recipe": [
+      { "materialKey": "gold_leaf", "qty": 1 },
+      { "materialKey": "daisy_sprig", "qty": 2 },
+      { "materialKey": "syrup_base", "qty": 1 }
+    ],
+    "unlockLevel": 8
+  },
+  {
+    "key": "saturn_orbital",
+    "name": "Saturn Orbital",
+    "modelId": "saturn-orbital-charm",
+    "recipe": [
+      { "materialKey": "aurora_crystal", "qty": 1 },
+      { "materialKey": "gold_leaf", "qty": 1 },
+      { "materialKey": "chrome_drop", "qty": 1 }
+    ],
+    "unlockLevel": 8
+  },
+  {
+    "key": "chrome_monkey",
+    "name": "Chrome Monkey",
+    "modelId": "charm-chrome-monkey",
+    "recipe": [
+      { "materialKey": "chrome_drop", "qty": 2 },
+      { "materialKey": "gold_leaf", "qty": 2 }
+    ],
+    "unlockLevel": 10
+  }
+]

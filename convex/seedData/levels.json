@@ -1,0 +1,106 @@
+[
+  {
+    "level": 1,
+    "xpToNext": 100,
+    "unlocks": [
+      "district:canal",
+      "npc:mira",
+      "npc:nell"
+    ]
+  },
+  {
+    "level": 2,
+    "xpToNext": 140,
+    "unlocks": [
+      "district:market",
+      "npc:pip",
+      "npc:joon",
+      "npc:sanne",
+      "shop"
+    ]
+  },
+  {
+    "level": 3,
+    "xpToNext": 180,
+    "unlocks": [
+      "district:meadow",
+      "npc:truus",
+      "npc:lotte",
+      "art:retro_mint_polka"
+    ]
+  },
+  {
+    "level": 4,
+    "xpToNext": 220,
+    "unlocks": [
+      "art:french_swirls",
+      "art:cateye_prism",
+      "shade:lilac_prism"
+    ]
+  },
+  {
+    "level": 5,
+    "xpToNext": 260,
+    "unlocks": [
+      "district:windmill",
+      "charm:molten_chrome_drops",
+      "art:molten_chrome_3d",
+      "art:aura_constellation"
+    ]
+  },
+  {
+    "level": 6,
+    "xpToNext": 300,
+    "unlocks": [
+      "charm:cyber_heart",
+      "charm:aurora_teardrop",
+      "shade:moonlight_silver"
+    ]
+  },
+  {
+    "level": 7,
+    "xpToNext": 340,
+    "unlocks": [
+      "dailies:4"
+    ]
+  },
+  {
+    "level": 8,
+    "xpToNext": 380,
+    "unlocks": [
+      "district:harbour",
+      "npc:bea",
+      "charm:y2k_stars",
+      "charm:saturn_orbital"
+    ]
+  },
+  {
+    "level": 9,
+    "xpToNext": 420,
+    "unlocks": [
+      "shade:emerald_nebula"
+    ]
+  },
+  {
+    "level": 10,
+    "xpToNext": 460,
+    "unlocks": [
+      "charm:chrome_monkey",
+      "dailies:5"
+    ]
+  },
+  {
+    "level": 11,
+    "xpToNext": 500,
+    "unlocks": [
+      "decor:slot_7"
+    ]
+  },
+  {
+    "level": 12,
+    "xpToNext": 0,
+    "unlocks": [
+      "title:master_artisan"
+    ]
+  }
+]

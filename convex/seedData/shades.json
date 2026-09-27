@@ -1,0 +1,74 @@
+[
+  {
+    "key": "rose_quartz",
+    "name": "Rose Quartz Syrup",
+    "nameKo": "로즈 쿼츠 시럽",
+    "hex": "#fda4af",
+    "finish": "syrup",
+    "unlockLevel": 1,
+    "price": 0
+  },
+  {
+    "key": "cherry_blossom",
+    "name": "Cherry Blossom Syrup",
+    "nameKo": "체리 블라썸 시럽",
+    "hex": "#fb7185",
+    "finish": "syrup",
+    "unlockLevel": 1,
+    "price": 0
+  },
+  {
+    "key": "apricot_peach",
+    "name": "Apricot Peach Dew",
+    "nameKo": "살구 복숭아 이슬",
+    "hex": "#fed7aa",
+    "finish": "syrup",
+    "unlockLevel": 1,
+    "price": 0
+  },
+  {
+    "key": "matcha_latte",
+    "name": "Matcha Latte Glaze",
+    "nameKo": "말차 라떼 글레이즈",
+    "hex": "#a7f3d0",
+    "finish": "syrup",
+    "unlockLevel": 2,
+    "price": 80
+  },
+  {
+    "key": "molten_sterling",
+    "name": "Molten Sterling Chrome",
+    "nameKo": "몰튼 실버 리퀴드",
+    "hex": "#cbd5e1",
+    "finish": "chrome",
+    "unlockLevel": 5,
+    "price": 200
+  },
+  {
+    "key": "lilac_prism",
+    "name": "Lilac Prism Cat-Eye",
+    "nameKo": "라일락 오로라 캣아이",
+    "hex": "#c084fc",
+    "finish": "cateye",
+    "unlockLevel": 4,
+    "price": 150
+  },
+  {
+    "key": "moonlight_silver",
+    "name": "Moonlight Silver Cat-Eye",
+    "nameKo": "문라이트 실버 캣아이",
+    "hex": "#e2e8f0",
+    "finish": "cateye",
+    "unlockLevel": 6,
+    "price": 220
+  },
+  {
+    "key": "emerald_nebula",
+    "name": "Emerald Nebula Cat-Eye",
+    "nameKo": "에메랄드 네뷸라 캣아이",
+    "hex": "#6ee7b7",
+    "finish": "cateye",
+    "unlockLevel": 9,
+    "price": 320
+  }
+]

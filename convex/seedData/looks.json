@@ -1,0 +1,74 @@
+[
+  {
+    "key": "cherry_blossom_french",
+    "name": "Cherry Blossom French",
+    "modelId": "set-cherry-blossom",
+    "shadeKey": "cherry_blossom",
+    "artStyleKey": "floral_petals",
+    "charmKey": "ribbon_bow",
+    "signature": true,
+    "websiteLookSlug": "petal-blossom",
+    "baseReward": 40
+  },
+  {
+    "key": "rose_quartz_french",
+    "name": "Rose Quartz French",
+    "modelId": "set-rose-quartz-french",
+    "shadeKey": "rose_quartz",
+    "artStyleKey": "micro_french",
+    "signature": true,
+    "websiteLookSlug": "classic-french-swirls",
+    "baseReward": 50
+  },
+  {
+    "key": "matcha_glaze",
+    "name": "Matcha Glaze",
+    "modelId": "set-matcha-glaze",
+    "shadeKey": "matcha_latte",
+    "artStyleKey": "retro_mint_polka",
+    "signature": true,
+    "websiteLookSlug": "retro-mint-polka",
+    "baseReward": 60
+  },
+  {
+    "key": "blush_coquette",
+    "name": "Blush Coquette",
+    "modelId": "blush-glaze-coquette-set",
+    "shadeKey": "rose_quartz",
+    "artStyleKey": "aura_constellation",
+    "charmKey": "cyber_heart",
+    "signature": true,
+    "websiteLookSlug": "blushing-aura-constellation",
+    "baseReward": 100
+  },
+  {
+    "key": "apricot_pearl",
+    "name": "Apricot Pearl",
+    "modelId": "set-apricot-pearl",
+    "shadeKey": "apricot_peach",
+    "artStyleKey": "polka_dots",
+    "charmKey": "baroque_pearl",
+    "signature": false,
+    "baseReward": 50
+  },
+  {
+    "key": "moonlight_cateye",
+    "name": "Moonlight Cat-Eye",
+    "modelId": "set-moonlight-cateye",
+    "shadeKey": "moonlight_silver",
+    "artStyleKey": "cateye_prism",
+    "charmKey": "saturn_orbital",
+    "signature": false,
+    "baseReward": 150
+  },
+  {
+    "key": "cyber_chrome",
+    "name": "Cyber Chrome",
+    "modelId": "cyberpunk-liquid-chrome-set",
+    "shadeKey": "molten_sterling",
+    "artStyleKey": "molten_chrome_3d",
+    "charmKey": "molten_chrome_drops",
+    "signature": false,
+    "baseReward": 160
+  }
+]

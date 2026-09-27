@@ -1,0 +1,80 @@
+[
+  {
+    "key": "clean_jelly",
+    "name": "Clean Jelly",
+    "nameKo": "클린 젤리",
+    "minigame": "none",
+    "difficulty": 1,
+    "unlockLevel": 1
+  },
+  {
+    "key": "micro_french",
+    "name": "Classic Micro French",
+    "nameKo": "마이크로 프렌치",
+    "minigame": "trace",
+    "difficulty": 2,
+    "requiredToolKey": "micro_liner_brush",
+    "unlockLevel": 1
+  },
+  {
+    "key": "polka_dots",
+    "name": "Delicate Polka Dots",
+    "nameKo": "폴카 도트",
+    "minigame": "dots",
+    "difficulty": 2,
+    "unlockLevel": 2
+  },
+  {
+    "key": "floral_petals",
+    "name": "Floral Petals",
+    "nameKo": "플로럴 페탈",
+    "minigame": "trace",
+    "difficulty": 2,
+    "requiredToolKey": "micro_liner_brush",
+    "unlockLevel": 1
+  },
+  {
+    "key": "retro_mint_polka",
+    "name": "Retro Mint & Polka",
+    "nameKo": "레트로 민트 & 폴카",
+    "minigame": "dots",
+    "difficulty": 3,
+    "unlockLevel": 3
+  },
+  {
+    "key": "french_swirls",
+    "name": "French & Swirls",
+    "nameKo": "프렌치 스월",
+    "minigame": "trace",
+    "difficulty": 4,
+    "requiredToolKey": "micro_liner_brush",
+    "unlockLevel": 4
+  },
+  {
+    "key": "aura_constellation",
+    "name": "Aura & Constellation",
+    "nameKo": "아우라 별자리",
+    "minigame": "dots",
+    "difficulty": 4,
+    "requiredToolKey": "aura_airbrush",
+    "unlockLevel": 5
+  },
+  {
+    "key": "cateye_prism",
+    "name": "Diagonal Prism Beam",
+    "nameKo": "캣아이 프리즘",
+    "minigame": "magnet",
+    "difficulty": 3,
+    "requiredToolKey": "magnetic_cat_eye_wand",
+    "unlockLevel": 4
+  },
+  {
+    "key": "molten_chrome_3d",
+    "name": "3D Molten Chrome",
+    "nameKo": "3D 몰튼 크롬",
+    "minigame": "drops",
+    "difficulty": 5,
+    "requiredToolKey": "precision_tweezers",
+    "unlockLevel": 5
+  }
+]

@@ -1,0 +1,74 @@
+[
+  {
+    "key": "sakura_petal",
+    "name": "Sakura Petal",
+    "nameKo": "벚꽃잎",
+    "modelId": "sakura-petal-bundle",
+    "district": "canal",
+    "respawnMinutes": 4,
+    "sellPrice": 3
+  },
+  {
+    "key": "freshwater_pearl",
+    "name": "Freshwater Pearl",
+    "nameKo": "담수진주",
+    "modelId": "freshwater-pearl-oyster",
+    "district": "canal",
+    "respawnMinutes": 6,
+    "sellPrice": 5
+  },
+  {
+    "key": "silk_ribbon",
+    "name": "Silk Ribbon",
+    "nameKo": "실크 리본",
+    "modelId": "silk-ribbon-spool",
+    "district": "market",
+    "respawnMinutes": 5,
+    "sellPrice": 4
+  },
+  {
+    "key": "syrup_base",
+    "name": "Syrup Base",
+    "nameKo": "시럽 베이스",
+    "modelId": "syrup-glass-vial",
+    "district": "market",
+    "respawnMinutes": 5,
+    "sellPrice": 4
+  },
+  {
+    "key": "daisy_sprig",
+    "name": "Daisy Sprig",
+    "nameKo": "데이지",
+    "modelId": "daisy-sprig",
+    "district": "meadow",
+    "respawnMinutes": 4,
+    "sellPrice": 3
+  },
+  {
+    "key": "chrome_drop",
+    "name": "Chrome Drop",
+    "nameKo": "크롬 방울",
+    "modelId": "chrome-droplet",
+    "district": "windmill",
+    "respawnMinutes": 8,
+    "sellPrice": 8
+  },
+  {
+    "key": "aurora_crystal",
+    "name": "Aurora Crystal",
+    "nameKo": "오로라 크리스탈",
+    "modelId": "aurora-crystal-shard",
+    "district": "windmill",
+    "respawnMinutes": 12,
+    "sellPrice": 12
+  },
+  {
+    "key": "gold_leaf",
+    "name": "Gold Leaf",
+    "nameKo": "금박",
+    "modelId": "gold-leaf-flake",
+    "district": "harbour",
+    "respawnMinutes": 12,
+    "sellPrice": 12
+  }
+]

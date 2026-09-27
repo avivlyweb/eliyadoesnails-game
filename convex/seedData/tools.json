@@ -1,0 +1,66 @@
+[
+  {
+    "key": "czech_glass_file",
+    "name": "Czech Glass File",
+    "modelId": "czech-glass-file",
+    "effect": "Base step +10",
+    "price": 0,
+    "unlockLevel": 1
+  },
+  {
+    "key": "micro_liner_brush",
+    "name": "Micro Liner Brush",
+    "modelId": "micro-liner-brush",
+    "effect": "Required for trace; tolerance +30%",
+    "price": 0,
+    "unlockLevel": 1
+  },
+  {
+    "key": "cuticle_serum_dropper",
+    "name": "Cuticle Serum Dropper",
+    "modelId": "cuticle-serum-dropper",
+    "effect": "Spill penalty -50%",
+    "price": 90,
+    "unlockLevel": 2
+  },
+  {
+    "key": "magnetic_cat_eye_wand",
+    "name": "Magnetic Cat-Eye Wand",
+    "modelId": "magnetic-cat-eye-wand",
+    "effect": "Required for magnet",
+    "price": 150,
+    "unlockLevel": 4
+  },
+  {
+    "key": "precision_tweezers",
+    "name": "Precision Tweezers",
+    "modelId": "precision-tweezers",
+    "effect": "Required for drops",
+    "price": 180,
+    "unlockLevel": 5
+  },
+  {
+    "key": "aura_airbrush",
+    "name": "Aura Airbrush",
+    "modelId": "aura-airbrush",
+    "effect": "Required for aura_constellation",
+    "price": 200,
+    "unlockLevel": 5
+  },
+  {
+    "key": "chrome_burnishing_pen",
+    "name": "Chrome Burnishing Pen",
+    "modelId": "chrome-burnishing-pen",
+    "effect": "Cure step: green zone +25%",
+    "price": 160,
+    "unlockLevel": 6
+  },
+  {
+    "key": "nail_sizing_wheel",
+    "name": "Nail Sizing Wheel",
+    "modelId": "nail-sizing-wheel",
+    "effect": "+15% Gloss on all deliveries",
+    "price": 300,
+    "unlockLevel": 7
+  }
+]

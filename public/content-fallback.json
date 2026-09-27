@@ -1,0 +1,1844 @@
+{
+  "artStyles": [
+    {
+      "key": "clean_jelly",
+      "name": "Clean Jelly",
+      "nameKo": "클린 젤리",
+      "minigame": "none",
+      "difficulty": 1,
+      "unlockLevel": 1
+    },
+    {
+      "key": "micro_french",
+      "name": "Classic Micro French",
+      "nameKo": "마이크로 프렌치",
+      "minigame": "trace",
+      "difficulty": 2,
+      "requiredToolKey": "micro_liner_brush",
+      "unlockLevel": 1
+    },
+    {
+      "key": "polka_dots",
+      "name": "Delicate Polka Dots",
+      "nameKo": "폴카 도트",
+      "minigame": "dots",
+      "difficulty": 2,
+      "unlockLevel": 2
+    },
+    {
+      "key": "floral_petals",
+      "name": "Floral Petals",
+      "nameKo": "플로럴 페탈",
+      "minigame": "trace",
+      "difficulty": 2,
+      "requiredToolKey": "micro_liner_brush",
+      "unlockLevel": 1
+    },
+    {
+      "key": "retro_mint_polka",
+      "name": "Retro Mint & Polka",
+      "nameKo": "레트로 민트 & 폴카",
+      "minigame": "dots",
+      "difficulty": 3,
+      "unlockLevel": 3
+    },
+    {
+      "key": "french_swirls",
+      "name": "French & Swirls",
+      "nameKo": "프렌치 스월",
+      "minigame": "trace",
+      "difficulty": 4,
+      "requiredToolKey": "micro_liner_brush",
+      "unlockLevel": 4
+    },
+    {
+      "key": "aura_constellation",
+      "name": "Aura & Constellation",
+      "nameKo": "아우라 별자리",
+      "minigame": "dots",
+      "difficulty": 4,
+      "requiredToolKey": "aura_airbrush",
+      "unlockLevel": 5
+    },
+    {
+      "key": "cateye_prism",
+      "name": "Diagonal Prism Beam",
+      "nameKo": "캣아이 프리즘",
+      "minigame": "magnet",
+      "difficulty": 3,
+      "requiredToolKey": "magnetic_cat_eye_wand",
+      "unlockLevel": 4
+    },
+    {
+      "key": "molten_chrome_3d",
+      "name": "3D Molten Chrome",
+      "nameKo": "3D 몰튼 크롬",
+      "minigame": "drops",
+      "difficulty": 5,
+      "requiredToolKey": "precision_tweezers",
+      "unlockLevel": 5
+    }
+  ],
+  "charms": [
+    {
+      "key": "ribbon_bow",
+      "name": "Ribbon Bow",
+      "modelId": "sculpted-ribbon-bow",
+      "recipe": [
+        {
+          "materialKey": "silk_ribbon",
+          "qty": 2
+        },
+        {
+          "materialKey": "sakura_petal",
+          "qty": 1
+        }
+      ],
+      "unlockLevel": 1
+    },
+    {
+      "key": "baroque_pearl",
+      "name": "Baroque Pearl",
+      "modelId": "baroque-nacre-pearl",
+      "recipe": [
+        {
+          "materialKey": "freshwater_pearl",
+          "qty": 3
+        }
+      ],
+      "unlockLevel": 1
+    },
+    {
+      "key": "molten_chrome_drops",
+      "name": "Molten Chrome Drops",
+      "modelId": "molten-chrome-drops",
+      "recipe": [
+        {
+          "materialKey": "chrome_drop",
+          "qty": 3
+        },
+        {
+          "materialKey": "syrup_base",
+          "qty": 1
+        }
+      ],
+      "unlockLevel": 5
+    },
+    {
+      "key": "cyber_heart",
+      "name": "Cyber Heart",
+      "modelId": "barbed-wire-cyber-heart",
+      "recipe": [
+        {
+          "materialKey": "chrome_drop",
+          "qty": 2
+        },
+        {
+          "materialKey": "silk_ribbon",
+          "qty": 1
+        }
+      ],
+      "unlockLevel": 6
+    },
+    {
+      "key": "aurora_teardrop",
+      "name": "Aurora Teardrop",
+      "modelId": "faceted-aurora-teardrop-gem",
+      "recipe": [
+        {
+          "materialKey": "aurora_crystal",
+          "qty": 2
+        },
+        {
+          "materialKey": "freshwater_pearl",
+          "qty": 1
+        }
+      ],
+      "unlockLevel": 6
+    },
+    {
+      "key": "y2k_stars",
+      "name": "Y2K Stars",
+      "modelId": "charm-y2k-cyber-stars",
+      "recipe": [
+        {
+          "materialKey": "gold_leaf",
+          "qty": 1
+        },
+        {
+          "materialKey": "daisy_sprig",
+          "qty": 2
+        },
+        {
+          "materialKey": "syrup_base",
+          "qty": 1
+        }
+      ],
+      "unlockLevel": 8
+    },
+    {
+      "key": "saturn_orbital",
+      "name": "Saturn Orbital",
+      "modelId": "saturn-orbital-charm",
+      "recipe": [
+        {
+          "materialKey": "aurora_crystal",
+          "qty": 1
+        },
+        {
+          "materialKey": "gold_leaf",
+          "qty": 1
+        },
+        {
+          "materialKey": "chrome_drop",
+          "qty": 1
+        }
+      ],
+      "unlockLevel": 8
+    },
+    {
+      "key": "chrome_monkey",
+      "name": "Chrome Monkey",
+      "modelId": "charm-chrome-monkey",
+      "recipe": [
+        {
+          "materialKey": "chrome_drop",
+          "qty": 2
+        },
+        {
+          "materialKey": "gold_leaf",
+          "qty": 2
+        }
+      ],
+      "unlockLevel": 10
+    }
+  ],
+  "decor": [
+    {
+      "key": "steaming_matcha_mug",
+      "name": "Steaming Matcha Mug",
+      "modelId": "steaming-matcha-mug",
+      "bonus": "+2 friendship per delivery",
+      "price": 60,
+      "unlockLevel": 2
+    },
+    {
+      "key": "celadon_tea_set",
+      "name": "Celadon Tea Set",
+      "modelId": "celadon-tea-set",
+      "bonus": "+5% Gloss",
+      "price": 120,
+      "unlockLevel": 3
+    },
+    {
+      "key": "potted_fiddle_fig",
+      "name": "Potted Fiddle Fig",
+      "modelId": "potted-fiddle-fig",
+      "bonus": "Material respawn -10%",
+      "price": 100,
+      "unlockLevel": 3
+    },
+    {
+      "key": "hinoki_incense",
+      "name": "Hinoki Incense",
+      "modelId": "hinoki-incense",
+      "bonus": "Deadlines +1 game hour",
+      "price": 140,
+      "unlockLevel": 4
+    },
+    {
+      "key": "brass_arc_lamp",
+      "name": "Brass Arc Lamp",
+      "modelId": "brass-arc-lamp",
+      "bonus": "Cure step green zone +10%",
+      "price": 150,
+      "unlockLevel": 5
+    },
+    {
+      "key": "washi_folding_screen",
+      "name": "Washi Folding Screen",
+      "modelId": "washi-folding-screen",
+      "bonus": "+5% XP",
+      "price": 180,
+      "unlockLevel": 6
+    },
+    {
+      "key": "floating_lacquer_display",
+      "name": "Floating Lacquer Display",
+      "modelId": "floating-lacquer-display",
+      "bonus": "Shows your 3 best designs; +5% Gloss",
+      "price": 250,
+      "unlockLevel": 8
+    }
+  ],
+  "dialogue": [
+    {
+      "npcKey": "mira",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Good morning, Eliya! The cherry blossoms by the canal are in full bloom.",
+        "Hello Eliya! Look at how fresh the morning dew is."
+      ]
+    },
+    {
+      "npcKey": "mira",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "Eliya! My hands feel so bare… could you make me Cherry Blossom French with a little ribbon bow?"
+      ]
+    },
+    {
+      "npcKey": "mira",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "Thank you, Eliya! These will brighten my whole day at the flower cart."
+      ]
+    },
+    {
+      "npcKey": "mira",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "Eliya, this is stunning! Like real cherry petals captured on my fingertips. Absolutely wonderful!"
+      ]
+    },
+    {
+      "npcKey": "mira",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "Better late than never! They still look lovely, thank you Eliya."
+      ]
+    },
+    {
+      "npcKey": "nell",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Eliya. Clay on the wheel, tea in the mug. Good day for creating.",
+        "Just trimming a new vase. How are the brushes today?"
+      ]
+    },
+    {
+      "npcKey": "nell",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "I need a set that can handle clay but still look refined. How about Rose Quartz French?"
+      ]
+    },
+    {
+      "npcKey": "nell",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "Nice work. Solid lines, smooth finish."
+      ]
+    },
+    {
+      "npcKey": "nell",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "Now that is artisan craft. The glaze and bevel are impeccable. Outstanding work, Eliya."
+      ]
+    },
+    {
+      "npcKey": "nell",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "Took your time, didn't you? At least the finish didn't crack."
+      ]
+    },
+    {
+      "npcKey": "pip",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Eliya!! Look at this light today, perfect for Life4Cuts!",
+        "Heeey Eliya! Did you bring new nail art today? I need photos!"
+      ]
+    },
+    {
+      "npcKey": "pip",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "Eliya!! Could you do Apricot Pearl? The pearlescent sheen will look SO cute in the photobooth flash!"
+      ]
+    },
+    {
+      "npcKey": "pip",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "Cute! Going straight into the photo strip album!"
+      ]
+    },
+    {
+      "npcKey": "pip",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "KYAAA!! This is literally perfection!! Look at that shine! We HAVE to do a photoshoot right now!"
+      ]
+    },
+    {
+      "npcKey": "pip",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "Aww, almost missed the golden hour! But still so so cute!"
+      ]
+    },
+    {
+      "npcKey": "joon",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "안녕하세요, Eliya. Fresh matcha latte is ready whenever you need a break.",
+        "The morning rush is calm today. Care for some steamed tea?"
+      ]
+    },
+    {
+      "npcKey": "joon",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "A quiet matcha glaze set would soothe the eyes while pouring espresso. What do you say?"
+      ]
+    },
+    {
+      "npcKey": "joon",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "고마워요, Eliya. Very soothing and subtle."
+      ]
+    },
+    {
+      "npcKey": "joon",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "대단해요! The color gradient is poetic. It captures the spirit of our market café beautifully."
+      ]
+    },
+    {
+      "npcKey": "joon",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "The latte got cold, but the nails are still warm and sweet."
+      ]
+    },
+    {
+      "npcKey": "sanne",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Welcome to the market! Looking for ribbons, vials, or a good trade today?",
+        "Good to see you Eliya! Fresh goods just arrived at the stall."
+      ]
+    },
+    {
+      "npcKey": "sanne",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "I've got a busy market day ahead. Can you craft me an Apricot Pearl set? I'll trade you some ribbon for it!"
+      ]
+    },
+    {
+      "npcKey": "sanne",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "A deal is a deal! Looks very practical and pretty."
+      ]
+    },
+    {
+      "npcKey": "sanne",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "Top quality! You really know how to deliver premium atelier craftsmanship. Worth every single coin!"
+      ]
+    },
+    {
+      "npcKey": "sanne",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "Time is money in the market, Eliya! But fine, I can't stay mad with nails this pretty."
+      ]
+    },
+    {
+      "npcKey": "truus",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Dag lieverd! Come sit by the greenhouse. The tulips are listening to the breeze.",
+        "Hello little Eliya! Take your time, there is no hurry in the meadow."
+      ]
+    },
+    {
+      "npcKey": "truus",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "My old gardening hands would love some gentle blossom petals, dear. Could you paint me some?"
+      ]
+    },
+    {
+      "npcKey": "truus",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "Dank je wel, Eliya. My hands feel like young tulip stems again."
+      ]
+    },
+    {
+      "npcKey": "truus",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "Prachtig! Truly magnificent, my dear. The flowers in the meadow will be envious!"
+      ]
+    },
+    {
+      "npcKey": "truus",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "No rush at all, child. Flowers take time to bloom too."
+      ]
+    },
+    {
+      "npcKey": "lotte",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Eliya!! Look at this bug I found in the tulips!",
+        "Eliya Eliya! Did you bring sparkly things from the studio?"
+      ]
+    },
+    {
+      "npcKey": "lotte",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "Can I have sparkly apricot pearl nails with cute polka dots please please please?!"
+      ]
+    },
+    {
+      "npcKey": "lotte",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "Yaaaay!! Look how shiny they are! Thank you Eliya!"
+      ]
+    },
+    {
+      "npcKey": "lotte",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "WOOOOOW!! Three whole stars!! I'm gonna show everybody at school!"
+      ]
+    },
+    {
+      "npcKey": "lotte",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "I waited so long! But yay, sparkly nails are here!"
+      ]
+    },
+    {
+      "npcKey": "bea",
+      "trigger": "greet",
+      "minFriendship": 0,
+      "lines": [
+        "Ah, the water ripples softly tonight... Hello, quiet artisan.",
+        "The harbour moon is high, Eliya. A serene night for gentle inspiration."
+      ]
+    },
+    {
+      "npcKey": "bea",
+      "trigger": "request",
+      "minFriendship": 0,
+      "lines": [
+        "The moonlight reflecting on the waves inspires me... Could you craft Moonlight Cat-Eye for my evening salon?"
+      ]
+    },
+    {
+      "npcKey": "bea",
+      "trigger": "deliver_1",
+      "minFriendship": 0,
+      "lines": [
+        "A quiet shimmer for the quiet night. Thank you, Eliya."
+      ]
+    },
+    {
+      "npcKey": "bea",
+      "trigger": "deliver_3",
+      "minFriendship": 0,
+      "lines": [
+        "Sublime. The velvet magnetic beam dances like silver ripples across the canal at midnight. Extraordinary."
+      ]
+    },
+    {
+      "npcKey": "bea",
+      "trigger": "late",
+      "minFriendship": 0,
+      "lines": [
+        "The night is still young, Eliya. Thank you for making the journey."
+      ]
+    }
+  ],
+  "districts": [
+    {
+      "key": "canal",
+      "name": "Canal Street",
+      "nameKo": "커낼 스트리트",
+      "centerTheta": 0.8,
+      "centerPhi": 0.8,
+      "radius": 0.35,
+      "unlockLevel": 1
+    },
+    {
+      "key": "market",
+      "name": "Market Square",
+      "nameKo": "마켓 스퀘어",
+      "centerTheta": 2.1,
+      "centerPhi": 0.8,
+      "radius": 0.3,
+      "unlockLevel": 2
+    },
+    {
+      "key": "meadow",
+      "name": "Tulip Meadow",
+      "nameKo": "튤립 메도우",
+      "centerTheta": 3.4,
+      "centerPhi": 0.8,
+      "radius": 0.35,
+      "unlockLevel": 3
+    },
+    {
+      "key": "windmill",
+      "name": "Windmill Hill",
+      "nameKo": "풍차 언덕",
+      "centerTheta": 4.7,
+      "centerPhi": 0.8,
+      "radius": 0.3,
+      "unlockLevel": 5
+    },
+    {
+      "key": "harbour",
+      "name": "Harbour",
+      "nameKo": "하버",
+      "centerTheta": 5.9,
+      "centerPhi": 1.05,
+      "radius": 0.3,
+      "unlockLevel": 8
+    }
+  ],
+  "levels": [
+    {
+      "level": 1,
+      "xpToNext": 100,
+      "unlocks": [
+        "district:canal",
+        "npc:mira",
+        "npc:nell"
+      ]
+    },
+    {
+      "level": 2,
+      "xpToNext": 140,
+      "unlocks": [
+        "district:market",
+        "npc:pip",
+        "npc:joon",
+        "npc:sanne",
+        "shop"
+      ]
+    },
+    {
+      "level": 3,
+      "xpToNext": 180,
+      "unlocks": [
+        "district:meadow",
+        "npc:truus",
+        "npc:lotte",
+        "art:retro_mint_polka"
+      ]
+    },
+    {
+      "level": 4,
+      "xpToNext": 220,
+      "unlocks": [
+        "art:french_swirls",
+        "art:cateye_prism",
+        "shade:lilac_prism"
+      ]
+    },
+    {
+      "level": 5,
+      "xpToNext": 260,
+      "unlocks": [
+        "district:windmill",
+        "charm:molten_chrome_drops",
+        "art:molten_chrome_3d",
+        "art:aura_constellation"
+      ]
+    },
+    {
+      "level": 6,
+      "xpToNext": 300,
+      "unlocks": [
+        "charm:cyber_heart",
+        "charm:aurora_teardrop",
+        "shade:moonlight_silver"
+      ]
+    },
+    {
+      "level": 7,
+      "xpToNext": 340,
+      "unlocks": [
+        "dailies:4"
+      ]
+    },
+    {
+      "level": 8,
+      "xpToNext": 380,
+      "unlocks": [
+        "district:harbour",
+        "npc:bea",
+        "charm:y2k_stars",
+        "charm:saturn_orbital"
+      ]
+    },
+    {
+      "level": 9,
+      "xpToNext": 420,
+      "unlocks": [
+        "shade:emerald_nebula"
+      ]
+    },
+    {
+      "level": 10,
+      "xpToNext": 460,
+      "unlocks": [
+        "charm:chrome_monkey",
+        "dailies:5"
+      ]
+    },
+    {
+      "level": 11,
+      "xpToNext": 500,
+      "unlocks": [
+        "decor:slot_7"
+      ]
+    },
+    {
+      "level": 12,
+      "xpToNext": 0,
+      "unlocks": [
+        "title:master_artisan"
+      ]
+    }
+  ],
+  "looks": [
+    {
+      "key": "cherry_blossom_french",
+      "name": "Cherry Blossom French",
+      "modelId": "set-cherry-blossom",
+      "shadeKey": "cherry_blossom",
+      "artStyleKey": "floral_petals",
+      "charmKey": "ribbon_bow",
+      "signature": true,
+      "websiteLookSlug": "petal-blossom",
+      "baseReward": 40
+    },
+    {
+      "key": "rose_quartz_french",
+      "name": "Rose Quartz French",
+      "modelId": "set-rose-quartz-french",
+      "shadeKey": "rose_quartz",
+      "artStyleKey": "micro_french",
+      "signature": true,
+      "websiteLookSlug": "classic-french-swirls",
+      "baseReward": 50
+    },
+    {
+      "key": "matcha_glaze",
+      "name": "Matcha Glaze",
+      "modelId": "set-matcha-glaze",
+      "shadeKey": "matcha_latte",
+      "artStyleKey": "retro_mint_polka",
+      "signature": true,
+      "websiteLookSlug": "retro-mint-polka",
+      "baseReward": 60
+    },
+    {
+      "key": "blush_coquette",
+      "name": "Blush Coquette",
+      "modelId": "blush-glaze-coquette-set",
+      "shadeKey": "rose_quartz",
+      "artStyleKey": "aura_constellation",
+      "charmKey": "cyber_heart",
+      "signature": true,
+      "websiteLookSlug": "blushing-aura-constellation",
+      "baseReward": 100
+    },
+    {
+      "key": "apricot_pearl",
+      "name": "Apricot Pearl",
+      "modelId": "set-apricot-pearl",
+      "shadeKey": "apricot_peach",
+      "artStyleKey": "polka_dots",
+      "charmKey": "baroque_pearl",
+      "signature": false,
+      "baseReward": 50
+    },
+    {
+      "key": "moonlight_cateye",
+      "name": "Moonlight Cat-Eye",
+      "modelId": "set-moonlight-cateye",
+      "shadeKey": "moonlight_silver",
+      "artStyleKey": "cateye_prism",
+      "charmKey": "saturn_orbital",
+      "signature": false,
+      "baseReward": 150
+    },
+    {
+      "key": "cyber_chrome",
+      "name": "Cyber Chrome",
+      "modelId": "cyberpunk-liquid-chrome-set",
+      "shadeKey": "molten_sterling",
+      "artStyleKey": "molten_chrome_3d",
+      "charmKey": "molten_chrome_drops",
+      "signature": false,
+      "baseReward": 160
+    }
+  ],
+  "materials": [
+    {
+      "key": "sakura_petal",
+      "name": "Sakura Petal",
+      "nameKo": "벚꽃잎",
+      "modelId": "sakura-petal-bundle",
+      "district": "canal",
+      "respawnMinutes": 4,
+      "sellPrice": 3
+    },
+    {
+      "key": "freshwater_pearl",
+      "name": "Freshwater Pearl",
+      "nameKo": "담수진주",
+      "modelId": "freshwater-pearl-oyster",
+      "district": "canal",
+      "respawnMinutes": 6,
+      "sellPrice": 5
+    },
+    {
+      "key": "silk_ribbon",
+      "name": "Silk Ribbon",
+      "nameKo": "실크 리본",
+      "modelId": "silk-ribbon-spool",
+      "district": "market",
+      "respawnMinutes": 5,
+      "sellPrice": 4
+    },
+    {
+      "key": "syrup_base",
+      "name": "Syrup Base",
+      "nameKo": "시럽 베이스",
+      "modelId": "syrup-glass-vial",
+      "district": "market",
+      "respawnMinutes": 5,
+      "sellPrice": 4
+    },
+    {
+      "key": "daisy_sprig",
+      "name": "Daisy Sprig",
+      "nameKo": "데이지",
+      "modelId": "daisy-sprig",
+      "district": "meadow",
+      "respawnMinutes": 4,
+      "sellPrice": 3
+    },
+    {
+      "key": "chrome_drop",
+      "name": "Chrome Drop",
+      "nameKo": "크롬 방울",
+      "modelId": "chrome-droplet",
+      "district": "windmill",
+      "respawnMinutes": 8,
+      "sellPrice": 8
+    },
+    {
+      "key": "aurora_crystal",
+      "name": "Aurora Crystal",
+      "nameKo": "오로라 크리스탈",
+      "modelId": "aurora-crystal-shard",
+      "district": "windmill",
+      "respawnMinutes": 12,
+      "sellPrice": 12
+    },
+    {
+      "key": "gold_leaf",
+      "name": "Gold Leaf",
+      "nameKo": "금박",
+      "modelId": "gold-leaf-flake",
+      "district": "harbour",
+      "respawnMinutes": 12,
+      "sellPrice": 12
+    }
+  ],
+  "npcs": [
+    {
+      "key": "mira",
+      "name": "Mira",
+      "role": "Florist",
+      "modelId": "mira-florist",
+      "district": "canal",
+      "homeTheta": 0.85,
+      "homePhi": 0.82,
+      "personality": "warm, early riser, talks about flowers",
+      "schedule": [
+        {
+          "fromHour": 6,
+          "theta": 0.85,
+          "phi": 0.82
+        },
+        {
+          "fromHour": 18,
+          "theta": 0.82,
+          "phi": 0.8
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 1
+    },
+    {
+      "key": "nell",
+      "name": "Nell",
+      "role": "Potter",
+      "modelId": "nell-potter",
+      "district": "canal",
+      "homeTheta": 0.78,
+      "homePhi": 0.76,
+      "personality": "dry humour, loves texture",
+      "schedule": [
+        {
+          "fromHour": 8,
+          "theta": 0.78,
+          "phi": 0.76
+        },
+        {
+          "fromHour": 19,
+          "theta": 0.75,
+          "phi": 0.75
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 1
+    },
+    {
+      "key": "pip",
+      "name": "Pip",
+      "role": "Photo collector",
+      "modelId": "pip-photo",
+      "district": "market",
+      "homeTheta": 2.12,
+      "homePhi": 0.8,
+      "personality": "energetic, says cute!! a lot",
+      "schedule": [
+        {
+          "fromHour": 9,
+          "theta": 2.12,
+          "phi": 0.8
+        },
+        {
+          "fromHour": 20,
+          "theta": 2.08,
+          "phi": 0.82
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 2
+    },
+    {
+      "key": "joon",
+      "name": "Joon",
+      "role": "Barista",
+      "modelId": "joon-barista",
+      "district": "market",
+      "homeTheta": 2.15,
+      "homePhi": 0.78,
+      "personality": "calm, poetic, Korean phrases",
+      "schedule": [
+        {
+          "fromHour": 7,
+          "theta": 2.15,
+          "phi": 0.78
+        },
+        {
+          "fromHour": 17,
+          "theta": 2.18,
+          "phi": 0.8
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 2
+    },
+    {
+      "key": "sanne",
+      "name": "Sanne",
+      "role": "Stall owner",
+      "modelId": "sanne-stall",
+      "district": "market",
+      "homeTheta": 2.05,
+      "homePhi": 0.82,
+      "personality": "practical, bargain-lover",
+      "schedule": [
+        {
+          "fromHour": 8,
+          "theta": 2.05,
+          "phi": 0.82
+        },
+        {
+          "fromHour": 18,
+          "theta": 2.02,
+          "phi": 0.84
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 2
+    },
+    {
+      "key": "truus",
+      "name": "Oma Truus",
+      "role": "Tulip grower",
+      "modelId": "truus-tulips",
+      "district": "meadow",
+      "homeTheta": 3.42,
+      "homePhi": 0.8,
+      "personality": "grandmotherly, slow",
+      "schedule": [
+        {
+          "fromHour": 8,
+          "theta": 3.42,
+          "phi": 0.8
+        },
+        {
+          "fromHour": 17,
+          "theta": 3.38,
+          "phi": 0.78
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 3
+    },
+    {
+      "key": "lotte",
+      "name": "Lotte",
+      "role": "Child (junior atelier)",
+      "modelId": "lotte-junior",
+      "district": "meadow",
+      "homeTheta": 3.38,
+      "homePhi": 0.82,
+      "personality": "curious, excited, short sentences",
+      "schedule": [
+        {
+          "fromHour": 10,
+          "theta": 3.38,
+          "phi": 0.82
+        },
+        {
+          "fromHour": 18,
+          "theta": 3.35,
+          "phi": 0.8
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 3
+    },
+    {
+      "key": "bea",
+      "name": "Bea",
+      "role": "Houseboat muse",
+      "modelId": "bea-houseboat",
+      "district": "harbour",
+      "homeTheta": 5.92,
+      "homePhi": 1.05,
+      "personality": "dreamy, night owl",
+      "schedule": [
+        {
+          "fromHour": 12,
+          "theta": 5.92,
+          "phi": 1.05
+        },
+        {
+          "fromHour": 22,
+          "theta": 5.88,
+          "phi": 1.02
+        }
+      ],
+      "isClient": true,
+      "unlockLevel": 8
+    }
+  ],
+  "pets": [
+    {
+      "key": "hoots",
+      "name": "Hoots",
+      "modelId": "hoots",
+      "ability": "+1 Sakura Petal per harvest",
+      "unlockNpcKey": "mira",
+      "unlockFriendship": 2
+    },
+    {
+      "key": "dewey",
+      "name": "Dewey",
+      "modelId": "dewey",
+      "ability": "+1 Freshwater Pearl per harvest",
+      "unlockNpcKey": "bea",
+      "unlockFriendship": 2
+    },
+    {
+      "key": "rocky",
+      "name": "Rocky",
+      "modelId": "rocky",
+      "ability": "+1 Chrome Drop per harvest",
+      "unlockNpcKey": "nell",
+      "unlockFriendship": 2
+    },
+    {
+      "key": "seedy",
+      "name": "Seedy",
+      "modelId": "seedy",
+      "ability": "+1 Daisy Sprig per harvest",
+      "unlockNpcKey": "truus",
+      "unlockFriendship": 2
+    },
+    {
+      "key": "fireball",
+      "name": "Fireball",
+      "modelId": "fireball",
+      "ability": "Bike speed +15%",
+      "unlockNpcKey": "joon",
+      "unlockFriendship": 3
+    },
+    {
+      "key": "codex",
+      "name": "Codex",
+      "modelId": "codex",
+      "ability": "The minimap shows the nearest ready node",
+      "unlockNpcKey": "pip",
+      "unlockFriendship": 3
+    },
+    {
+      "key": "null-signal",
+      "name": "Null-Signal",
+      "modelId": "null-signal",
+      "ability": "10% shop discount",
+      "unlockNpcKey": "sanne",
+      "unlockFriendship": 3
+    }
+  ],
+  "questTemplates": [
+    {
+      "key": "quest_mira_1",
+      "npcKey": "mira",
+      "kind": "story",
+      "lookKey": "cherry_blossom_french",
+      "minLevel": 1,
+      "minFriendship": 0,
+      "rewardGloss": 40,
+      "rewardXp": 100,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_mira_2",
+      "npcKey": "mira",
+      "kind": "story",
+      "lookKey": "apricot_pearl",
+      "minLevel": 1,
+      "minFriendship": 1,
+      "rewardGloss": 60,
+      "rewardXp": 80,
+      "rewardFriendship": 15,
+      "order": 2
+    },
+    {
+      "key": "quest_mira_3",
+      "npcKey": "mira",
+      "kind": "story",
+      "lookKey": "cherry_blossom_french",
+      "minLevel": 2,
+      "minFriendship": 2,
+      "rewardGloss": 120,
+      "rewardXp": 140,
+      "rewardFriendship": 25,
+      "order": 3
+    },
+    {
+      "key": "quest_nell_1",
+      "npcKey": "nell",
+      "kind": "story",
+      "lookKey": "rose_quartz_french",
+      "minLevel": 1,
+      "minFriendship": 0,
+      "rewardGloss": 50,
+      "rewardXp": 80,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_nell_2",
+      "npcKey": "nell",
+      "kind": "story",
+      "lookKey": "matcha_glaze",
+      "minLevel": 3,
+      "minFriendship": 1,
+      "rewardGloss": 70,
+      "rewardXp": 100,
+      "rewardFriendship": 15,
+      "order": 2
+    },
+    {
+      "key": "quest_nell_3",
+      "npcKey": "nell",
+      "kind": "story",
+      "lookKey": "cyber_chrome",
+      "minLevel": 5,
+      "minFriendship": 2,
+      "rewardGloss": 150,
+      "rewardXp": 180,
+      "rewardFriendship": 25,
+      "order": 3
+    },
+    {
+      "key": "quest_pip_1",
+      "npcKey": "pip",
+      "kind": "story",
+      "lookKey": "apricot_pearl",
+      "minLevel": 2,
+      "minFriendship": 0,
+      "rewardGloss": 50,
+      "rewardXp": 80,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_pip_2",
+      "npcKey": "pip",
+      "kind": "story",
+      "lookKey": "blush_coquette",
+      "minLevel": 6,
+      "minFriendship": 2,
+      "rewardGloss": 120,
+      "rewardXp": 150,
+      "rewardFriendship": 20,
+      "order": 2
+    },
+    {
+      "key": "quest_pip_3",
+      "npcKey": "pip",
+      "kind": "story",
+      "lookKey": "apricot_pearl",
+      "minLevel": 6,
+      "minFriendship": 3,
+      "rewardGloss": 80,
+      "rewardXp": 100,
+      "rewardFriendship": 25,
+      "unlocks": [
+        "feature:photo_mode"
+      ],
+      "order": 3
+    },
+    {
+      "key": "quest_joon_1",
+      "npcKey": "joon",
+      "kind": "story",
+      "lookKey": "matcha_glaze",
+      "minLevel": 2,
+      "minFriendship": 0,
+      "rewardGloss": 60,
+      "rewardXp": 90,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_joon_2",
+      "npcKey": "joon",
+      "kind": "story",
+      "lookKey": "rose_quartz_french",
+      "deadlineGameHours": 4,
+      "minLevel": 3,
+      "minFriendship": 1,
+      "rewardGloss": 70,
+      "rewardXp": 100,
+      "rewardFriendship": 15,
+      "order": 2
+    },
+    {
+      "key": "quest_joon_3",
+      "npcKey": "joon",
+      "kind": "story",
+      "lookKey": "moonlight_cateye",
+      "minLevel": 6,
+      "minFriendship": 3,
+      "rewardGloss": 160,
+      "rewardXp": 200,
+      "rewardFriendship": 25,
+      "order": 3
+    },
+    {
+      "key": "quest_sanne_1",
+      "npcKey": "sanne",
+      "kind": "story",
+      "lookKey": "apricot_pearl",
+      "minLevel": 2,
+      "minFriendship": 0,
+      "rewardGloss": 40,
+      "rewardXp": 80,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_sanne_2",
+      "npcKey": "sanne",
+      "kind": "story",
+      "lookKey": "blush_coquette",
+      "minLevel": 6,
+      "minFriendship": 1,
+      "rewardGloss": 100,
+      "rewardXp": 140,
+      "rewardFriendship": 20,
+      "order": 2
+    },
+    {
+      "key": "quest_sanne_3",
+      "npcKey": "sanne",
+      "kind": "story",
+      "lookKey": "cherry_blossom_french",
+      "minLevel": 6,
+      "minFriendship": 2,
+      "rewardGloss": 120,
+      "rewardXp": 150,
+      "rewardFriendship": 25,
+      "order": 3
+    },
+    {
+      "key": "quest_truus_1",
+      "npcKey": "truus",
+      "kind": "story",
+      "lookKey": "cherry_blossom_french",
+      "minLevel": 3,
+      "minFriendship": 0,
+      "rewardGloss": 60,
+      "rewardXp": 90,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_truus_2",
+      "npcKey": "truus",
+      "kind": "story",
+      "lookKey": "rose_quartz_french",
+      "minLevel": 3,
+      "minFriendship": 1,
+      "rewardGloss": 60,
+      "rewardXp": 90,
+      "rewardFriendship": 15,
+      "order": 2
+    },
+    {
+      "key": "quest_truus_3",
+      "npcKey": "truus",
+      "kind": "story",
+      "lookKey": "matcha_glaze",
+      "minLevel": 3,
+      "minFriendship": 2,
+      "rewardGloss": 140,
+      "rewardXp": 160,
+      "rewardFriendship": 25,
+      "order": 3
+    },
+    {
+      "key": "quest_lotte_1",
+      "npcKey": "lotte",
+      "kind": "story",
+      "lookKey": "apricot_pearl",
+      "minLevel": 3,
+      "minFriendship": 0,
+      "rewardGloss": 40,
+      "rewardXp": 80,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_lotte_2",
+      "npcKey": "lotte",
+      "kind": "story",
+      "lookKey": "apricot_pearl",
+      "minLevel": 3,
+      "minFriendship": 1,
+      "rewardGloss": 50,
+      "rewardXp": 80,
+      "rewardFriendship": 15,
+      "order": 2
+    },
+    {
+      "key": "quest_lotte_3",
+      "npcKey": "lotte",
+      "kind": "story",
+      "lookKey": "cherry_blossom_french",
+      "minLevel": 3,
+      "minFriendship": 2,
+      "rewardGloss": 80,
+      "rewardXp": 110,
+      "rewardFriendship": 25,
+      "unlocks": [
+        "feature:junior_atelier_card"
+      ],
+      "order": 3
+    },
+    {
+      "key": "quest_bea_1",
+      "npcKey": "bea",
+      "kind": "story",
+      "lookKey": "moonlight_cateye",
+      "minLevel": 8,
+      "minFriendship": 0,
+      "rewardGloss": 150,
+      "rewardXp": 180,
+      "rewardFriendship": 15,
+      "order": 1
+    },
+    {
+      "key": "quest_bea_2",
+      "npcKey": "bea",
+      "kind": "story",
+      "lookKey": "cyber_chrome",
+      "minLevel": 8,
+      "minFriendship": 1,
+      "rewardGloss": 180,
+      "rewardXp": 200,
+      "rewardFriendship": 20,
+      "order": 2
+    },
+    {
+      "key": "quest_bea_3",
+      "npcKey": "bea",
+      "kind": "story",
+      "lookKey": "moonlight_cateye",
+      "minLevel": 8,
+      "minFriendship": 2,
+      "rewardGloss": 220,
+      "rewardXp": 250,
+      "rewardFriendship": 25,
+      "order": 3
+    },
+    {
+      "key": "daily_mira_1",
+      "npcKey": "mira",
+      "kind": "daily",
+      "lookKey": "cherry_blossom_french",
+      "deadlineGameHours": 10,
+      "minLevel": 1,
+      "minFriendship": 0,
+      "rewardGloss": 45,
+      "rewardXp": 50,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_nell_1",
+      "npcKey": "nell",
+      "kind": "daily",
+      "lookKey": "rose_quartz_french",
+      "deadlineGameHours": 10,
+      "minLevel": 1,
+      "minFriendship": 0,
+      "rewardGloss": 45,
+      "rewardXp": 50,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_pip_1",
+      "npcKey": "pip",
+      "kind": "daily",
+      "lookKey": "apricot_pearl",
+      "deadlineGameHours": 10,
+      "minLevel": 2,
+      "minFriendship": 0,
+      "rewardGloss": 50,
+      "rewardXp": 60,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_joon_1",
+      "npcKey": "joon",
+      "kind": "daily",
+      "lookKey": "matcha_glaze",
+      "deadlineGameHours": 8,
+      "minLevel": 2,
+      "minFriendship": 0,
+      "rewardGloss": 55,
+      "rewardXp": 60,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_sanne_1",
+      "npcKey": "sanne",
+      "kind": "daily",
+      "lookKey": "apricot_pearl",
+      "deadlineGameHours": 12,
+      "minLevel": 2,
+      "minFriendship": 0,
+      "rewardGloss": 45,
+      "rewardXp": 50,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_truus_1",
+      "npcKey": "truus",
+      "kind": "daily",
+      "lookKey": "cherry_blossom_french",
+      "deadlineGameHours": 10,
+      "minLevel": 3,
+      "minFriendship": 0,
+      "rewardGloss": 50,
+      "rewardXp": 60,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_lotte_1",
+      "npcKey": "lotte",
+      "kind": "daily",
+      "lookKey": "apricot_pearl",
+      "deadlineGameHours": 10,
+      "minLevel": 3,
+      "minFriendship": 0,
+      "rewardGloss": 45,
+      "rewardXp": 50,
+      "rewardFriendship": 10,
+      "order": 0
+    },
+    {
+      "key": "daily_bea_1",
+      "npcKey": "bea",
+      "kind": "daily",
+      "lookKey": "moonlight_cateye",
+      "deadlineGameHours": 12,
+      "minLevel": 8,
+      "minFriendship": 0,
+      "rewardGloss": 70,
+      "rewardXp": 80,
+      "rewardFriendship": 10,
+      "order": 0
+    }
+  ],
+  "resourceNodes": [
+    {
+      "key": "node_canal_sakura_1",
+      "materialKey": "sakura_petal",
+      "district": "canal",
+      "theta": 0.72,
+      "phi": 0.76,
+      "yield": 2
+    },
+    {
+      "key": "node_canal_sakura_2",
+      "materialKey": "sakura_petal",
+      "district": "canal",
+      "theta": 0.88,
+      "phi": 0.82,
+      "yield": 2
+    },
+    {
+      "key": "node_canal_pearl_1",
+      "materialKey": "freshwater_pearl",
+      "district": "canal",
+      "theta": 0.76,
+      "phi": 0.9,
+      "yield": 1
+    },
+    {
+      "key": "node_canal_pearl_2",
+      "materialKey": "freshwater_pearl",
+      "district": "canal",
+      "theta": 0.84,
+      "phi": 0.7,
+      "yield": 1
+    },
+    {
+      "key": "node_market_ribbon_1",
+      "materialKey": "silk_ribbon",
+      "district": "market",
+      "theta": 2.05,
+      "phi": 0.78,
+      "yield": 2
+    },
+    {
+      "key": "node_market_ribbon_2",
+      "materialKey": "silk_ribbon",
+      "district": "market",
+      "theta": 2.18,
+      "phi": 0.84,
+      "yield": 2
+    },
+    {
+      "key": "node_market_syrup_1",
+      "materialKey": "syrup_base",
+      "district": "market",
+      "theta": 2.02,
+      "phi": 0.85,
+      "yield": 1
+    },
+    {
+      "key": "node_market_syrup_2",
+      "materialKey": "syrup_base",
+      "district": "market",
+      "theta": 2.15,
+      "phi": 0.74,
+      "yield": 1
+    },
+    {
+      "key": "node_meadow_daisy_1",
+      "materialKey": "daisy_sprig",
+      "district": "meadow",
+      "theta": 3.32,
+      "phi": 0.78,
+      "yield": 2
+    },
+    {
+      "key": "node_meadow_daisy_2",
+      "materialKey": "daisy_sprig",
+      "district": "meadow",
+      "theta": 3.48,
+      "phi": 0.85,
+      "yield": 2
+    },
+    {
+      "key": "node_meadow_sakura_1",
+      "materialKey": "sakura_petal",
+      "district": "meadow",
+      "theta": 3.36,
+      "phi": 0.72,
+      "yield": 2
+    },
+    {
+      "key": "node_meadow_sakura_2",
+      "materialKey": "sakura_petal",
+      "district": "meadow",
+      "theta": 3.44,
+      "phi": 0.88,
+      "yield": 2
+    },
+    {
+      "key": "node_windmill_chrome_1",
+      "materialKey": "chrome_drop",
+      "district": "windmill",
+      "theta": 4.65,
+      "phi": 0.78,
+      "yield": 1
+    },
+    {
+      "key": "node_windmill_chrome_2",
+      "materialKey": "chrome_drop",
+      "district": "windmill",
+      "theta": 4.75,
+      "phi": 0.84,
+      "yield": 1
+    },
+    {
+      "key": "node_windmill_crystal_1",
+      "materialKey": "aurora_crystal",
+      "district": "windmill",
+      "theta": 4.62,
+      "phi": 0.73,
+      "yield": 1
+    },
+    {
+      "key": "node_harbour_gold_1",
+      "materialKey": "gold_leaf",
+      "district": "harbour",
+      "theta": 5.85,
+      "phi": 1.02,
+      "yield": 1
+    },
+    {
+      "key": "node_harbour_gold_2",
+      "materialKey": "gold_leaf",
+      "district": "harbour",
+      "theta": 5.95,
+      "phi": 1.08,
+      "yield": 1
+    },
+    {
+      "key": "node_harbour_crystal_1",
+      "materialKey": "aurora_crystal",
+      "district": "harbour",
+      "theta": 5.88,
+      "phi": 0.98,
+      "yield": 1
+    }
+  ],
+  "shades": [
+    {
+      "key": "rose_quartz",
+      "name": "Rose Quartz Syrup",
+      "nameKo": "로즈 쿼츠 시럽",
+      "hex": "#fda4af",
+      "finish": "syrup",
+      "unlockLevel": 1,
+      "price": 0
+    },
+    {
+      "key": "cherry_blossom",
+      "name": "Cherry Blossom Syrup",
+      "nameKo": "체리 블라썸 시럽",
+      "hex": "#fb7185",
+      "finish": "syrup",
+      "unlockLevel": 1,
+      "price": 0
+    },
+    {
+      "key": "apricot_peach",
+      "name": "Apricot Peach Dew",
+      "nameKo": "살구 복숭아 이슬",
+      "hex": "#fed7aa",
+      "finish": "syrup",
+      "unlockLevel": 1,
+      "price": 0
+    },
+    {
+      "key": "matcha_latte",
+      "name": "Matcha Latte Glaze",
+      "nameKo": "말차 라떼 글레이즈",
+      "hex": "#a7f3d0",
+      "finish": "syrup",
+      "unlockLevel": 2,
+      "price": 80
+    },
+    {
+      "key": "molten_sterling",
+      "name": "Molten Sterling Chrome",
+      "nameKo": "몰튼 실버 리퀴드",
+      "hex": "#cbd5e1",
+      "finish": "chrome",
+      "unlockLevel": 5,
+      "price": 200
+    },
+    {
+      "key": "lilac_prism",
+      "name": "Lilac Prism Cat-Eye",
+      "nameKo": "라일락 오로라 캣아이",
+      "hex": "#c084fc",
+      "finish": "cateye",
+      "unlockLevel": 4,
+      "price": 150
+    },
+    {
+      "key": "moonlight_silver",
+      "name": "Moonlight Silver Cat-Eye",
+      "nameKo": "문라이트 실버 캣아이",
+      "hex": "#e2e8f0",
+      "finish": "cateye",
+      "unlockLevel": 6,
+      "price": 220
+    },
+    {
+      "key": "emerald_nebula",
+      "name": "Emerald Nebula Cat-Eye",
+      "nameKo": "에메랄드 네뷸라 캣아이",
+      "hex": "#6ee7b7",
+      "finish": "cateye",
+      "unlockLevel": 9,
+      "price": 320
+    }
+  ],
+  "tools": [
+    {
+      "key": "czech_glass_file",
+      "name": "Czech Glass File",
+      "modelId": "czech-glass-file",
+      "effect": "Base step +10",
+      "price": 0,
+      "unlockLevel": 1
+    },
+    {
+      "key": "micro_liner_brush",
+      "name": "Micro Liner Brush",
+      "modelId": "micro-liner-brush",
+      "effect": "Required for trace; tolerance +30%",
+      "price": 0,
+      "unlockLevel": 1
+    },
+    {
+      "key": "cuticle_serum_dropper",
+      "name": "Cuticle Serum Dropper",
+      "modelId": "cuticle-serum-dropper",
+      "effect": "Spill penalty -50%",
+      "price": 90,
+      "unlockLevel": 2
+    },
+    {
+      "key": "magnetic_cat_eye_wand",
+      "name": "Magnetic Cat-Eye Wand",
+      "modelId": "magnetic-cat-eye-wand",
+      "effect": "Required for magnet",
+      "price": 150,
+      "unlockLevel": 4
+    },
+    {
+      "key": "precision_tweezers",
+      "name": "Precision Tweezers",
+      "modelId": "precision-tweezers",
+      "effect": "Required for drops",
+      "price": 180,
+      "unlockLevel": 5
+    },
+    {
+      "key": "aura_airbrush",
+      "name": "Aura Airbrush",
+      "modelId": "aura-airbrush",
+      "effect": "Required for aura_constellation",
+      "price": 200,
+      "unlockLevel": 5
+    },
+    {
+      "key": "chrome_burnishing_pen",
+      "name": "Chrome Burnishing Pen",
+      "modelId": "chrome-burnishing-pen",
+      "effect": "Cure step: green zone +25%",
+      "price": 160,
+      "unlockLevel": 6
+    },
+    {
+      "key": "nail_sizing_wheel",
+      "name": "Nail Sizing Wheel",
+      "modelId": "nail-sizing-wheel",
+      "effect": "+15% Gloss on all deliveries",
+      "price": 300,
+      "unlockLevel": 7
+    }
+  ]
+}

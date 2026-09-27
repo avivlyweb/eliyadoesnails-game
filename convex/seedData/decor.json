@@ -1,0 +1,58 @@
+[
+  {
+    "key": "steaming_matcha_mug",
+    "name": "Steaming Matcha Mug",
+    "modelId": "steaming-matcha-mug",
+    "bonus": "+2 friendship per delivery",
+    "price": 60,
+    "unlockLevel": 2
+  },
+  {
+    "key": "celadon_tea_set",
+    "name": "Celadon Tea Set",
+    "modelId": "celadon-tea-set",
+    "bonus": "+5% Gloss",
+    "price": 120,
+    "unlockLevel": 3
+  },
+  {
+    "key": "potted_fiddle_fig",
+    "name": "Potted Fiddle Fig",
+    "modelId": "potted-fiddle-fig",
+    "bonus": "Material respawn -10%",
+    "price": 100,
+    "unlockLevel": 3
+  },
+  {
+    "key": "hinoki_incense",
+    "name": "Hinoki Incense",
+    "modelId": "hinoki-incense",
+    "bonus": "Deadlines +1 game hour",
+    "price": 140,
+    "unlockLevel": 4
+  },
+  {
+    "key": "brass_arc_lamp",
+    "name": "Brass Arc Lamp",
+    "modelId": "brass-arc-lamp",
+    "bonus": "Cure step green zone +10%",
+    "price": 150,
+    "unlockLevel": 5
+  },
+  {
+    "key": "washi_folding_screen",
+    "name": "Washi Folding Screen",
+    "modelId": "washi-folding-screen",
+    "bonus": "+5% XP",
+    "price": 180,
+    "unlockLevel": 6
+  },
+  {
+    "key": "floating_lacquer_display",
+    "name": "Floating Lacquer Display",
+    "modelId": "floating-lacquer-display",
+    "bonus": "Shows your 3 best designs; +5% Gloss",
+    "price": 250,
+    "unlockLevel": 8
+  }
+]

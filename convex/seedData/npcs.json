@@ -1,0 +1,130 @@
+[
+  {
+    "key": "mira",
+    "name": "Mira",
+    "role": "Florist",
+    "modelId": "mira-florist",
+    "district": "canal",
+    "homeTheta": 0.85,
+    "homePhi": 0.82,
+    "personality": "warm, early riser, talks about flowers",
+    "schedule": [
+      { "fromHour": 6, "theta": 0.85, "phi": 0.82 },
+      { "fromHour": 18, "theta": 0.82, "phi": 0.80 }
+    ],
+    "isClient": true,
+    "unlockLevel": 1
+  },
+  {
+    "key": "nell",
+    "name": "Nell",
+    "role": "Potter",
+    "modelId": "nell-potter",
+    "district": "canal",
+    "homeTheta": 0.78,
+    "homePhi": 0.76,
+    "personality": "dry humour, loves texture",
+    "schedule": [
+      { "fromHour": 8, "theta": 0.78, "phi": 0.76 },
+      { "fromHour": 19, "theta": 0.75, "phi": 0.75 }
+    ],
+    "isClient": true,
+    "unlockLevel": 1
+  },
+  {
+    "key": "pip",
+    "name": "Pip",
+    "role": "Photo collector",
+    "modelId": "pip-photo",
+    "district": "market",
+    "homeTheta": 2.12,
+    "homePhi": 0.80,
+    "personality": "energetic, says cute!! a lot",
+    "schedule": [
+      { "fromHour": 9, "theta": 2.12, "phi": 0.80 },
+      { "fromHour": 20, "theta": 2.08, "phi": 0.82 }
+    ],
+    "isClient": true,
+    "unlockLevel": 2
+  },
+  {
+    "key": "joon",
+    "name": "Joon",
+    "role": "Barista",
+    "modelId": "joon-barista",
+    "district": "market",
+    "homeTheta": 2.15,
+    "homePhi": 0.78,
+    "personality": "calm, poetic, Korean phrases",
+    "schedule": [
+      { "fromHour": 7, "theta": 2.15, "phi": 0.78 },
+      { "fromHour": 17, "theta": 2.18, "phi": 0.80 }
+    ],
+    "isClient": true,
+    "unlockLevel": 2
+  },
+  {
+    "key": "sanne",
+    "name": "Sanne",
+    "role": "Stall owner",
+    "modelId": "sanne-stall",
+    "district": "market",
+    "homeTheta": 2.05,
+    "homePhi": 0.82,
+    "personality": "practical, bargain-lover",
+    "schedule": [
+      { "fromHour": 8, "theta": 2.05, "phi": 0.82 },
+      { "fromHour": 18, "theta": 2.02, "phi": 0.84 }
+    ],
+    "isClient": true,
+    "unlockLevel": 2
+  },
+  {
+    "key": "truus",
+    "name": "Oma Truus",
+    "role": "Tulip grower",
+    "modelId": "truus-tulips",
+    "district": "meadow",
+    "homeTheta": 3.42,
+    "homePhi": 0.80,
+    "personality": "grandmotherly, slow",
+    "schedule": [
+      { "fromHour": 8, "theta": 3.42, "phi": 0.80 },
+      { "fromHour": 17, "theta": 3.38, "phi": 0.78 }
+    ],
+    "isClient": true,
+    "unlockLevel": 3
+  },
+  {
+    "key": "lotte",
+    "name": "Lotte",
+    "role": "Child (junior atelier)",
+    "modelId": "lotte-junior",
+    "district": "meadow",
+    "homeTheta": 3.38,
+    "homePhi": 0.82,
+    "personality": "curious, excited, short sentences",
+    "schedule": [
+      { "fromHour": 10, "theta": 3.38, "phi": 0.82 },
+      { "fromHour": 18, "theta": 3.35, "phi": 0.80 }
+    ],
+    "isClient": true,
+    "unlockLevel": 3
+  },
+  {
+    "key": "bea",
+    "name": "Bea",
+    "role": "Houseboat muse",
+    "modelId": "bea-houseboat",
+    "district": "harbour",
+    "homeTheta": 5.92,
+    "homePhi": 1.05,
+    "personality": "dreamy, night owl",
+    "schedule": [
+      { "fromHour": 12, "theta": 5.92, "phi": 1.05 },
+      { "fromHour": 22, "theta": 5.88, "phi": 1.02 }
+    ],
+    "isClient": true,
+    "unlockLevel": 8
+  }
+]

@@ -1,0 +1,146 @@
+[
+  {
+    "key": "node_canal_sakura_1",
+    "materialKey": "sakura_petal",
+    "district": "canal",
+    "theta": 0.72,
+    "phi": 0.76,
+    "yield": 2
+  },
+  {
+    "key": "node_canal_sakura_2",
+    "materialKey": "sakura_petal",
+    "district": "canal",
+    "theta": 0.88,
+    "phi": 0.82,
+    "yield": 2
+  },
+  {
+    "key": "node_canal_pearl_1",
+    "materialKey": "freshwater_pearl",
+    "district": "canal",
+    "theta": 0.76,
+    "phi": 0.90,
+    "yield": 1
+  },
+  {
+    "key": "node_canal_pearl_2",
+    "materialKey": "freshwater_pearl",
+    "district": "canal",
+    "theta": 0.84,
+    "phi": 0.70,
+    "yield": 1
+  },
+  {
+    "key": "node_market_ribbon_1",
+    "materialKey": "silk_ribbon",
+    "district": "market",
+    "theta": 2.05,
+    "phi": 0.78,
+    "yield": 2
+  },
+  {
+    "key": "node_market_ribbon_2",
+    "materialKey": "silk_ribbon",
+    "district": "market",
+    "theta": 2.18,
+    "phi": 0.84,
+    "yield": 2
+  },
+  {
+    "key": "node_market_syrup_1",
+    "materialKey": "syrup_base",
+    "district": "market",
+    "theta": 2.02,
+    "phi": 0.85,
+    "yield": 1
+  },
+  {
+    "key": "node_market_syrup_2",
+    "materialKey": "syrup_base",
+    "district": "market",
+    "theta": 2.15,
+    "phi": 0.74,
+    "yield": 1
+  },
+  {
+    "key": "node_meadow_daisy_1",
+    "materialKey": "daisy_sprig",
+    "district": "meadow",
+    "theta": 3.32,
+    "phi": 0.78,
+    "yield": 2
+  },
+  {
+    "key": "node_meadow_daisy_2",
+    "materialKey": "daisy_sprig",
+    "district": "meadow",
+    "theta": 3.48,
+    "phi": 0.85,
+    "yield": 2
+  },
+  {
+    "key": "node_meadow_sakura_1",
+    "materialKey": "sakura_petal",
+    "district": "meadow",
+    "theta": 3.36,
+    "phi": 0.72,
+    "yield": 2
+  },
+  {
+    "key": "node_meadow_sakura_2",
+    "materialKey": "sakura_petal",
+    "district": "meadow",
+    "theta": 3.44,
+    "phi": 0.88,
+    "yield": 2
+  },
+  {
+    "key": "node_windmill_chrome_1",
+    "materialKey": "chrome_drop",
+    "district": "windmill",
+    "theta": 4.65,
+    "phi": 0.78,
+    "yield": 1
+  },
+  {
+    "key": "node_windmill_chrome_2",
+    "materialKey": "chrome_drop",
+    "district": "windmill",
+    "theta": 4.75,
+    "phi": 0.84,
+    "yield": 1
+  },
+  {
+    "key": "node_windmill_crystal_1",
+    "materialKey": "aurora_crystal",
+    "district": "windmill",
+    "theta": 4.62,
+    "phi": 0.73,
+    "yield": 1
+  },
+  {
+    "key": "node_harbour_gold_1",
+    "materialKey": "gold_leaf",
+    "district": "harbour",
+    "theta": 5.85,
+    "phi": 1.02,
+    "yield": 1
+  },
+  {
+    "key": "node_harbour_gold_2",
+    "materialKey": "gold_leaf",
+    "district": "harbour",
+    "theta": 5.95,
+    "phi": 1.08,
+    "yield": 1
+  },
+  {
+    "key": "node_harbour_crystal_1",
+    "materialKey": "aurora_crystal",
+    "district": "harbour",
+    "theta": 5.88,
+    "phi": 0.98,
+    "yield": 1
+  }
+]

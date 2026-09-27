@@ -23,10 +23,20 @@ _Last updated by: Lead · 2026-09-27_
 
 ## Backend
 - **Branch:** `backend/step-0`
+- **Status:** Done
 - **Done:**
-- **Next:**
-- **Blocked:**
-- **Preview:**
+  - Convex setup complete with `.env.example` and dev deployment configuration
+  - Created full Convex schema (`convex/schema.ts`) covering all 14 content and player state tables
+  - Generated seed data JSON files in `convex/seedData/` from 03 §8
+  - Exported seed data fallback to `public/content-fallback.json`
+  - Built idempotent `seed:run` internal mutation in `convex/seed.ts` and executed it on dev deployment
+  - Built `content.getAll` and `content.getDialogue` in `convex/content.ts`
+  - Built `players.bootstrap`, `players.state`, and `players.savePosition` in `convex/players.ts` (with `convex/lib/player.ts` helper)
+  - Installed `convex-test` and `vitest` with unit tests for bootstrap, savePosition, seed, and content (100% pass)
+  - Type checking verified with 0 errors (`tsc --noEmit`, `convex codegen --typecheck enable`)
+- **Next:** Step 1 support and Phase 2 gather mutations (`convex/gather.ts`)
+- **Blocked:** none
+- **Preview:** Dev deployment active at `https://incredible-snake-136.convex.cloud`
 
 ## Blender
 - **Branch:** `blender/batch-1`
