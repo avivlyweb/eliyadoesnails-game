@@ -7,7 +7,12 @@ export class PlanetCamera {
   public camera: THREE.PerspectiveCamera;
   public mode: GameViewMode = "overworld";
 
-  public distance: number = 10.5;
+  // Section 8 Specs: Lower, closer camera (-25% dist, 20-22° pitch, FOV 50)
+  public distance: number = 7.5;
+  public baseDistance: number = 7.5;
+  public zoomMin: number = 4.8;
+  public zoomMax: number = 11.0;
+
   public back: THREE.Vector3 = new THREE.Vector3(0, 0, 1);
   public lastNormal: THREE.Vector3 = new THREE.Vector3(0, 1, 0);
   private currentLookTarget: THREE.Vector3 = new THREE.Vector3();
@@ -15,10 +20,23 @@ export class PlanetCamera {
 
   constructor(camera: THREE.PerspectiveCamera) {
     this.camera = camera;
-    this.camera.fov = 44;
+    this.camera.fov = 50; // Spec §8: FOV 50
     this.camera.near = 0.1;
     this.camera.far = 300;
     this.camera.updateProjectionMatrix();
+
+    this.setupScrollZoom();
+  }
+
+  private setupScrollZoom() {
+    window.addEventListener("wheel", (e) => {
+      if (this.mode !== "overworld") return;
+      this.baseDistance = THREE.MathUtils.clamp(
+        this.baseDistance + e.deltaY * 0.005,
+        this.zoomMin,
+        this.zoomMax
+      );
+    }, { passive: true });
   }
 
   public setMode(mode: GameViewMode, duration = 1.4) {
@@ -52,7 +70,7 @@ export class PlanetCamera {
       if (this.back.lengthSq() < 0.1) {
         this.back.set(0, 0, 1).projectOnPlane(playerNormal).normalize();
       }
-      this.currentLookTarget.copy(playerPos).addScaledVector(playerNormal, 1.2);
+      this.currentLookTarget.copy(playerPos).addScaledVector(playerNormal, 1.1);
       this.initialized = true;
     }
 
@@ -61,29 +79,30 @@ export class PlanetCamera {
     this.back.applyQuaternion(qNorm).projectOnPlane(playerNormal).normalize();
     this.lastNormal.copy(playerNormal);
 
-    // Camera follow distance & height
-    const targetDist = isBike ? 13.0 : 10.0;
-    const targetHeight = isBike ? 6.5 : 5.2;
-    this.distance = THREE.MathUtils.lerp(this.distance, targetDist, delta * 4.0);
+    // Camera follow distance & height (Spec §8: pitch ~20-22°)
+    // tan(21°) ≈ 0.384 -> height ≈ distance * 0.38
+    const targetDist = isBike ? this.baseDistance * 1.25 : this.baseDistance;
+    const targetHeight = targetDist * 0.38; // 21° pitch
+    this.distance = THREE.MathUtils.lerp(this.distance, targetDist, delta * 4.5);
 
-    // Smoothly orbit camera behind character when actively moving
+    // Smoothly orbit camera behind character when moving
     if (isMoving && playerFacing.lengthSq() > 0.1) {
       const desiredBack = playerFacing.clone().negate().projectOnPlane(playerNormal).normalize();
-      this.back.lerp(desiredBack, delta * 2.8).projectOnPlane(playerNormal).normalize();
+      this.back.lerp(desiredBack, delta * 3.2).projectOnPlane(playerNormal).normalize();
     }
 
-    // Look target slightly above player
-    const lookTarget = playerPos.clone().addScaledVector(playerNormal, 1.2);
-    this.currentLookTarget.lerp(lookTarget, 1 - Math.exp(-delta * 8));
+    // Look target slightly above player (1.1m)
+    const lookTarget = playerPos.clone().addScaledVector(playerNormal, 1.1);
+    this.currentLookTarget.lerp(lookTarget, 1 - Math.exp(-delta * 9));
 
-    // Desired camera position = lookTarget + back * distance + normal * height
+    // Desired camera position
     const desiredPos = lookTarget
       .clone()
       .addScaledVector(this.back, this.distance)
       .addScaledVector(playerNormal, targetHeight);
 
-    this.camera.position.lerp(desiredPos, 1 - Math.exp(-delta * 6));
-    this.camera.up.lerp(playerNormal, 1 - Math.exp(-delta * 6)).normalize();
+    this.camera.position.lerp(desiredPos, 1 - Math.exp(-delta * 7));
+    this.camera.up.lerp(playerNormal, 1 - Math.exp(-delta * 7)).normalize();
     this.camera.lookAt(this.currentLookTarget);
   }
 }

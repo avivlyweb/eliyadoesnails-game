@@ -7,6 +7,8 @@ import { photobooth } from "./photobooth/life4cuts";
 import { sound } from "./engine/audio";
 import { questSystem, ClientTicket } from "./engine/game-quest";
 import { AtelierCompanion } from "./engine/companion";
+import { gameConvex, PlayerStatePayload } from "./net/convex";
+import { DISTRICTS, sphericalToNormal } from "./engine/planet-layout";
 
 class EliyaCanalWorldGame {
   private renderer: THREE.WebGLRenderer;
@@ -66,6 +68,14 @@ class EliyaCanalWorldGame {
 
     // Initialize Quest HUD Tray & Book
     questSystem.updateHUD();
+
+    // 5. Connect to Convex Backend (or local content fallback if offline)
+    gameConvex.init().then(() => {
+      this.syncFromConvexState(gameConvex.currentState);
+    });
+    gameConvex.subscribe((state) => {
+      this.syncFromConvexState(state);
+    });
 
     // Expose game on window for UI interactions
     (window as any).gameInstance = this;
@@ -365,7 +375,37 @@ class EliyaCanalWorldGame {
     }
   }
 
+  private syncFromConvexState(state: PlayerStatePayload | null) {
+    if (!state?.player) return;
+    const p = state.player;
+    const levelEl = document.getElementById("hud-level");
+    if (levelEl) levelEl.textContent = `Lv. ${p.level}`;
+    const glossEl = document.getElementById("hud-gloss");
+    if (glossEl) glossEl.textContent = `${p.gloss} Gloss`;
+  }
+
   private updateHUD() {
+    // 1. Update Live In-Game Clock from Convex
+    const clockEl = document.getElementById("hud-clock");
+    if (clockEl) clockEl.textContent = gameConvex.getFormattedTime();
+
+    // 2. Update Current District Tag
+    const districtEl = document.getElementById("hud-district");
+    if (districtEl) {
+      const norm = this.player.normal;
+      let closest = DISTRICTS[0];
+      let minAngularDist = 999;
+      for (const d of DISTRICTS) {
+        const dNorm = sphericalToNormal(d.centerTheta, d.centerPhi);
+        const dist = norm.distanceTo(dNorm);
+        if (dist < minAngularDist) {
+          minAngularDist = dist;
+          closest = d;
+        }
+      }
+      districtEl.textContent = `${closest.name} · ${closest.nameKo}`;
+    }
+
     const near = this.planet.getNearestLandmark(this.player.getPosition());
     const dock = document.getElementById("interact-dock");
     const actionText = document.getElementById("interaction-action-text");
@@ -405,6 +445,17 @@ class EliyaCanalWorldGame {
   private animate = () => {
     requestAnimationFrame(this.animate);
     const delta = Math.min(this.clock.getDelta(), 0.1);
+
+    // Update path status & coordinates for Convex synchronization
+    this.player.isOnPath = this.planet.isPointOnPath(this.player.normal);
+    const norm = this.player.normal;
+    const phi = Math.acos(THREE.MathUtils.clamp(norm.y, -1, 1));
+    let theta = Math.atan2(norm.x, norm.z);
+    if (theta < 0) theta += Math.PI * 2;
+    gameConvex.updatePlayerLocation(theta, phi);
+
+    // Update dynamic world props (windmill, lanterns, pickups, wind sway)
+    this.planet.update(delta);
 
     // Update Character Movement & Physics (Camera-relative input)
     this.player.update(delta, this.camera);

@@ -26,10 +26,11 @@ export class SphericalCharacter {
   public normal: THREE.Vector3 = new THREE.Vector3(0, 1, 0); // Up vector on sphere
   public facing: THREE.Vector3 = new THREE.Vector3(0, 0, 1); // Tangent forward vector on sphere
 
-  public planetRadius: number = 26;
+  public planetRadius: number = 17.5;
   public heightAboveGround: number = 0;
   public verticalVelocity: number = 0;
   public isGrounded: boolean = true;
+  public isOnPath: boolean = false;
 
   public walkCycle: number = 0;
   public currentSpeed: number = 0;
@@ -39,7 +40,7 @@ export class SphericalCharacter {
   // Keys tracking
   private keys: Record<string, boolean> = {};
 
-  constructor(scene: THREE.Scene, planetRadius = 26) {
+  constructor(scene: THREE.Scene, planetRadius = 17.5) {
     this.scene = scene;
     this.planetRadius = planetRadius;
     this.root = new THREE.Group();
@@ -282,9 +283,9 @@ export class SphericalCharacter {
       moveDir.addScaledVector(camForward, moveY).addScaledVector(camRight, moveX).normalize();
     }
 
-    const maxSpeed = this.isRidingBicycle ? 10.5 : 5.0;
-    const targetSpeed = hasInput ? maxSpeed : 0;
-    const accelRate = this.isRidingBicycle ? 7.0 : 14.0;
+    const baseSpeed = this.isRidingBicycle ? (this.isOnPath ? 4.95 : 4.5) : 2.4;
+    const targetSpeed = hasInput ? baseSpeed : 0;
+    const accelRate = this.isRidingBicycle ? 6.0 : 12.0;
     this.currentSpeed = THREE.MathUtils.lerp(this.currentSpeed, targetSpeed, delta * accelRate);
 
     this.moving = Math.abs(this.currentSpeed) > 0.08 && hasInput;

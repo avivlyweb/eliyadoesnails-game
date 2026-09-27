@@ -55,11 +55,23 @@ _Last updated by: Lead · 2026-09-27_
   - Pickups: [sakura-petal-bundle](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/sakura-petal-bundle.png), [daisy-sprig](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/daisy-sprig.png), [freshwater-pearl-oyster](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/freshwater-pearl-oyster.png), [chrome-droplet](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/chrome-droplet.png), [syrup-glass-vial](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/syrup-glass-vial.png), [aurora-crystal-shard](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/aurora-crystal-shard.png), [silk-ribbon-spool](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/silk-ribbon-spool.png), [gold-leaf-flake](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/gold-leaf-flake.png)
 
 ## Game
-- **Branch:** —
+- **Branch:** `game/step-1`
+- **Status:** Done (Step 0 game side + Step 1)
 - **Done:**
-- **Next:** waiting for backend step 0 (can start the district/path/scatter code with placeholder boxes)
-- **Blocked:**
-- **Preview:**
+  - Connected Convex via vanilla browser `ConvexClient` (`src/net/convex.ts`)
+  - Initialized `content.getAll` with offline fallback to `public/content-fallback.json`
+  - Wired `players.bootstrap` and subscribed to live `players.state`
+  - Synchronized in-game clock (1 in-game hour = 1 real minute) and throttled position saves (`players.savePosition` every 10s and on tab hide)
+  - Resized planetoid to radius R = 17.5m (Spec §1, ~70s circumference walk) with 96x96 vertex noise terrain
+  - Clustered 5 distinct districts (Canal Street, Market Square, Tulip Meadow, Windmill Hill, Harbour) with tall landmarks
+  - Built procedural ribbon paths with sine wiggles, cobble kerb stone instancing, and +10% bike speed bonus
+  - Built instanced filler scattering for 16 manifest models with seeded PRNG and wind sway shader (`onBeforeCompile`)
+  - Placed Dutch tulip fields (600+ instanced tulips in 7 curved parallel color rows) in Tulip Meadow
+  - Lowered camera distance to 7.5m with 20–22° pitch, FOV 50, and scroll wheel zoom (Spec §8)
+  - Placed night lanterns along paths with time-reactive lighting (20:00–06:00)
+- **Next:** Step 2 (gathering mechanics & mini-game polish)
+- **Blocked:** none
+- **Preview:** https://eliyadoesnails-game.vercel.app
 
 ## Website
 - **Branch:** —

@@ -1,5 +1,14 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import {
+  DISTRICTS,
+  DistrictConfig,
+  sphericalToNormal,
+  slerpNormals,
+  createMulberry32,
+  stringToSeed,
+} from "./planet-layout";
+import { gameConvex } from "../net/convex";
 
 export interface PlanetLandmark {
   id: string;
@@ -9,41 +18,63 @@ export interface PlanetLandmark {
   position: THREE.Vector3;
   modelPath?: string;
   dialogue: string;
+  districtKey?: string;
+}
+
+interface PathSample {
+  normal: THREE.Vector3;
+  pos: THREE.Vector3;
+  isDistrictCenter: boolean;
 }
 
 export class SphericalPlanet {
   public scene: THREE.Scene;
   public root: THREE.Group;
-  public readonly radius: number = 26; // Planetoid radius
+  public readonly radius: number = 17.5; // Spec §1: smaller planet radius (~70s walk around)
   public loader: GLTFLoader;
 
   public landmarks: PlanetLandmark[] = [];
   public npcs: THREE.Group[] = [];
 
+  // Procedural Paths data
+  private pathSamples: PathSample[] = [];
+  private pathMeshGroup: THREE.Group = new THREE.Group();
+
+  // Filler Instancing
+  private fillerGroup: THREE.Group = new THREE.Group();
+  private windUniforms: { uTime: { value: number } } = { uTime: { value: 0 } };
+
+  // Dynamic props (windmill blades, canal water, night lanterns)
+  private windmillBlades: THREE.Object3D | null = null;
+  private lanternLights: THREE.PointLight[] = [];
+  private lanternMaterials: THREE.MeshStandardMaterial[] = [];
+  private pickupGlows: THREE.Object3D[] = [];
+
   constructor(scene: THREE.Scene) {
     this.scene = scene;
     this.root = new THREE.Group();
     this.scene.add(this.root);
+    this.root.add(this.pathMeshGroup);
+    this.root.add(this.fillerGroup);
+
     this.loader = new GLTFLoader();
 
     this.buildTerrain();
-    this.spawnAtelierAndCanalHouses();
-    this.spawnQuayStreetProps();
-    this.spawnBoutiquesAndBridges();
-    this.spawnNatureAndCanalFlora();
-    this.spawnTownNeighbors();
+    this.buildProceduralPaths();
+    this.buildCanalWater();
+    this.spawnDistrictAnchors();
+    this.spawnPathLanterns();
+    this.loadInstancedFillerModels();
   }
 
   // Spherical polar coordinate helper
-  public getSphericalPoint(theta: number, phi: number, rOffset = 0): { pos: THREE.Vector3; norm: THREE.Vector3 } {
-    const r = this.radius + rOffset;
-    const sinPhi = Math.sin(phi);
-    const cosPhi = Math.cos(phi);
-    const sinTheta = Math.sin(theta);
-    const cosTheta = Math.cos(theta);
-
-    const norm = new THREE.Vector3(sinPhi * sinTheta, cosPhi, sinPhi * cosTheta).normalize();
-    const pos = norm.clone().multiplyScalar(r);
+  public getSphericalPoint(
+    theta: number,
+    phi: number,
+    rOffset = 0
+  ): { pos: THREE.Vector3; norm: THREE.Vector3 } {
+    const norm = sphericalToNormal(theta, phi);
+    const pos = norm.clone().multiplyScalar(this.radius + rOffset);
     return { pos, norm };
   }
 
@@ -55,240 +86,309 @@ export class SphericalPlanet {
     object.quaternion.copy(qNorm).premultiply(qYaw);
   }
 
-  // 1. Planetoid Core Surface with Eliya's Warm Cream & Muted Sage Palette
+  // =========================================================================
+  // 1. TERRAIN SPHERE WITH VERTEX NOISE (Spec §1)
+  // =========================================================================
   private buildTerrain() {
-    // Planet Surface (Soft Sage Green)
-    const earthGeo = new THREE.SphereGeometry(this.radius, 64, 64);
+    // 96x96 sphere geometry for subtle organic topography
+    const earthGeo = new THREE.SphereGeometry(this.radius, 96, 96);
+    const posAttr = earthGeo.attributes.position;
+    const v = new THREE.Vector3();
+
+    // Noise function: gentle ±0.15m low frequency, 0 under districts and paths
+    for (let i = 0; i < posAttr.count; i++) {
+      v.fromBufferAttribute(posAttr, i);
+      const norm = v.clone().normalize();
+
+      // Check proximity to any district center
+      let minDistrictDist = 999;
+      for (const d of DISTRICTS) {
+        const dNorm = sphericalToNormal(d.centerTheta, d.centerPhi);
+        const dist = norm.distanceTo(dNorm);
+        if (dist < minDistrictDist) minDistrictDist = dist;
+      }
+
+      // Check proximity to path centerline (sample check)
+      let minPathDist = 999;
+      for (let s = 0; s < this.pathSamples.length; s += 8) {
+        const pDist = norm.distanceTo(this.pathSamples[s].normal);
+        if (pDist < minPathDist) minPathDist = pDist;
+      }
+
+      // Only add noise away from districts and paths
+      const flattenFactor = THREE.MathUtils.smoothstep(minDistrictDist, 0.15, 0.45) *
+                            THREE.MathUtils.smoothstep(minPathDist, 0.08, 0.25);
+
+      // Low frequency 3D simplex-like sine noise
+      const noise =
+        (Math.sin(norm.x * 5.0) * Math.cos(norm.y * 5.0) +
+         Math.sin(norm.z * 4.5) * Math.cos(norm.x * 4.5)) * 0.14 * flattenFactor;
+
+      v.setLength(this.radius + noise);
+      posAttr.setXYZ(i, v.x, v.y, v.z);
+    }
+
+    earthGeo.computeVertexNormals();
+
     const earthMat = new THREE.MeshStandardMaterial({
-      color: 0x768f72, // Eliya Muted Sage
+      color: 0x768f72, // pal_grass / Eliya Muted Sage
       roughness: 0.92,
     });
     const earth = new THREE.Mesh(earthGeo, earthMat);
     earth.receiveShadow = true;
     this.root.add(earth);
-
-    // Warm Silk-Cream Cobblestone Street Belt
-    const streetGeo = new THREE.CylinderGeometry(this.radius + 0.04, this.radius + 0.04, 12, 64, 1, true);
-    const streetMat = new THREE.MeshStandardMaterial({
-      color: 0xeae4db, // Warm cream cobblestone (#FAF7F5 palette complement)
-      roughness: 0.78,
-    });
-    const streetBelt = new THREE.Mesh(streetGeo, streetMat);
-    streetBelt.receiveShadow = true;
-    this.root.add(streetBelt);
-
-    // Deep Canal Water Ring
-    const canalGeo = new THREE.CylinderGeometry(this.radius - 0.12, this.radius - 0.12, 6, 64, 1, true);
-    const canalMat = new THREE.MeshStandardMaterial({
-      color: 0x24464c, // Amsterdam canal water
-      roughness: 0.12,
-      metalness: 0.88,
-    });
-    const canalRing = new THREE.Mesh(canalGeo, canalMat);
-    canalRing.position.y = -3.0;
-    this.root.add(canalRing);
   }
 
-  // 2. Spawn Eliya's Atelier Gloss & Amsterdam Canal Architecture
-  private spawnAtelierAndCanalHouses() {
-    // 1. ELIYA'S ATELIER GLOSS (Stepped Gable Canal House + Full Salon Atelier)
-    const { pos: atPos, norm: atNorm } = this.getSphericalPoint(0.8, 0.8, 0);
+  // =========================================================================
+  // 2. PROCEDURAL PATHS (Spec §3)
+  // =========================================================================
+  private buildProceduralPaths() {
+    // Connect districts in a continuous ring + 1 shortcut over north pole
+    const connections: Array<[number, number]> = [
+      [0, 1], // canal -> market
+      [1, 2], // market -> meadow
+      [2, 3], // meadow -> windmill
+      [3, 4], // windmill -> harbour
+      [4, 0], // harbour -> canal
+      [0, 2], // shortcut: canal across north pole to meadow
+    ];
+
+    const pathGeometries: THREE.BufferGeometry[] = [];
+    const stepMeters = 0.5;
+    const arcStep = stepMeters / this.radius;
+
+    for (const [idxA, idxB] of connections) {
+      const distA = DISTRICTS[idxA];
+      const distB = DISTRICTS[idxB];
+      const normA = sphericalToNormal(distA.centerTheta, distA.centerPhi);
+      const normB = sphericalToNormal(distB.centerTheta, distB.centerPhi);
+
+      const angularDist = Math.acos(THREE.MathUtils.clamp(normA.dot(normB), -1, 1));
+      const steps = Math.max(12, Math.floor(angularDist / arcStep));
+
+      const ribbonVertices: number[] = [];
+      const ribbonNormals: number[] = [];
+      const ribbonIndices: number[] = [];
+
+      for (let i = 0; i <= steps; i++) {
+        const t = i / steps;
+        const baseNorm = slerpNormals(normA, normB, t);
+
+        // Sine wiggle (amp 0.6m, wavelength 12m)
+        const arcMeters = t * angularDist * this.radius;
+        const wiggleOffset = Math.sin(arcMeters * ((2 * Math.PI) / 12)) * 0.5;
+
+        // Path tangent direction & perpendicular tangent on sphere
+        const nextNorm = slerpNormals(normA, normB, Math.min(1, t + 0.02));
+        const forward = nextNorm.clone().sub(baseNorm).normalize();
+        const perp = new THREE.Vector3().crossVectors(forward, baseNorm).normalize();
+
+        // Width: 2.4m in district centers, 1.8m in gaps
+        const isNearCenter = t < 0.15 || t > 0.85;
+        const halfWidth = (isNearCenter ? 1.2 : 0.9);
+
+        // Extrude ribbon 0.02m above surface
+        const centerPos = baseNorm.clone().multiplyScalar(this.radius + 0.02);
+        centerPos.addScaledVector(perp, wiggleOffset);
+
+        const leftPos = centerPos.clone().addScaledVector(perp, -halfWidth);
+        const rightPos = centerPos.clone().addScaledVector(perp, halfWidth);
+
+        ribbonVertices.push(leftPos.x, leftPos.y, leftPos.z);
+        ribbonVertices.push(rightPos.x, rightPos.y, rightPos.z);
+
+        ribbonNormals.push(baseNorm.x, baseNorm.y, baseNorm.z);
+        ribbonNormals.push(baseNorm.x, baseNorm.y, baseNorm.z);
+
+        // Store sample for player path boost & lantern placement
+        this.pathSamples.push({
+          normal: baseNorm.clone(),
+          pos: centerPos.clone(),
+          isDistrictCenter: isNearCenter,
+        });
+
+        if (i < steps) {
+          const row1 = i * 2;
+          const row2 = (i + 1) * 2;
+          ribbonIndices.push(row1, row1 + 1, row2);
+          ribbonIndices.push(row1 + 1, row2 + 1, row2);
+        }
+      }
+
+      const geom = new THREE.BufferGeometry();
+      geom.setAttribute("position", new THREE.Float32BufferAttribute(ribbonVertices, 3));
+      geom.setAttribute("normal", new THREE.Float32BufferAttribute(ribbonNormals, 3));
+      geom.setIndex(ribbonIndices);
+      pathGeometries.push(geom);
+    }
+
+    // Material: pal_taupe (#C2AC94) with 0.95 roughness
+    const pathMat = new THREE.MeshStandardMaterial({
+      color: 0xc2ac94, // pal_taupe
+      roughness: 0.95,
+      metalness: 0.05,
+    });
+
+    for (const g of pathGeometries) {
+      const mesh = new THREE.Mesh(g, pathMat);
+      mesh.receiveShadow = true;
+      this.pathMeshGroup.add(mesh);
+    }
+
+    // Edge kerb stones: instance cobble-edge-stone every ~0.7m along paths
+    this.spawnPathEdgeStones();
+  }
+
+  private spawnPathEdgeStones() {
+    this.loader.load("/models/filler/cobble-edge-stone.glb", (gltf) => {
+      let stoneMesh: THREE.Mesh | null = null;
+      gltf.scene.traverse((c) => {
+        if ((c as THREE.Mesh).isMesh && !stoneMesh) {
+          stoneMesh = c as THREE.Mesh;
+        }
+      });
+      if (!stoneMesh) return;
+
+      const count = Math.min(600, Math.floor(this.pathSamples.length * 0.8));
+      const inst = new THREE.InstancedMesh(
+        (stoneMesh as any).geometry,
+        (stoneMesh as any).material,
+        count * 2
+      );
+
+      const mat = new THREE.Matrix4();
+      const pos = new THREE.Vector3();
+      const q = new THREE.Quaternion();
+      const s = new THREE.Vector3();
+      const up = new THREE.Vector3(0, 1, 0);
+
+      let instIdx = 0;
+      for (let i = 0; i < this.pathSamples.length && instIdx < count * 2; i += 2) {
+        const sample = this.pathSamples[i];
+        const nextSample = this.pathSamples[Math.min(this.pathSamples.length - 1, i + 1)];
+        const fwd = nextSample.pos.clone().sub(sample.pos).normalize();
+        const perp = new THREE.Vector3().crossVectors(fwd, sample.normal).normalize();
+
+        const halfWidth = sample.isDistrictCenter ? 1.25 : 0.95;
+
+        // Left stone
+        pos.copy(sample.pos).addScaledVector(perp, -halfWidth);
+        const qNormL = new THREE.Quaternion().setFromUnitVectors(up, sample.normal);
+        const qYawL = new THREE.Quaternion().setFromAxisAngle(sample.normal, (Math.random() - 0.5) * 0.2);
+        q.copy(qNormL).premultiply(qYawL);
+        const scaleValL = 0.9 + Math.random() * 0.2;
+        s.set(scaleValL, scaleValL, scaleValL);
+        mat.compose(pos, q, s);
+        inst.setMatrixAt(instIdx++, mat);
+
+        // Right stone
+        pos.copy(sample.pos).addScaledVector(perp, halfWidth);
+        const qNormR = new THREE.Quaternion().setFromUnitVectors(up, sample.normal);
+        const qYawR = new THREE.Quaternion().setFromAxisAngle(sample.normal, (Math.random() - 0.5) * 0.2);
+        q.copy(qNormR).premultiply(qYawR);
+        const scaleValR = 0.9 + Math.random() * 0.2;
+        s.set(scaleValR, scaleValR, scaleValR);
+        mat.compose(pos, q, s);
+        inst.setMatrixAt(instIdx++, mat);
+      }
+
+      inst.instanceMatrix.needsUpdate = true;
+      inst.computeBoundingSphere();
+      inst.receiveShadow = true;
+      this.pathMeshGroup.add(inst);
+    });
+  }
+
+  // =========================================================================
+  // 3. CANAL WATER STRIP (Spec §3)
+  // =========================================================================
+  private buildCanalWater() {
+    // 3m wide curved canal ribbon in the canal district
+    const canalTheta = 0.8;
+    const canalPhiStart = 0.65;
+    const canalPhiEnd = 0.95;
+    const steps = 30;
+
+    const canalGeo = new THREE.BufferGeometry();
+    const vertices: number[] = [];
+    const normals: number[] = [];
+    const indices: number[] = [];
+
+    for (let i = 0; i <= steps; i++) {
+      const phi = THREE.MathUtils.lerp(canalPhiStart, canalPhiEnd, i / steps);
+      const theta = canalTheta + Math.sin(i * 0.2) * 0.06;
+      const norm = sphericalToNormal(theta, phi);
+
+      // Tangent perpendicular to north-south canal flow
+      const perp = new THREE.Vector3(Math.cos(theta), 0, -Math.sin(theta)).normalize();
+
+      // Recessed slightly below ground (-0.08m)
+      const centerPos = norm.clone().multiplyScalar(this.radius - 0.08);
+      const leftPos = centerPos.clone().addScaledVector(perp, -1.6);
+      const rightPos = centerPos.clone().addScaledVector(perp, 1.6);
+
+      vertices.push(leftPos.x, leftPos.y, leftPos.z);
+      vertices.push(rightPos.x, rightPos.y, rightPos.z);
+
+      normals.push(norm.x, norm.y, norm.z);
+      normals.push(norm.x, norm.y, norm.z);
+
+      if (i < steps) {
+        const r1 = i * 2;
+        const r2 = (i + 1) * 2;
+        indices.push(r1, r1 + 1, r2);
+        indices.push(r1 + 1, r2 + 1, r2);
+      }
+    }
+
+    canalGeo.setAttribute("position", new THREE.Float32BufferAttribute(vertices, 3));
+    canalGeo.setAttribute("normal", new THREE.Float32BufferAttribute(normals, 3));
+    canalGeo.setIndex(indices);
+
+    const waterMat = new THREE.MeshStandardMaterial({
+      color: 0x9ec4c7, // Amsterdam canal water shimmer
+      roughness: 0.1,
+      metalness: 0.45,
+    });
+
+    const canalMesh = new THREE.Mesh(canalGeo, waterMat);
+    this.root.add(canalMesh);
+
+    // Arched canal bridge crossing over the canal
+    const { pos: brPos, norm: brNorm } = this.getSphericalPoint(0.8, 0.8, 0.02);
+    this.loader.load("/models/architecture/arched-brick-canal-bridge.glb", (gltf) => {
+      const bridge = gltf.scene;
+      bridge.position.copy(brPos);
+      bridge.scale.setScalar(1.0);
+      this.orientToNormal(bridge, brNorm, 0.8);
+      this.root.add(bridge);
+    });
+  }
+
+  // =========================================================================
+  // 4. DISTRICT ANCHORS & LANDMARKS (Spec §2 & §5)
+  // =========================================================================
+  private spawnDistrictAnchors() {
+    // -----------------------------------------------------------------------
+    // DISTRICT 1: CANAL STREET (θ=0.8, φ=0.8)
+    // -----------------------------------------------------------------------
+    // Eliya's Atelier Gloss (Stepped Gable Canal House)
+    const { pos: atPos, norm: atNorm } = this.getSphericalPoint(0.86, 0.74, 0);
     this.loader.load("/models/architecture/canal-house-stepped-gable.glb", (gltf) => {
       const house = gltf.scene;
       house.position.copy(atPos);
-      house.scale.setScalar(1.25);
+      house.scale.setScalar(1.15);
       this.orientToNormal(house, atNorm, 0.2);
 
-      // Atelier Boutique Awning in --accent-petal (#a8505e) & Rose entrance trim
-      const awningGeo = new THREE.BoxGeometry(1.8, 0.08, 0.8);
-      const awningMat = new THREE.MeshStandardMaterial({
-        color: 0xa8505e,
-        roughness: 0.5,
-      });
-      const awning = new THREE.Mesh(awningGeo, awningMat);
-      awning.position.set(0, 2.6, 0.9);
-      awning.rotation.x = 0.22;
+      // Pink Petal Awning
+      const awning = new THREE.Mesh(
+        new THREE.BoxGeometry(1.6, 0.08, 0.75),
+        new THREE.MeshStandardMaterial({ color: 0xa8505e, roughness: 0.5 })
+      );
+      awning.position.set(0, 2.4, 0.8);
+      awning.rotation.x = 0.2;
       house.add(awning);
-
       this.root.add(house);
-    });
-
-    // Parked Vintage Bicycle in front of Atelier
-    const { pos: bikePos, norm: bikeNorm } = this.getSphericalPoint(0.74, 0.86, 0.05);
-    this.loader.load("/models/street/vintage-bicycle-eliya.glb", (gltf) => {
-      const bike = gltf.scene;
-      bike.position.copy(bikePos);
-      bike.scale.setScalar(0.75);
-      this.orientToNormal(bike, bikeNorm, 0.6);
-      this.root.add(bike);
-    });
-
-    // DELUXE MANICURE STATION & TABLETOP CLUTTER
-    const { pos: stPos, norm: stNorm } = this.getSphericalPoint(0.86, 0.84, 0.05);
-    this.loader.load("/models/furniture/manicure-station-deluxe.glb", (gltf) => {
-      const station = gltf.scene;
-      station.position.copy(stPos);
-      station.scale.setScalar(0.9);
-      this.orientToNormal(station, stNorm, 0.4);
-      this.root.add(station);
-    });
-
-    // Tabletop Prop 1: Desktop UV Tunnel Lamp ("The Halo")
-    const { pos: uvPos, norm: uvNorm } = this.getSphericalPoint(0.87, 0.835, 0.06);
-    this.loader.load("/models/station/desktop-uv-tunnel-lamp.glb", (gltf) => {
-      const uv = gltf.scene;
-      uv.position.copy(uvPos);
-      uv.scale.setScalar(0.7);
-      this.orientToNormal(uv, uvNorm, 0.4);
-      this.root.add(uv);
-
-      const uvLight = new THREE.PointLight(0xa582f7, 0.9, 3.5);
-      uvLight.position.copy(uvPos.clone().addScaledVector(uvNorm, 0.3));
-      this.root.add(uvLight);
-    });
-
-    // Tabletop Prop 2: Linen Velvet Hand Pillow
-    const { pos: pilPos, norm: pilNorm } = this.getSphericalPoint(0.86, 0.842, 0.06);
-    this.loader.load("/models/station/linen-velvet-hand-pillow.glb", (gltf) => {
-      const pillow = gltf.scene;
-      pillow.position.copy(pilPos);
-      pillow.scale.setScalar(0.75);
-      this.orientToNormal(pillow, pilNorm, 0.4);
-      this.root.add(pillow);
-    });
-
-    // Tabletop Prop 3: Scalloped Ceramic Charm Palette
-    const { pos: palPos, norm: palNorm } = this.getSphericalPoint(0.852, 0.844, 0.06);
-    this.loader.load("/models/station/scalloped-ceramic-charm-palette.glb", (gltf) => {
-      const pal = gltf.scene;
-      pal.position.copy(palPos);
-      pal.scale.setScalar(0.65);
-      this.orientToNormal(pal, palNorm, 0.1);
-      this.root.add(pal);
-    });
-
-    // Tabletop Prop 4: Steaming Ceramic Matcha Mug
-    const { pos: mugPos, norm: mugNorm } = this.getSphericalPoint(0.855, 0.836, 0.06);
-    this.loader.load("/models/station/steaming-ceramic-matcha-mug.glb", (gltf) => {
-      const mug = gltf.scene;
-      mug.position.copy(mugPos);
-      mug.scale.setScalar(0.7);
-      this.orientToNormal(mug, mugNorm, 0.8);
-      this.root.add(mug);
-    });
-
-    // Tabletop Prop 5: Couture Press-On Drawer Box
-    const { pos: boxPos, norm: boxNorm } = this.getSphericalPoint(0.868, 0.848, 0.06);
-    this.loader.load("/models/station/couture-press-on-drawer-box.glb", (gltf) => {
-      const box = gltf.scene;
-      box.position.copy(boxPos);
-      box.scale.setScalar(0.7);
-      this.orientToNormal(box, boxNorm, 0.3);
-      this.root.add(box);
-    });
-
-    // Tabletop Prop 6: Glass Syrup Swatch Discs
-    const { pos: discPos, norm: discNorm } = this.getSphericalPoint(0.862, 0.846, 0.06);
-    this.loader.load("/models/tools/glass-syrup-swatch-discs.glb", (gltf) => {
-      const discs = gltf.scene;
-      discs.position.copy(discPos);
-      discs.scale.setScalar(0.65);
-      this.orientToNormal(discs, discNorm, 0.2);
-      this.root.add(discs);
-    });
-
-    // Client Boucle Tub Chair
-    const { pos: chPos, norm: chNorm } = this.getSphericalPoint(0.89, 0.855, 0.05);
-    this.loader.load("/models/furniture/client-boucle-tub-chair.glb", (gltf) => {
-      const chair = gltf.scene;
-      chair.position.copy(chPos);
-      chair.scale.setScalar(0.85);
-      this.orientToNormal(chair, chNorm, -0.6);
-      this.root.add(chair);
-    });
-
-    // Stylist Swivel Stool
-    const { pos: stoolPos, norm: stoolNorm } = this.getSphericalPoint(0.835, 0.835, 0.05);
-    this.loader.load("/models/furniture/stylist-swivel-stool.glb", (gltf) => {
-      const stool = gltf.scene;
-      stool.position.copy(stoolPos);
-      stool.scale.setScalar(0.8);
-      this.orientToNormal(stool, stoolNorm, 1.2);
-      this.root.add(stool);
-    });
-
-    // Rolling Treatment Cart with Tools
-    const { pos: cartPos, norm: cartNorm } = this.getSphericalPoint(0.84, 0.85, 0.05);
-    this.loader.load("/models/furniture/rolling-treatment-cart.glb", (gltf) => {
-      const cart = gltf.scene;
-      cart.position.copy(cartPos);
-      cart.scale.setScalar(0.8);
-      this.orientToNormal(cart, cartNorm, 0.1);
-      this.root.add(cart);
-    });
-
-    // Potted Fiddle Leaf Fig
-    const { pos: figPos, norm: figNorm } = this.getSphericalPoint(0.76, 0.83, 0.05);
-    this.loader.load("/models/furniture/potted-fiddle-leaf-fig.glb", (gltf) => {
-      const fig = gltf.scene;
-      fig.position.copy(figPos);
-      fig.scale.setScalar(0.9);
-      this.orientToNormal(fig, figNorm, 0);
-      this.root.add(fig);
-    });
-
-    // Brass Arc Floor Lamp
-    const { pos: lampPos, norm: lampNorm } = this.getSphericalPoint(0.82, 0.81, 0.05);
-    this.loader.load("/models/furniture/brass-arc-floor-lamp.glb", (gltf) => {
-      const lamp = gltf.scene;
-      lamp.position.copy(lampPos);
-      lamp.scale.setScalar(0.9);
-      this.orientToNormal(lamp, lampNorm, 0.5);
-      this.root.add(lamp);
-
-      const lampLight = new THREE.PointLight(0xffecd0, 1.4, 5);
-      lampLight.position.copy(lampPos.clone().addScaledVector(lampNorm, 2.2));
-      this.root.add(lampLight);
-    });
-
-    // Floating Lacquer Display Rack
-    const { pos: lacqPos, norm: lacqNorm } = this.getSphericalPoint(0.78, 0.85, 0.05);
-    this.loader.load("/models/furniture/floating-lacquer-display.glb", (gltf) => {
-      const lacq = gltf.scene;
-      lacq.position.copy(lacqPos);
-      lacq.scale.setScalar(0.8);
-      this.orientToNormal(lacq, lacqNorm, 0);
-      this.root.add(lacq);
-    });
-
-    // Washi Folding Privacy Screen
-    const { pos: washiPos, norm: washiNorm } = this.getSphericalPoint(0.92, 0.82, 0.05);
-    this.loader.load("/models/furniture/washi-folding-screen.glb", (gltf) => {
-      const screen = gltf.scene;
-      screen.position.copy(washiPos);
-      screen.scale.setScalar(0.85);
-      this.orientToNormal(screen, washiNorm, -0.4);
-      this.root.add(screen);
-    });
-
-    // Celadon Tea Ceremony Set on Pedestal
-    const { pos: teaPos, norm: teaNorm } = this.getSphericalPoint(0.73, 0.84, 0.05);
-    this.loader.load("/models/station/celadon-tea-ceremony-set.glb", (gltf) => {
-      const tea = gltf.scene;
-      tea.position.copy(teaPos);
-      tea.scale.setScalar(0.75);
-      this.orientToNormal(tea, teaNorm, 0.5);
-      this.root.add(tea);
-    });
-
-    // AR Hand Mannequin Pedestal
-    const { pos: arPos, norm: arNorm } = this.getSphericalPoint(0.71, 0.87, 0.05);
-    this.loader.load("/models/furniture/ar-hand-mannequin-pedestal.glb", (gltf) => {
-      const ar = gltf.scene;
-      ar.position.copy(arPos);
-      ar.scale.setScalar(0.8);
-      this.orientToNormal(ar, arNorm, 0.8);
-      this.root.add(ar);
     });
 
     this.landmarks.push({
@@ -297,26 +397,37 @@ export class SphericalPlanet {
       role: "Bespoke Glass Nails Studio",
       normal: atNorm,
       position: atPos,
-      dialogue: "Welcome to Atelier Gloss. Step up to the travertine manicure desk to shape, tint, and sculpt custom glass nails.",
+      dialogue: "Welcome to Atelier Gloss. Step up to the manicure desk to shape, tint, and sculpt bespoke glass nails.",
+      districtKey: "canal",
     });
 
-    // 2. Historic Neck Gable Canal House
-    const { pos: neckPos, norm: neckNorm } = this.getSphericalPoint(1.4, 0.92, 0);
+    // Parked Vintage Bicycle
+    const { pos: bikePos, norm: bikeNorm } = this.getSphericalPoint(0.83, 0.78, 0.02);
+    this.loader.load("/models/street/vintage-bicycle-eliya.glb", (gltf) => {
+      const bike = gltf.scene;
+      bike.position.copy(bikePos);
+      bike.scale.setScalar(0.7);
+      this.orientToNormal(bike, bikeNorm, 0.4);
+      this.root.add(bike);
+    });
+
+    // Canal House Neck Gable
+    const { pos: neckPos, norm: neckNorm } = this.getSphericalPoint(0.98, 0.78, 0);
     this.loader.load("/models/architecture/canal-house-neck-gable.glb", (gltf) => {
       const neck = gltf.scene;
       neck.position.copy(neckPos);
-      neck.scale.setScalar(1.2);
-      this.orientToNormal(neck, neckNorm, 1.2);
+      neck.scale.setScalar(1.05);
+      this.orientToNormal(neck, neckNorm, 0.8);
       this.root.add(neck);
     });
 
-    // 3. Bell Gable Canal House (Nell's Ceramic Workshop)
-    const { pos: bellPos, norm: bellNorm } = this.getSphericalPoint(4.85, 0.9, 0);
+    // Canal House Bell Gable (Nell the Potter)
+    const { pos: bellPos, norm: bellNorm } = this.getSphericalPoint(0.72, 0.86, 0);
     this.loader.load("/models/architecture/canal-house-bell-gable.glb", (gltf) => {
       const bell = gltf.scene;
       bell.position.copy(bellPos);
-      bell.scale.setScalar(1.2);
-      this.orientToNormal(bell, bellNorm, 4.8);
+      bell.scale.setScalar(1.05);
+      this.orientToNormal(bell, bellNorm, 2.4);
       this.root.add(bell);
     });
 
@@ -326,221 +437,662 @@ export class SphericalPlanet {
       role: "Nell the Potter",
       normal: bellNorm,
       position: bellPos,
-      dialogue: "My custom short almond set! Molten chrome drops that won't chip even at the pottery wheel!",
-    });
-  }
-
-  // 3. Spawn Bridges, Salon Boat & Photobooth
-  private spawnBoutiquesAndBridges() {
-    // 1. Arched Brick Canal Bridge
-    const { pos: brPos, norm: brNorm } = this.getSphericalPoint(2.85, 1.1, 0);
-    this.loader.load("/models/architecture/arched-brick-canal-bridge.glb", (gltf) => {
-      const bridge = gltf.scene;
-      bridge.position.copy(brPos);
-      bridge.scale.setScalar(1.15);
-      this.orientToNormal(bridge, brNorm, 2.85);
-      this.root.add(bridge);
+      dialogue: "My pottery studio! Short almond nails with molten chrome drops that won't chip even at the wheel.",
+      districtKey: "canal",
     });
 
-    // 2. Moored Wooden Salon Boat in the Canal
-    const { pos: boatPos, norm: boatNorm } = this.getSphericalPoint(3.2, 1.25, -0.15);
-    this.loader.load("/models/architecture/moored-wooden-salon-boat.glb", (gltf) => {
-      const boat = gltf.scene;
-      boat.position.copy(boatPos);
-      boat.scale.setScalar(1.05);
-      this.orientToNormal(boat, boatNorm, 3.2);
-      this.root.add(boat);
-    });
-
-    // Boucle Chair on Boat Deck
-    const { pos: boatChairPos, norm: boatChairNorm } = this.getSphericalPoint(3.22, 1.23, -0.1);
-    this.loader.load("/models/furniture/client-boucle-chair.glb", (gltf) => {
-      const chair = gltf.scene;
-      chair.position.copy(boatChairPos);
-      chair.scale.setScalar(0.75);
-      this.orientToNormal(chair, boatChairNorm, 2.8);
-      this.root.add(chair);
-    });
-
-    this.landmarks.push({
-      id: "salon_boat",
-      name: "Moored Canal Houseboat",
-      role: "Canal Neighbor",
-      normal: boatNorm,
-      position: boatPos,
-      dialogue: "The liquid chrome set shimmers on the water like molten moonlight. Thank you, Eliya!",
-    });
-
-    // 3. Hongdae Life4Cuts Photobooth Kiosk
-    const { pos: boothPos, norm: boothNorm } = this.getSphericalPoint(0.35, 1.05, 0.05);
-    this.loader.load("/models/architecture/photobooth-kiosk.glb", (gltf) => {
-      const booth = gltf.scene;
-      booth.position.copy(boothPos);
-      booth.scale.setScalar(1.1);
-      this.orientToNormal(booth, boothNorm, 0.35);
-      this.root.add(booth);
-    });
-
-    // Life4Cuts Photo Strip Prop by Booth
-    const { pos: stripPos, norm: stripNorm } = this.getSphericalPoint(0.38, 1.07, 0.06);
-    this.loader.load("/models/station/life4cuts-photo-strip.glb", (gltf) => {
-      const strip = gltf.scene;
-      strip.position.copy(stripPos);
-      strip.scale.setScalar(0.9);
-      this.orientToNormal(strip, stripNorm, 0.2);
-      this.root.add(strip);
-    });
-
-    this.landmarks.push({
-      id: "photobooth",
-      name: "Hongdae Life4Cuts Photobooth",
-      role: "4-Cut Photo Strip Studio",
-      normal: boothNorm,
-      position: boothPos,
-      dialogue: "Step inside to capture aesthetic 4-cut snapshot strips of your completed manicure!",
-    });
-
-    // 4. Dutch Windmill on the Horizon Ridge
-    const { pos: millPos, norm: millNorm } = this.getSphericalPoint(5.6, 0.72, 0);
-    this.loader.load("/models/world/windmill.glb", (gltf) => {
-      const mill = gltf.scene;
-      mill.position.copy(millPos);
-      mill.scale.setScalar(1.1);
-      this.orientToNormal(mill, millNorm, 5.6);
-      this.root.add(mill);
-    });
-  }
-
-  // 4. Street Clutter: Flower Carts, Lanterns, Benches, Cast Iron Bollards
-  private spawnQuayStreetProps() {
-    // 1. Florist Flower Cart by the Canal Bridge
-    const { pos: cartPos, norm: cartNorm } = this.getSphericalPoint(2.55, 1.02, 0.05);
+    // Florist Flower Cart (Mira the Florist)
+    const { pos: cartPos, norm: cartNorm } = this.getSphericalPoint(0.74, 0.76, 0.02);
     this.loader.load("/models/street/florist-flower-cart.glb", (gltf) => {
       const cart = gltf.scene;
       cart.position.copy(cartPos);
-      cart.scale.setScalar(1.1);
-      this.orientToNormal(cart, cartNorm, 1.4);
+      cart.scale.setScalar(0.85);
+      this.orientToNormal(cart, cartNorm, 1.1);
       this.root.add(cart);
     });
 
     this.landmarks.push({
-      id: "florist",
+      id: "florist_cart",
       name: "Mira's Flower Cart",
-      role: "The Florist",
+      role: "Mira the Florist",
       normal: cartNorm,
       position: cartPos,
-      dialogue: "Eliya! Are those the cherry blossom syrup press-ons? They match my fresh peonies perfectly!",
+      dialogue: "Eliya! My hands feel so bare… could you make me Cherry Blossom French with a little ribbon bow?",
+      districtKey: "canal",
     });
 
-    // 2. Cast-iron mooring bollards along the water's edge
-    for (let i = 0; i < 8; i++) {
-      const theta = (i * Math.PI * 2) / 8 + 0.1;
-      const { pos, norm } = this.getSphericalPoint(theta, 1.18, 0);
-      this.loader.load("/models/street/cast-iron-mooring-bollard.glb", (gltf) => {
-        const bollard = gltf.scene;
-        bollard.position.copy(pos);
-        bollard.scale.setScalar(0.7);
-        this.orientToNormal(bollard, norm, theta);
-        this.root.add(bollard);
+    // 2 Petal Trees along Canal
+    const { pos: ptPos1, norm: ptNorm1 } = this.getSphericalPoint(0.88, 0.88, 0);
+    this.loader.load("/models/discoveries/petal-tree.glb", (gltf) => {
+      const tree = gltf.scene;
+      tree.position.copy(ptPos1);
+      tree.scale.setScalar(0.85);
+      this.orientToNormal(tree, ptNorm1, 0.3);
+      this.root.add(tree);
+    });
+
+    const { pos: ptPos2, norm: ptNorm2 } = this.getSphericalPoint(0.68, 0.72, 0);
+    this.loader.load("/models/discoveries/petal-tree.glb", (gltf) => {
+      const tree = gltf.scene;
+      tree.position.copy(ptPos2);
+      tree.scale.setScalar(0.75);
+      this.orientToNormal(tree, ptNorm2, 1.4);
+      this.root.add(tree);
+    });
+
+    // Material Pickups in Canal: Sakura Petals & Freshwater Pearl
+    this.spawnPickup("sakura-petal-bundle", 0.86, 0.86, "Sakura Petal Resource Node");
+    this.spawnPickup("freshwater-pearl-oyster", 0.76, 0.82, "Freshwater Pearl Oyster Node");
+
+    // -----------------------------------------------------------------------
+    // DISTRICT 2: MARKET SQUARE (θ=2.1, φ=0.8)
+    // -----------------------------------------------------------------------
+    // Photobooth Kiosk (Pip)
+    const { pos: photoPos, norm: photoNorm } = this.getSphericalPoint(2.14, 0.76, 0);
+    this.loader.load("/models/architecture/photobooth-kiosk.glb", (gltf) => {
+      const photo = gltf.scene;
+      photo.position.copy(photoPos);
+      photo.scale.setScalar(0.9);
+      this.orientToNormal(photo, photoNorm, 2.1);
+      this.root.add(photo);
+    });
+
+    this.landmarks.push({
+      id: "photobooth",
+      name: "Hongdae Life4Cuts Studio",
+      role: "Pip the Photo Collector",
+      normal: photoNorm,
+      position: photoPos,
+      dialogue: "Pip here! Ready to shoot vintage 4-cut film strips of your newest glass manicure designs?",
+      districtKey: "market",
+    });
+
+    // Cafe Table Set & Market Stall Booths (Market Square center)
+    const { pos: mktPos, norm: mktNorm } = this.getSphericalPoint(2.05, 0.84, 0.02);
+    const marketStall = this.createStylizedMarketStall();
+    marketStall.position.copy(mktPos);
+    this.orientToNormal(marketStall, mktNorm, 0.5);
+    this.root.add(marketStall);
+
+    this.landmarks.push({
+      id: "market_stall",
+      name: "Sanne's Atelier Market Stall",
+      role: "Sanne the Stall Owner",
+      normal: mktNorm,
+      position: mktPos,
+      dialogue: "Fresh syrup bases and fine silk ribbons! Trade your excess gathered botanicals for atelier gloss.",
+      districtKey: "market",
+    });
+
+    // Joon's Cafe Kiosk
+    const { pos: cafePos, norm: cafeNorm } = this.getSphericalPoint(2.2, 0.84, 0.02);
+    const cafeKiosk = this.createStylizedCafeKiosk();
+    cafeKiosk.position.copy(cafePos);
+    this.orientToNormal(cafeKiosk, cafeNorm, -0.4);
+    this.root.add(cafeKiosk);
+
+    this.landmarks.push({
+      id: "joon_cafe",
+      name: "Joon's Slow Matcha Kiosk",
+      role: "Joon the Barista",
+      normal: cafeNorm,
+      position: cafePos,
+      dialogue: "A warm cup of ceremonial matcha before you craft your next manicure. Take your time.",
+      districtKey: "market",
+    });
+
+    // Material Pickups in Market: Silk Ribbon & Syrup Base
+    this.spawnPickup("silk-ribbon-spool", 2.08, 0.72, "Silk Ribbon Spool Node");
+    this.spawnPickup("syrup-glass-vial", 2.18, 0.88, "Syrup Glass Vial Node");
+
+    // -----------------------------------------------------------------------
+    // DISTRICT 3: TULIP MEADOW (θ=3.4, φ=0.8)
+    // -----------------------------------------------------------------------
+    // Greenhouse Conservatory
+    const { pos: ghPos, norm: ghNorm } = this.getSphericalPoint(3.38, 0.74, 0.02);
+    const greenhouse = this.createStylizedGreenhouse();
+    greenhouse.position.copy(ghPos);
+    this.orientToNormal(greenhouse, ghNorm, 0.2);
+    this.root.add(greenhouse);
+
+    this.landmarks.push({
+      id: "greenhouse",
+      name: "Oma Truus's Tulip Greenhouse",
+      role: "Oma Truus the Tulip Grower",
+      normal: ghNorm,
+      position: ghPos,
+      dialogue: "Look at these vibrant Dutch tulips! Slow, careful tending produces the richest pigments.",
+      districtKey: "meadow",
+    });
+
+    // Flower Patches & Wind Chime
+    const { pos: chimePos, norm: chimeNorm } = this.getSphericalPoint(3.48, 0.86, 0.02);
+    this.loader.load("/models/discoveries/wind-chime.glb", (gltf) => {
+      const chime = gltf.scene;
+      chime.position.copy(chimePos);
+      chime.scale.setScalar(0.7);
+      this.orientToNormal(chime, chimeNorm, 0);
+      this.root.add(chime);
+    });
+
+    this.landmarks.push({
+      id: "wind_chime",
+      name: "Meadow Wind Chime",
+      role: "Atelier Discovery",
+      normal: chimeNorm,
+      position: chimePos,
+      dialogue: "The breeze chimes softly over the tulip rows. +10 Gloss discovery bonus!",
+      districtKey: "meadow",
+    });
+
+    // Material Pickups in Meadow: Daisy Sprig & Sakura Petal
+    this.spawnPickup("daisy-sprig", 3.32, 0.82, "Daisy Sprig Node");
+    this.spawnPickup("sakura-petal-bundle", 3.45, 0.78, "Meadow Sakura Petal Node");
+
+    // -----------------------------------------------------------------------
+    // DISTRICT 4: WINDMILL HILL (θ=4.7, φ=0.8)
+    // -----------------------------------------------------------------------
+    // Historic Windmill (Tall Landmark)
+    const { pos: millPos, norm: millNorm } = this.getSphericalPoint(4.7, 0.78, 0);
+    this.loader.load("/models/world/windmill.glb", (gltf) => {
+      const mill = gltf.scene;
+      mill.position.copy(millPos);
+      mill.scale.setScalar(1.2);
+      this.orientToNormal(mill, millNorm, 1.2);
+
+      // Find rotating sails
+      mill.traverse((c) => {
+        if (c.name.toLowerCase().includes("blade") || c.name.toLowerCase().includes("sail")) {
+          this.windmillBlades = c;
+        }
       });
-    }
+      this.root.add(mill);
+    });
 
-    // 3. Glowing Amsterdam Street Lanterns
-    for (let i = 0; i < 14; i++) {
-      const theta = (i * Math.PI * 2) / 14 + 0.2;
-      const { pos, norm } = this.getSphericalPoint(theta, 0.95, 0);
+    this.landmarks.push({
+      id: "windmill",
+      name: "Historic Canal Windmill",
+      role: "Landmark & Milling Post",
+      normal: millNorm,
+      position: millPos,
+      dialogue: "The ancient sails turn slowly in the Dutch wind, grinding minerals into shimmering pearl mica.",
+      districtKey: "windmill",
+    });
 
-      this.loader.load("/models/street/amsterdam-lantern-post.glb", (gltf) => {
-        const post = gltf.scene;
-        post.position.copy(pos);
-        post.scale.setScalar(0.75);
-        this.orientToNormal(post, norm, theta);
-        this.root.add(post);
+    // Pines & Bird Tree
+    const { pos: btPos, norm: btNorm } = this.getSphericalPoint(4.82, 0.86, 0);
+    this.loader.load("/models/discoveries/bird-tree.glb", (gltf) => {
+      const bt = gltf.scene;
+      bt.position.copy(btPos);
+      bt.scale.setScalar(0.75);
+      this.orientToNormal(bt, btNorm, 0.5);
+      this.root.add(bt);
+    });
 
-        const light = new THREE.PointLight(0xffbe6b, 1.3, 7.5);
-        light.position.copy(pos.clone().addScaledVector(norm, 2.5));
+    const { pos: pinePos, norm: pineNorm } = this.getSphericalPoint(4.58, 0.74, 0);
+    this.loader.load("/models/discoveries/forest-pine.glb", (gltf) => {
+      const pine = gltf.scene;
+      pine.position.copy(pinePos);
+      pine.scale.setScalar(0.85);
+      this.orientToNormal(pine, pineNorm, 1.0);
+      this.root.add(pine);
+    });
+
+    // Material Pickups in Windmill: Chrome Droplets & Aurora Crystals
+    this.spawnPickup("chrome-droplet", 4.65, 0.84, "Chrome Droplet Node");
+    this.spawnPickup("aurora-crystal-shard", 4.76, 0.72, "Aurora Crystal Shard Node");
+
+    // -----------------------------------------------------------------------
+    // DISTRICT 5: HARBOUR (θ=5.9, φ=1.05)
+    // -----------------------------------------------------------------------
+    // Moored Wooden Salon Boat (Bea)
+    const { pos: boatPos, norm: boatNorm } = this.getSphericalPoint(5.92, 1.06, -0.06);
+    this.loader.load("/models/architecture/moored-wooden-salon-boat.glb", (gltf) => {
+      const boat = gltf.scene;
+      boat.position.copy(boatPos);
+      boat.scale.setScalar(0.95);
+      this.orientToNormal(boat, boatNorm, 5.92);
+      this.root.add(boat);
+    });
+
+    this.landmarks.push({
+      id: "salon_boat",
+      name: "Moored Wooden Salon Boat",
+      role: "Bea the Houseboat Muse",
+      normal: boatNorm,
+      position: boatPos,
+      dialogue: "Welcome aboard my houseboat salon! Soft candlelight, lapping water, and deep moonlight cat-eye polish.",
+      districtKey: "harbour",
+    });
+
+    // Harbour Dock Jetty
+    const { pos: dockPos, norm: dockNorm } = this.getSphericalPoint(5.82, 1.02, 0.02);
+    const dockJetty = this.createStylizedHarbourDock();
+    dockJetty.position.copy(dockPos);
+    this.orientToNormal(dockJetty, dockNorm, 0.6);
+    this.root.add(dockJetty);
+
+    // Mooring Bollards
+    const { pos: bolPos, norm: bolNorm } = this.getSphericalPoint(5.85, 1.08, 0.02);
+    this.loader.load("/models/street/cast-iron-mooring-bollard.glb", (gltf) => {
+      const bol = gltf.scene;
+      bol.position.copy(bolPos);
+      bol.scale.setScalar(0.7);
+      this.orientToNormal(bol, bolNorm, 0);
+      this.root.add(bol);
+    });
+
+    // Material Pickups in Harbour: Gold Leaf & Aurora Crystal
+    this.spawnPickup("gold-leaf-flake", 5.86, 0.98, "Gold Leaf Flake Node");
+    this.spawnPickup("aurora-crystal-shard", 5.98, 1.12, "Harbour Aurora Crystal Node");
+  }
+
+  // =========================================================================
+  // 5. MATERIAL PICKUPS WITH GLOW NODES (Spec B3)
+  // =========================================================================
+  private spawnPickup(modelName: string, theta: number, phi: number, label: string) {
+    const { pos, norm } = this.getSphericalPoint(theta, phi, 0.05);
+    const path = `/models/pickups/${modelName}.glb`;
+
+    this.loader.load(path, (gltf) => {
+      const model = gltf.scene;
+      model.position.copy(pos);
+      model.scale.setScalar(0.85);
+      this.orientToNormal(model, norm, Math.random() * Math.PI * 2);
+
+      // Track glow node for pulsing animation
+      model.traverse((c) => {
+        if (c.name.includes("Glow")) {
+          this.pickupGlows.push(c);
+        }
+      });
+
+      this.root.add(model);
+    });
+
+    this.landmarks.push({
+      id: `pickup_${modelName}_${theta.toFixed(2)}`,
+      name: label,
+      role: "Crafting Resource Pickup",
+      normal: norm,
+      position: pos,
+      dialogue: `Collected material for your manicure charms!`,
+    });
+  }
+
+  // =========================================================================
+  // 6. STREET LANTERNS ALONG PATHS (Spec §5)
+  // =========================================================================
+  private spawnPathLanterns() {
+    this.loader.load("/models/street/amsterdam-lantern-post.glb", (gltf) => {
+      const lanternTemplate = gltf.scene;
+      // Place along path samples every ~10 meters (roughly every 20 samples)
+      for (let i = 8; i < this.pathSamples.length; i += 22) {
+        const sample = this.pathSamples[i];
+        const lantern = lanternTemplate.clone();
+
+        // Place on the side of the path (+1.2m offset)
+        const nextSample = this.pathSamples[Math.min(this.pathSamples.length - 1, i + 1)];
+        const fwd = nextSample.pos.clone().sub(sample.pos).normalize();
+        const perp = new THREE.Vector3().crossVectors(fwd, sample.normal).normalize();
+
+        const placedPos = sample.pos.clone().addScaledVector(perp, 1.2);
+        lantern.position.copy(placedPos);
+        lantern.scale.setScalar(0.7);
+        this.orientToNormal(lantern, sample.normal, 0);
+
+        // Warm light source
+        const light = new THREE.PointLight(0xffecd0, 0, 6.0);
+        light.position.copy(placedPos.clone().addScaledVector(sample.normal, 1.8));
         this.root.add(light);
+        this.lanternLights.push(light);
+
+        // Find glass/bulb material for emissive switching
+        lantern.traverse((c) => {
+          if ((c as THREE.Mesh).isMesh) {
+            const mesh = c as THREE.Mesh;
+            const mat = (mesh.material as THREE.MeshStandardMaterial).clone();
+            mesh.material = mat;
+            this.lanternMaterials.push(mat);
+          }
+        });
+
+        this.root.add(lantern);
+      }
+    });
+  }
+
+  // =========================================================================
+  // 7. INSTANCED FILLER SCATTER (Spec §4)
+  // =========================================================================
+  private loadInstancedFillerModels() {
+    // 1. Meadow Dutch Tulip Rows (Pink, Red, Yellow, White)
+    this.spawnMeadowTulipRows();
+
+    // 2. Instanced Grass Tufts across all districts
+    this.spawnInstancedDistrictFiller("grass-tuft-a", 160, 0.45);
+    this.spawnInstancedDistrictFiller("grass-tuft-b", 160, 0.45);
+    this.spawnInstancedDistrictFiller("grass-tuft-c", 160, 0.45);
+
+    // 3. Round Bushes & Clovers
+    this.spawnInstancedDistrictFiller("clover-patch", 80, 0.65);
+    this.spawnInstancedDistrictFiller("round-bush-small", 45, 1.2);
+    this.spawnInstancedDistrictFiller("round-bush-large", 35, 1.6);
+    this.spawnInstancedDistrictFiller("pebble-set", 65, 0.8);
+    this.spawnInstancedDistrictFiller("mushroom-pair", 35, 1.0);
+    this.spawnInstancedDistrictFiller("fallen-petals", 60, 0.6);
+  }
+
+  // 6-8 parallel curved rows of tulips alternating colour in Meadow (Spec §4)
+  private spawnMeadowTulipRows() {
+    const meadow = DISTRICTS.find((d) => d.key === "meadow")!;
+    const tulipColors = [
+      "tulip-cluster-pink",
+      "tulip-cluster-red",
+      "tulip-cluster-yellow",
+      "tulip-cluster-white",
+      "tulip-cluster-pink",
+      "tulip-cluster-red",
+      "tulip-cluster-yellow",
+    ];
+
+    tulipColors.forEach((colorId, rowIdx) => {
+      this.loader.load(`/models/filler/${colorId}.glb`, (gltf) => {
+        let tulipMesh: THREE.Mesh | null = null;
+        gltf.scene.traverse((c) => {
+          if ((c as THREE.Mesh).isMesh && !tulipMesh) {
+            tulipMesh = c as THREE.Mesh;
+          }
+        });
+        if (!tulipMesh) return;
+
+        const countPerRow = 32;
+        const inst = new THREE.InstancedMesh(
+          (tulipMesh as any).geometry,
+          (tulipMesh as any).material,
+          countPerRow
+        );
+
+        // Apply wind sway shader
+        this.applyWindSwayShader((tulipMesh as any).material);
+
+        const rowPhiOffset = (rowIdx - 3) * 0.045;
+        const mat = new THREE.Matrix4();
+        const pos = new THREE.Vector3();
+        const q = new THREE.Quaternion();
+        const s = new THREE.Vector3();
+        const up = new THREE.Vector3(0, 1, 0);
+
+        for (let i = 0; i < countPerRow; i++) {
+          const t = i / countPerRow;
+          const theta = meadow.centerTheta - 0.22 + t * 0.44;
+          const phi = meadow.centerPhi + rowPhiOffset + Math.sin(t * Math.PI) * 0.03;
+
+          const { pos: pPos, norm: pNorm } = this.getSphericalPoint(theta, phi, 0);
+          pos.copy(pPos);
+
+          const qNorm = new THREE.Quaternion().setFromUnitVectors(up, pNorm);
+          const qYaw = new THREE.Quaternion().setFromAxisAngle(pNorm, (Math.random() - 0.5) * 0.3);
+          q.copy(qNorm).premultiply(qYaw);
+
+          const scaleVal = 0.85 + Math.random() * 0.25;
+          s.set(scaleVal, scaleVal, scaleVal);
+
+          mat.compose(pos, q, s);
+          inst.setMatrixAt(i, mat);
+        }
+
+        inst.instanceMatrix.needsUpdate = true;
+        inst.computeBoundingSphere();
+        inst.receiveShadow = true;
+        this.fillerGroup.add(inst);
       });
+    });
+  }
+
+  // Poisson-disk scatter per district (Spec §4)
+  private spawnInstancedDistrictFiller(modelId: string, totalCount: number, minDist: number) {
+    this.loader.load(`/models/filler/${modelId}.glb`, (gltf) => {
+      let sourceMesh: THREE.Mesh | null = null;
+      gltf.scene.traverse((c) => {
+        if ((c as THREE.Mesh).isMesh && !sourceMesh) {
+          sourceMesh = c as THREE.Mesh;
+        }
+      });
+      if (!sourceMesh) return;
+
+      // Apply wind shader to grass models
+      if (modelId.startsWith("grass-tuft")) {
+        this.applyWindSwayShader((sourceMesh as any).material);
+      }
+
+      const inst = new THREE.InstancedMesh(
+        (sourceMesh as any).geometry,
+        (sourceMesh as any).material,
+        totalCount
+      );
+
+      const mat = new THREE.Matrix4();
+      const pos = new THREE.Vector3();
+      const q = new THREE.Quaternion();
+      const s = new THREE.Vector3();
+      const up = new THREE.Vector3(0, 1, 0);
+
+      let placed = 0;
+      const countPerDistrict = Math.floor(totalCount / DISTRICTS.length);
+
+      for (const d of DISTRICTS) {
+        const rng = createMulberry32(stringToSeed(d.key + modelId));
+        const centerNorm = sphericalToNormal(d.centerTheta, d.centerPhi);
+
+        for (let i = 0; i < countPerDistrict && placed < totalCount; i++) {
+          // Polar sampling within district radius
+          const angle = rng() * Math.PI * 2;
+          const distRad = Math.sqrt(rng()) * d.radius;
+
+          const theta = d.centerTheta + Math.cos(angle) * distRad;
+          const phi = d.centerPhi + Math.sin(angle) * distRad;
+
+          const { pos: pPos, norm: pNorm } = this.getSphericalPoint(theta, phi, 0);
+
+          // Rejection check: don't place on path
+          if (this.isPointOnPath(pNorm)) continue;
+
+          pos.copy(pPos);
+
+          const qNorm = new THREE.Quaternion().setFromUnitVectors(up, pNorm);
+          const qYaw = new THREE.Quaternion().setFromAxisAngle(pNorm, rng() * Math.PI * 2);
+          q.copy(qNorm).premultiply(qYaw);
+
+          const scaleVal = 0.8 + rng() * 0.4;
+          s.set(scaleVal, scaleVal, scaleVal);
+
+          mat.compose(pos, q, s);
+          inst.setMatrixAt(placed++, mat);
+        }
+      }
+
+      inst.count = placed;
+      inst.instanceMatrix.needsUpdate = true;
+      inst.computeBoundingSphere();
+      inst.receiveShadow = true;
+      this.fillerGroup.add(inst);
+    });
+  }
+
+  // Wind sway vertex shader using onBeforeCompile (Spec §4)
+  private applyWindSwayShader(mat: THREE.MeshStandardMaterial) {
+    mat.onBeforeCompile = (shader) => {
+      shader.uniforms.uTime = this.windUniforms.uTime;
+      shader.vertexShader = `
+        uniform float uTime;
+        ${shader.vertexShader}
+      `;
+      shader.vertexShader = shader.vertexShader.replace(
+        "#include <begin_vertex>",
+        `
+        #include <begin_vertex>
+        float sway = sin(uTime * 1.5 + position.x * 2.0 + position.z * 2.0) * 0.04 * max(0.0, transformed.y);
+        transformed.x += sway;
+        transformed.z += sway * 0.5;
+        `
+      );
+    };
+  }
+
+  // Path detection for bicycle speed boost (+10% on paths per Spec §3)
+  public isPointOnPath(normal: THREE.Vector3): boolean {
+    const checkRadius = 1.2 / this.radius; // 1.2m threshold in radians
+    for (let i = 0; i < this.pathSamples.length; i += 3) {
+      if (normal.distanceTo(this.pathSamples[i].normal) < checkRadius) {
+        return true;
+      }
     }
+    return false;
   }
 
-  // 5. Nature & Botanical Greenery
-  private spawnNatureAndCanalFlora() {
-    const trees = [
-      { model: "discoveries/bird-tree.glb", theta: 0.5, phi: 0.72, scale: 1.1 },
-      { model: "discoveries/petal-tree.glb", theta: 1.8, phi: 0.75, scale: 1.2 },
-      { model: "discoveries/forest-pine.glb", theta: 2.2, phi: 0.65, scale: 1.0 },
-      { model: "discoveries/flower-patch.glb", theta: 0.95, phi: 0.84, scale: 1.0 },
-      { model: "discoveries/flower-patch.glb", theta: 2.65, phi: 0.95, scale: 1.1 },
-      { model: "discoveries/wind-chime.glb", theta: 4.2, phi: 0.82, scale: 1.0 },
-      { model: "discoveries/fern-clump.glb", theta: 1.15, phi: 0.78, scale: 1.1 },
-    ];
-
-    trees.forEach((t) => {
-      const { pos, norm } = this.getSphericalPoint(t.theta, t.phi, 0);
-      this.loader.load(`/models/${t.model}`, (gltf) => {
-        const mesh = gltf.scene;
-        mesh.position.copy(pos);
-        mesh.scale.setScalar(t.scale);
-        this.orientToNormal(mesh, norm, t.theta);
-        mesh.traverse((c) => {
-          if ((c as THREE.Mesh).isMesh) {
-            c.castShadow = true;
-            c.receiveShadow = true;
-          }
-        });
-        this.root.add(mesh);
-      });
-    });
-  }
-
-  // 6. Living Town Neighbors (8 NPCs)
-  private spawnTownNeighbors() {
-    const residents = [
-      { id: "dewey", model: "pets/dewey.glb", theta: 1.1, phi: 0.88, name: "Dewey by Canal Path" },
-      { id: "rocky", model: "pets/rocky.glb", theta: 2.7, phi: 1.02, name: "Rocky at Bridge" },
-      { id: "seedy", model: "pets/seedy.glb", theta: 0.92, phi: 0.82, name: "Seedy at Salon" },
-      { id: "fireball", model: "pets/fireball.glb", theta: 4.88, phi: 0.92, name: "Fireball at Ceramic House" },
-      { id: "hoots", model: "pets/hoots.glb", theta: 3.55, phi: 1.02, name: "Hoots at Library" },
-      { id: "null-signal", model: "pets/null-signal.glb", theta: 5.58, phi: 0.78, name: "Null-Signal at Windmill" },
-      { id: "codex", model: "pets/codex.glb", theta: 0.72, phi: 0.86, name: "Codex at Tea Desk" },
-    ];
-
-    residents.forEach((r) => {
-      const { pos, norm } = this.getSphericalPoint(r.theta, r.phi, 0);
-      this.loader.load(`/models/${r.model}`, (gltf) => {
-        const npc = gltf.scene;
-        npc.position.copy(pos);
-        npc.scale.setScalar(0.85);
-        this.orientToNormal(npc, norm, r.theta + Math.PI);
-        npc.traverse((c) => {
-          if ((c as THREE.Mesh).isMesh) {
-            c.castShadow = true;
-            c.receiveShadow = true;
-          }
-        });
-        this.root.add(npc);
-        this.npcs.push(npc);
-      });
-    });
-  }
-
-  // Nearest landmark query
-  public getNearestLandmark(playerPos: THREE.Vector3): { landmark: PlanetLandmark; dist: number } | null {
+  // Nearest interactable landmark check
+  public getNearestLandmark(
+    playerPos: THREE.Vector3,
+    maxDistance = 2.8
+  ): { landmark: PlanetLandmark; distance: number } | null {
     let nearest: PlanetLandmark | null = null;
-    let minDist = Infinity;
+    let minDist = maxDistance;
 
     for (const lm of this.landmarks) {
-      const d = playerPos.distanceTo(lm.position);
-      if (d < minDist) {
-        minDist = d;
+      const dist = playerPos.distanceTo(lm.position);
+      if (dist < minDist) {
+        minDist = dist;
         nearest = lm;
       }
     }
 
-    if (nearest && minDist < 6.8) {
-      return { landmark: nearest, dist: minDist };
+    return nearest ? { landmark: nearest, distance: minDist } : null;
+  }
+
+  // =========================================================================
+  // 8. ANIMATION & NIGHT/DAY CYCLE (Spec §5 & §6)
+  // =========================================================================
+  public update(delta: number) {
+    this.windUniforms.uTime.value += delta;
+
+    // Rotate windmill blades
+    if (this.windmillBlades) {
+      this.windmillBlades.rotation.z += delta * 0.8;
     }
-    return null;
+
+    // Pulse material pickup glow nodes
+    const pulse = 1.0 + Math.sin(this.windUniforms.uTime.value * 3.5) * 0.15;
+    for (const glow of this.pickupGlows) {
+      glow.scale.set(pulse, pulse, pulse);
+    }
+
+    // Switch lanterns on at night (game time >= 20:00 or < 06:00)
+    const isNight = gameConvex.isNight();
+    const targetLightIntensity = isNight ? 1.6 : 0.0;
+    const targetEmissive = isNight ? 0.9 : 0.0;
+
+    for (const l of this.lanternLights) {
+      l.intensity = THREE.MathUtils.lerp(l.intensity, targetLightIntensity, delta * 3.0);
+    }
+    for (const m of this.lanternMaterials) {
+      if (m.emissive) {
+        m.emissive.setRGB(0.9 * targetEmissive, 0.7 * targetEmissive, 0.4 * targetEmissive);
+      }
+    }
+  }
+
+  // =========================================================================
+  // STYLIZED PROCEDURAL STRUCTURES (Placeholders per Spec)
+  // =========================================================================
+  private createStylizedMarketStall(): THREE.Group {
+    const group = new THREE.Group();
+    // Counter
+    const counter = new THREE.Mesh(
+      new THREE.BoxGeometry(1.4, 0.9, 0.7),
+      new THREE.MeshStandardMaterial({ color: 0xac8061, roughness: 0.75 }) // pal_wood
+    );
+    counter.position.y = 0.45;
+    group.add(counter);
+
+    // Striped Awning
+    const awning = new THREE.Mesh(
+      new THREE.BoxGeometry(1.6, 0.1, 1.0),
+      new THREE.MeshStandardMaterial({ color: 0xa8505e, roughness: 0.5 }) // pal_petal
+    );
+    awning.position.set(0, 1.8, 0.1);
+    awning.rotation.x = 0.15;
+    group.add(awning);
+
+    // Posts
+    const postMat = new THREE.MeshStandardMaterial({ color: 0x2a2a38, roughness: 0.6 }); // pal_ink
+    for (const x of [-0.65, 0.65]) {
+      const post = new THREE.Mesh(new THREE.CylinderGeometry(0.03, 0.03, 1.8), postMat);
+      post.position.set(x, 0.9, 0.35);
+      group.add(post);
+    }
+    return group;
+  }
+
+  private createStylizedCafeKiosk(): THREE.Group {
+    const group = new THREE.Group();
+    // Kiosk body
+    const body = new THREE.Mesh(
+      new THREE.BoxGeometry(1.6, 1.8, 1.4),
+      new THREE.MeshStandardMaterial({ color: 0xf8f6f1, roughness: 0.8 }) // pal_cream
+    );
+    body.position.y = 0.9;
+    group.add(body);
+
+    // Sage Green Counter Top & Awning
+    const roof = new THREE.Mesh(
+      new THREE.BoxGeometry(1.8, 0.12, 1.6),
+      new THREE.MeshStandardMaterial({ color: 0xb3caba, roughness: 0.6 }) // pal_sage
+    );
+    roof.position.y = 1.85;
+    group.add(roof);
+
+    return group;
+  }
+
+  private createStylizedGreenhouse(): THREE.Group {
+    const group = new THREE.Group();
+    // Glass walls
+    const glassMat = new THREE.MeshStandardMaterial({
+      color: 0xe0cdb3,
+      roughness: 0.2,
+      metalness: 0.1,
+      transparent: true,
+      opacity: 0.65,
+    });
+    const house = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.6, 1.8), glassMat);
+    house.position.y = 0.8;
+    group.add(house);
+
+    // Peaked roof
+    const roof = new THREE.Mesh(
+      new THREE.ConeGeometry(1.4, 0.8, 4),
+      new THREE.MeshStandardMaterial({ color: 0xc78a75, roughness: 0.7 }) // pal_terracotta
+    );
+    roof.position.y = 2.0;
+    roof.rotation.y = Math.PI / 4;
+    group.add(roof);
+
+    return group;
+  }
+
+  private createStylizedHarbourDock(): THREE.Group {
+    const group = new THREE.Group();
+    const woodMat = new THREE.MeshStandardMaterial({ color: 0xac8061, roughness: 0.85 }); // pal_wood
+    const plank = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.14, 1.0), woodMat);
+    plank.position.y = 0.1;
+    group.add(plank);
+
+    for (const x of [-0.9, 0.9]) {
+      const leg = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 0.6), woodMat);
+      leg.position.set(x, -0.2, 0);
+      group.add(leg);
+    }
+    return group;
   }
 }
