@@ -433,6 +433,64 @@ class GameConvexService {
     });
   }
 
+  public async buyShopItem(
+    itemType: "shade" | "tool" | "decor",
+    itemKey: string
+  ) {
+    if (!this.isOnline) {
+      if (this.currentState) {
+        this.currentState.player.gloss -= 50;
+        this.currentState.inventory.push({
+          itemType,
+          itemKey,
+          qty: 1,
+        });
+        this.notifyListeners();
+      }
+      return { success: true, itemKey, cost: 50 };
+    }
+    return await convex.mutation(api.shop.buyItem, {
+      guestToken: this.guestToken,
+      itemType,
+      itemKey,
+    });
+  }
+
+  public async sellMaterial(materialKey: string, qty: number) {
+    if (!this.isOnline) {
+      if (this.currentState) {
+        const item = this.currentState.inventory.find(
+          (i) => i.itemType === "material" && i.itemKey === materialKey
+        );
+        if (item) {
+          item.qty = Math.max(0, item.qty - qty);
+        }
+        this.currentState.player.gloss += 4 * qty;
+        this.notifyListeners();
+      }
+      return { success: true, materialKey, soldQty: qty, payout: 4 * qty };
+    }
+    return await convex.mutation(api.shop.sellMaterial, {
+      guestToken: this.guestToken,
+      materialKey,
+      qty,
+    });
+  }
+
+  public async setActivePet(petKey?: string) {
+    if (!this.isOnline) {
+      if (this.currentState) {
+        this.currentState.player.activePetKey = petKey;
+        this.notifyListeners();
+      }
+      return { success: true, activePetKey: petKey };
+    }
+    return await convex.mutation(api.shop.setActivePet, {
+      guestToken: this.guestToken,
+      petKey,
+    });
+  }
+
   public isNight(): boolean {
     const hours = Math.floor(this.currentGameMinutes / 60) % 24;
     return hours >= 20 || hours < 6;

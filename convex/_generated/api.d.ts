@@ -15,6 +15,7 @@ import type * as lib_player from "../lib/player.js";
 import type * as players from "../players.js";
 import type * as quests from "../quests.js";
 import type * as seed from "../seed.js";
+import type * as shop from "../shop.js";
 import type * as studio from "../studio.js";
 
 import type {
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   players: typeof players;
   quests: typeof quests;
   seed: typeof seed;
+  shop: typeof shop;
   studio: typeof studio;
 }>;
 

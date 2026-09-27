@@ -267,6 +267,33 @@ export class SphericalCharacter {
     }
   }
 
+  // Companion Pet Tracking
+  public activePet: THREE.Group | null = null;
+  public activePetKey: string | null = null;
+  private petHopTime: number = 0;
+
+  public setCompanionPet(petKey: string | null) {
+    if (this.activePet) {
+      this.root.remove(this.activePet);
+      this.activePet = null;
+    }
+    this.activePetKey = petKey;
+    if (!petKey) return;
+
+    this.loader.load(
+      `/models/pets/${petKey}.glb`,
+      (gltf) => {
+        if (this.activePetKey !== petKey) return;
+        this.activePet = gltf.scene;
+        this.activePet.scale.setScalar(0.42);
+        this.activePet.position.set(0.65, 0, -0.25);
+        this.root.add(this.activePet);
+      },
+      undefined,
+      (err) => console.warn("Failed to load pet model:", err)
+    );
+  }
+
   /**
    * Main physics step modeled after Little Ritual's engine:
    * Translates 2D input (WASD) relative to the 3D Camera view on the planet's tangent plane.
@@ -290,12 +317,21 @@ export class SphericalCharacter {
       moveDir.addScaledVector(camForward, moveY).addScaledVector(camRight, moveX).normalize();
     }
 
-    const baseSpeed = this.isRidingBicycle ? (this.isOnPath ? 4.95 : 4.5) : 2.4;
+    const petSpeedMult = (this.isRidingBicycle && this.activePetKey === "fireball") ? 1.15 : 1.0;
+    const baseSpeed = (this.isRidingBicycle ? (this.isOnPath ? 4.95 : 4.5) : 2.4) * petSpeedMult;
     const targetSpeed = hasInput ? baseSpeed : 0;
     const accelRate = this.isRidingBicycle ? 6.0 : 12.0;
     this.currentSpeed = THREE.MathUtils.lerp(this.currentSpeed, targetSpeed, delta * accelRate);
 
     this.moving = Math.abs(this.currentSpeed) > 0.08 && hasInput;
+
+    // Animate Companion Pet (hopping & following)
+    if (this.activePet) {
+      this.petHopTime += delta * (this.moving ? 8 : 2);
+      const hop = Math.abs(Math.sin(this.petHopTime)) * (this.moving ? 0.12 : 0.03);
+      this.activePet.position.y = hop;
+      this.activePet.rotation.y = Math.sin(this.petHopTime * 0.5) * 0.15;
+    }
 
     // Advance along the spherical planet surface
     if (Math.abs(this.currentSpeed) > 0.05 && moveDir.lengthSq() > 0) {

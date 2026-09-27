@@ -9,6 +9,8 @@ import { questSystem, ClientTicket } from "./engine/game-quest";
 import { AtelierCompanion } from "./engine/companion";
 import { gameConvex, PlayerStatePayload } from "./net/convex";
 import { DISTRICTS, sphericalToNormal } from "./engine/planet-layout";
+import { marketShop } from "./engine/market-shop";
+import { nailMinigame } from "./engine/nail-studio-minigame";
 
 const MATERIAL_ICONS: Record<string, { icon: string; name: string; nameKo: string; district: string; price: number; desc: string }> = {
   sakura_petal: { icon: "🌸", name: "Sakura Petal", nameKo: "벚꽃잎", district: "Canal & Meadow", price: 3, desc: "Delicate spring cherry blossom petals harvested from Amsterdam canal trees." },
@@ -184,6 +186,9 @@ class EliyaCanalWorldGame {
         this.player.toggleBicycle();
         document.getElementById("btn-toggle-bike")?.classList.toggle("active", this.player.isRidingBicycle);
       }
+      if (e.code === "KeyS" && !e.ctrlKey && !e.metaKey) {
+        marketShop.open();
+      }
       if (e.code === "KeyC") {
         this.companion.toggle();
       }
@@ -214,6 +219,11 @@ class EliyaCanalWorldGame {
     const lm = near.landmark;
     if (lm.nodeKey) {
       this.handleGatherNode(lm);
+      return;
+    }
+
+    if (lm.id === "market_stall" || lm.npcKey === "sanne") {
+      marketShop.open();
       return;
     }
 
@@ -398,6 +408,7 @@ class EliyaCanalWorldGame {
     // Top Bar Buttons
     const btnStation = document.getElementById("btn-open-station");
     const btnBooth = document.getElementById("btn-open-booth");
+    const btnShop = document.getElementById("btn-open-shop");
     const btnBike = document.getElementById("btn-toggle-bike");
     const btnSound = document.getElementById("btn-toggle-sound");
     const journalBtn = document.getElementById("journal-button");
@@ -405,6 +416,7 @@ class EliyaCanalWorldGame {
 
     if (btnStation) btnStation.addEventListener("click", () => this.openManicureStation());
     if (btnBooth) btnBooth.addEventListener("click", () => this.openPhotobooth());
+    if (btnShop) btnShop.addEventListener("click", () => marketShop.open());
     if (journalBtn) journalBtn.addEventListener("click", () => this.toggleOrderCard());
     if (btnContextInteract) btnContextInteract.addEventListener("click", () => this.interactWithNearby());
 
@@ -556,6 +568,8 @@ class EliyaCanalWorldGame {
     if (dialogBox) dialogBox.style.display = "none";
     const orderCard = document.getElementById("order-card");
     if (orderCard) orderCard.style.display = "none";
+    marketShop.close();
+    nailMinigame.close();
   }
 
   private getInventoryQty(itemType: string, itemKey: string): number {
@@ -702,6 +716,10 @@ class EliyaCanalWorldGame {
     const invModal = document.getElementById("inventory-modal-overlay");
     if (invModal && invModal.style.display === "flex") {
       this.renderInventory();
+    }
+
+    if (p.activePetKey !== this.player.activePetKey) {
+      this.player.setCompanionPet(p.activePetKey || null);
     }
   }
 
