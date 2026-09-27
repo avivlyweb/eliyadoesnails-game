@@ -9,6 +9,7 @@ import {
   stringToSeed,
 } from "./planet-layout";
 import { gameConvex } from "../net/convex";
+import { questSystem } from "./game-quest";
 
 export interface PlanetLandmark {
   id: string;
@@ -20,6 +21,7 @@ export interface PlanetLandmark {
   dialogue: string;
   districtKey?: string;
   nodeKey?: string;
+  npcKey?: string;
 }
 
 interface PathSample {
@@ -54,6 +56,12 @@ export class SphericalPlanet {
   private lanternLights: THREE.PointLight[] = [];
   private lanternMaterials: THREE.MeshStandardMaterial[] = [];
   private pickupGlows: THREE.Object3D[] = [];
+  private npcQuestMarkers: Array<{
+    npcKey: string;
+    marker: THREE.Group;
+    basePos: THREE.Vector3;
+    normal: THREE.Vector3;
+  }> = [];
 
   constructor(scene: THREE.Scene) {
     this.scene = scene;
@@ -70,6 +78,7 @@ export class SphericalPlanet {
     this.spawnDistrictAnchors();
     this.spawnPathLanterns();
     this.loadInstancedFillerModels();
+    this.spawnNPCCharacters();
   }
 
   // Spherical polar coordinate helper
@@ -693,6 +702,169 @@ export class SphericalPlanet {
   }
 
   // =========================================================================
+  // 4b. NPC CHARACTERS & FLOATING QUEST MARKERS (Spec B4 & B5)
+  // =========================================================================
+  private spawnNPCCharacters() {
+    const npcsConfig: Array<{
+      key: string;
+      name: string;
+      role: string;
+      district: string;
+      theta: number;
+      phi: number;
+      yaw: number;
+      modelId: string;
+      greeting: string;
+      scale?: number;
+    }> = [
+      {
+        key: "mira",
+        name: "Mira",
+        role: "Florist",
+        district: "canal",
+        theta: 0.85,
+        phi: 0.82,
+        yaw: 1.1,
+        modelId: "mira-florist",
+        greeting: "Eliya! The morning market is opening, but my hands feel so bare without your floral jelly press-ons!",
+      },
+      {
+        key: "nell",
+        name: "Nell",
+        role: "Potter",
+        district: "canal",
+        theta: 0.78,
+        phi: 0.76,
+        yaw: 2.4,
+        modelId: "nell-potter",
+        greeting: "Eliya! Normal polish chips in five seconds at the pottery wheel. I need your sculpted nail armor!",
+      },
+      {
+        key: "pip",
+        name: "Pip",
+        role: "Photo Collector",
+        district: "market",
+        theta: 2.12,
+        phi: 0.80,
+        yaw: 2.1,
+        modelId: "pip-photo",
+        greeting: "Eliya! The Life4Cuts arcade booth is primed, but we need your iconic Glass Manicure for today's lookbook strip!",
+      },
+      {
+        key: "joon",
+        name: "Joon",
+        role: "Barista",
+        district: "market",
+        theta: 2.15,
+        phi: 0.78,
+        yaw: -0.4,
+        modelId: "joon-barista",
+        greeting: "Eliya, an-nyeong! A calm morning calls for deep jade matcha tint with gold rim.",
+      },
+      {
+        key: "sanne",
+        name: "Sanne",
+        role: "Market Stall Owner",
+        district: "market",
+        theta: 2.05,
+        phi: 0.82,
+        yaw: 0.5,
+        modelId: "sanne-stall",
+        greeting: "Fresh syrup bases and fine silk ribbons! Trade your excess gathered botanicals for atelier gloss.",
+      },
+      {
+        key: "truus",
+        name: "Oma Truus",
+        role: "Tulip Grower",
+        district: "meadow",
+        theta: 3.42,
+        phi: 0.80,
+        yaw: 0.2,
+        modelId: "truus-tulips",
+        greeting: "Dag kindje! The tulip bulbs are blooming in the greenhouse. Something soft and floral for an old grower?",
+      },
+      {
+        key: "lotte",
+        name: "Lotte",
+        role: "Junior Apprentice",
+        district: "meadow",
+        theta: 3.38,
+        phi: 0.82,
+        yaw: 1.5,
+        scale: 0.72,
+        modelId: "lotte-junior",
+        greeting: "Eliya!! Look look! I'm practicing my brush strokes! Can you show me how a real Master crafts rainbow jelly nails?",
+      },
+      {
+        key: "bea",
+        name: "Bea",
+        role: "Houseboat Muse",
+        district: "harbour",
+        theta: 5.92,
+        phi: 1.05,
+        yaw: 5.92,
+        modelId: "bea-houseboat",
+        greeting: "Eliya, darling! The canal reflects the street lanterns so softly tonight, but my nails are waiting for your cosmic velvet touch.",
+      },
+    ];
+
+    for (const npc of npcsConfig) {
+      const { pos, norm } = this.getSphericalPoint(npc.theta, npc.phi, 0);
+
+      // Register interactable landmark for the NPC
+      this.landmarks.push({
+        id: `npc_${npc.key}`,
+        name: `${npc.name} (${npc.role})`,
+        role: npc.role,
+        normal: norm,
+        position: pos,
+        dialogue: npc.greeting,
+        districtKey: npc.district,
+        npcKey: npc.key,
+      });
+
+      // Load 3D Character Model
+      this.loader.load(
+        `/models/npcs/${npc.modelId}.glb`,
+        (gltf) => {
+          const char = gltf.scene;
+          char.position.copy(pos);
+          const s = npc.scale ?? 0.85;
+          char.scale.setScalar(s);
+          this.orientToNormal(char, norm, npc.yaw);
+          (char as any).userData = { npcKey: npc.key, lastSway: 0 };
+          this.npcs.push(char);
+          this.root.add(char);
+        },
+        undefined,
+        (err) => console.warn(`[Planet] Failed to load NPC model ${npc.modelId}:`, err)
+      );
+
+      // Load Floating Quest Marker Diamond above head
+      this.loader.load(
+        "/models/ui/quest-marker.glb",
+        (gltf) => {
+          const marker = gltf.scene;
+          const markerBasePos = norm.clone().multiplyScalar(this.radius + 1.45);
+          marker.position.copy(markerBasePos);
+          marker.scale.setScalar(0.7);
+          this.orientToNormal(marker, norm, 0);
+          this.root.add(marker);
+
+          this.npcQuestMarkers.push({
+            npcKey: npc.key,
+            marker,
+            basePos: markerBasePos,
+            normal: norm,
+          });
+        },
+        undefined,
+        (err) => console.warn(`[Planet] Failed to load quest marker for ${npc.key}:`, err)
+      );
+    }
+  }
+
+  // =========================================================================
   // 5. MATERIAL PICKUPS WITH GLOW NODES (Spec B3)
   // =========================================================================
   private spawnPickup(
@@ -1041,6 +1213,25 @@ export class SphericalPlanet {
       if (m.emissive) {
         m.emissive.setRGB(0.9 * targetEmissive, 0.7 * targetEmissive, 0.4 * targetEmissive);
       }
+    }
+
+    // Animate NPC gentle idle sway
+    const time = this.windUniforms.uTime.value;
+    for (let i = 0; i < this.npcs.length; i++) {
+      const npc = this.npcs[i];
+      const sway = Math.sin(time * 2.2 + i * 1.3) * 0.02;
+      npc.rotation.z += sway - (npc.userData.lastSway || 0);
+      npc.userData.lastSway = sway;
+    }
+
+    // Animate Quest Markers (spin + bob + visibility based on quests)
+    for (const qm of this.npcQuestMarkers) {
+      qm.marker.rotateOnAxis(new THREE.Vector3(0, 1, 0), delta * 2.2);
+      const bob = Math.sin(time * 3.5 + stringToSeed(qm.npcKey)) * 0.05;
+      qm.marker.position.copy(qm.basePos).addScaledVector(qm.normal, bob);
+
+      const ticket = questSystem.getTicket(qm.npcKey);
+      qm.marker.visible = !!ticket && ticket.status !== "delivered";
     }
   }
 

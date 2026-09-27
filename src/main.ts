@@ -306,7 +306,13 @@ class EliyaCanalWorldGame {
     if (roleEl) roleEl.textContent = ticket.role;
     this.pendingDeliveryTicketId = ticket.id;
 
-    if (ticket.status === "packed") {
+    if (ticket.status === "offered") {
+      textEl.innerHTML = `${ticket.greeting}<br/><br/><div style="background:rgba(168,80,94,0.06); border:1px solid rgba(168,80,94,0.18); border-radius:6px; padding:10px 14px; font-size:12px; line-height:1.5;"><strong>Bespoke Commission:</strong> ${ticket.setDesignName} + ${ticket.requestedCharm}<br/><span style="color:var(--accent-petal); font-weight:600;">Reward:</span> +${ticket.rewardGloss || 40} Gloss · +${ticket.rewardXp || 80} XP · +${ticket.rewardFriendship || 15} Friendship</div>`;
+      if (deliverBtn) {
+        deliverBtn.style.display = "inline-flex";
+        deliverBtn.textContent = `🌸 Accept Commission`;
+      }
+    } else if (ticket.status === "packed") {
       textEl.textContent = `Eliya! Did you bring my bespoke ${ticket.setDesignName}? Look at that gorgeous packaging!`;
       if (deliverBtn) {
         deliverBtn.style.display = "inline-flex";
@@ -316,8 +322,8 @@ class EliyaCanalWorldGame {
       textEl.textContent = `Enjoying my ${ticket.setDesignName}! Thank you again, Eliya! ♡`;
       if (deliverBtn) deliverBtn.style.display = "none";
     } else {
-      // unprepared
-      textEl.textContent = ticket.greeting;
+      // unprepared / active
+      textEl.textContent = `I can't wait for my bespoke ${ticket.setDesignName}! Take your time crafting at Atelier Gloss, then ride your Omafiets bike back to deliver.`;
       if (deliverBtn) deliverBtn.style.display = "none";
     }
 
@@ -435,39 +441,63 @@ class EliyaCanalWorldGame {
       });
     }
 
-    // Deliver Order Button
+    // Deliver / Accept Commission Button
     const btnDeliver = document.getElementById("btn-deliver-order");
     if (btnDeliver) {
-      btnDeliver.addEventListener("click", () => {
+      btnDeliver.addEventListener("click", async () => {
         if (!this.pendingDeliveryTicketId) return;
-        const res = questSystem.deliverToClient(this.pendingDeliveryTicketId);
+        const ticket = questSystem.getTicket(this.pendingDeliveryTicketId);
+        if (!ticket) return;
 
-        // Notify companion mascot
-        window.dispatchEvent(
-          new CustomEvent("delivery-completed", {
-            detail: {
-              clientName: this.pendingDeliveryTicketId.toUpperCase(),
-              rewardCharm: res.reward,
-            },
-          })
-        );
-
-        const textEl = document.getElementById("dialogue-text");
-        if (textEl) {
-          textEl.innerHTML = `${res.dialogue}<br/><br/><strong style="color:#a8505e;">✦ Received Reward: ${res.reward}!</strong>`;
+        if (ticket.status === "offered") {
+          await questSystem.acceptCommission(ticket.id);
+          const textEl = document.getElementById("dialogue-text");
+          if (textEl) {
+            textEl.innerHTML = `Thank you so much! I'll be waiting right here. Ride your Omafiets to Atelier Gloss whenever you're ready to craft.`;
+          }
+          btnDeliver.style.display = "none";
+          this.showToast(`🌸 Accepted commission for ${ticket.clientName}!`);
+          return;
         }
-        btnDeliver.style.display = "none";
 
-        // Count remaining packed boxes
-        const packedCount = Object.values(questSystem.tickets).filter((t) => t.status === "packed").length;
-        this.player.updateBoxCount(packedCount);
+        if (ticket.status === "packed") {
+          const res = await questSystem.deliverToClient(this.pendingDeliveryTicketId);
 
-        this.showToast(`🎁 Successfully delivered to ${this.pendingDeliveryTicketId.toUpperCase()}!`);
+          // Notify companion mascot
+          window.dispatchEvent(
+            new CustomEvent("delivery-completed", {
+              detail: {
+                clientName: this.pendingDeliveryTicketId.toUpperCase(),
+                rewardCharm: res.reward,
+              },
+            })
+          );
 
-        if (questSystem.isCompleted) {
-          setTimeout(() => {
-            this.showCompletionCelebration();
-          }, 1400);
+          let levelUpHtml = "";
+          if (res.levelUps && res.levelUps.length > 0) {
+            levelUpHtml += `<br/><strong style="color:#2e7d32;">🎉 LEVEL UP! Reached Atelier Level ${res.levelUps[res.levelUps.length - 1]}!</strong>`;
+          }
+          if (res.newUnlocks && res.newUnlocks.length > 0) {
+            levelUpHtml += `<br/><span style="color:#1b5e20;">✨ Unlocked: ${res.newUnlocks.join(", ")}!</span>`;
+          }
+
+          const textEl = document.getElementById("dialogue-text");
+          if (textEl) {
+            textEl.innerHTML = `${res.dialogue}<br/><br/><strong style="color:#a8505e;">✦ Received Reward: +${res.glossEarned} Gloss · +${res.xpEarned} XP · ${res.reward}!</strong>${levelUpHtml}`;
+          }
+          btnDeliver.style.display = "none";
+
+          // Count remaining packed boxes
+          const packedCount = Object.values(questSystem.tickets).filter((t) => t.status === "packed").length;
+          this.player.updateBoxCount(packedCount);
+
+          this.showToast(`🎁 Delivered to ${ticket.clientName}! +${res.glossEarned} Gloss, +${res.xpEarned} XP`);
+
+          if (questSystem.isCompleted) {
+            setTimeout(() => {
+              this.showCompletionCelebration();
+            }, 1400);
+          }
         }
       });
     }
@@ -721,6 +751,8 @@ class EliyaCanalWorldGame {
         const ticket = questSystem.getTicketByLandmark(lm.id);
         if (ticket && ticket.status === "packed") {
           msg = `🎁 Press [E] or Click to Deliver Couture Box to ${ticket.clientName}`;
+        } else if (ticket && ticket.status === "offered") {
+          msg = `🌸 Press [E] or Click to Accept Commission from ${ticket.clientName}`;
         } else if (ticket) {
           msg = `✦ Press [E] or Click to Talk to ${ticket.clientName}`;
         }

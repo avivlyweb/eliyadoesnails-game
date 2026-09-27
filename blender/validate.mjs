@@ -31,7 +31,22 @@ const MODEL_SPECS = {
   "syrup-glass-vial": { category: "pickup", size: 0.42, sizeType: "height", maxTris: 1500, requiredNodes: ["vial_Liquid", "vial_Glow"] },
   "aurora-crystal-shard": { category: "pickup", size: 0.45, sizeType: "height", maxTris: 1500, requiredNodes: ["crystal_Glow"] },
   "silk-ribbon-spool": { category: "pickup", size: 0.38, sizeType: "height", maxTris: 1500, requiredNodes: ["spool_Glow"] },
-  "gold-leaf-flake": { category: "pickup", size: 0.38, sizeType: "height", maxTris: 1500, requiredNodes: ["gold_Glow"] }
+  "gold-leaf-flake": { category: "pickup", size: 0.38, sizeType: "height", maxTris: 1500, requiredNodes: ["gold_Glow"] },
+
+  // B5 UI Props (max 10 materials)
+  "quest-marker": { category: "ui", size: 0.35, sizeType: "height", maxTris: 300, requiredNodes: ["marker_Gem"] },
+  "delivery-parcel": { category: "ui", size: 0.28, sizeType: "width", maxTris: 500 },
+  "material-basket": { category: "ui", size: 0.30, sizeType: "width", maxTris: 500 },
+
+  // B4 Characters (NPCs) (max 8000 tris, max 10 materials)
+  "mira-florist": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "nell-potter": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "bea-houseboat": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "pip-photo": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "joon-barista": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "sanne-stall": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "truus-tulips": { category: "npcs", size: 1.52, sizeType: "height", maxTris: 8000 },
+  "lotte-junior": { category: "npcs", size: 1.14, sizeType: "height", maxTris: 8000 }
 };
 
 const NPC_REQUIRED_NODES = [
@@ -180,7 +195,7 @@ async function validateFile(filePath, id, spec) {
   }
 
   // 7. NPCs contain every required node name from B4
-  if (spec && spec.category === "npc") {
+  if (spec && (spec.category === "npc" || spec.category === "npcs")) {
     for (const req of NPC_REQUIRED_NODES) {
       const fullReq = `${id}_${req}`;
       if (!nodeNames.includes(fullReq)) {

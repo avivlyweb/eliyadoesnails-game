@@ -310,6 +310,129 @@ class GameConvexService {
     }
   }
 
+  public async getQuestBoard(npcKey?: string) {
+    if (!this.isOnline) {
+      const allQuests = this.currentState?.quests || [];
+      const filtered = allQuests.filter(
+        (q) =>
+          (q.status === "offered" || q.status === "active" || q.status === "crafted") &&
+          (!npcKey || q.npcKey === npcKey)
+      );
+      const templates = this.content?.questTemplates || [];
+      const looks = this.content?.looks || [];
+      return filtered.map((q) => {
+        const template = templates.find((t: any) => t.key === q.templateKey);
+        const look = template ? looks.find((l: any) => l.key === template.lookKey) : null;
+        return { ...q, template, look };
+      });
+    }
+    try {
+      return await convex.query(api.quests.board, {
+        guestToken: this.guestToken,
+        npcKey,
+      });
+    } catch (err) {
+      console.warn("[Convex] getQuestBoard error:", err);
+      return [];
+    }
+  }
+
+  public async acceptQuest(questId: string) {
+    if (!this.isOnline) {
+      if (this.currentState) {
+        const q = this.currentState.quests.find((item) => item._id === questId);
+        if (q) {
+          q.status = "active";
+          q.acceptedAt = Date.now();
+          this.notifyListeners();
+        }
+      }
+      return { success: true, questId };
+    }
+    return await convex.mutation(api.quests.accept, {
+      guestToken: this.guestToken,
+      questId: questId as any,
+    });
+  }
+
+  public async deliverQuest(questId: string) {
+    if (!this.isOnline) {
+      if (this.currentState) {
+        const q = this.currentState.quests.find((item) => item._id === questId);
+        if (q) {
+          q.status = "delivered";
+          this.currentState.player.gloss += 50;
+          this.currentState.player.xp += 100;
+          this.notifyListeners();
+        }
+      }
+      return {
+        success: true,
+        questId,
+        rewards: {
+          gloss: 50,
+          xp: 100,
+          friendship: 15,
+        },
+        glossEarned: 50,
+        xpEarned: 100,
+        friendshipEarned: 15,
+        newLevel: this.currentState?.player.level ?? 1,
+        newGloss: this.currentState?.player.gloss ?? 100,
+        newXp: this.currentState?.player.xp ?? 100,
+        levelUps: [],
+        newUnlocks: [],
+      };
+    }
+    return await convex.mutation(api.quests.deliver, {
+      guestToken: this.guestToken,
+      questId: questId as any,
+    });
+  }
+
+  public async startStudioDesign(questId: string) {
+    if (!this.isOnline) {
+      return {
+        success: true,
+        designId: "local-design-" + Date.now(),
+        look: null,
+      };
+    }
+    return await convex.mutation(api.studio.startDesign, {
+      guestToken: this.guestToken,
+      questId: questId as any,
+    });
+  }
+
+  public async finishStudioDesign(
+    questId: string,
+    designId: string,
+    scores: { base: number; art: number; finish: number }
+  ) {
+    if (!this.isOnline) {
+      if (this.currentState) {
+        const q = this.currentState.quests.find((item) => item._id === questId);
+        if (q) {
+          q.status = "crafted";
+          q.stars = 3;
+          this.notifyListeners();
+        }
+      }
+      return {
+        success: true,
+        designId,
+        stars: 3,
+        scores,
+      };
+    }
+    return await convex.mutation(api.studio.finishDesign, {
+      guestToken: this.guestToken,
+      questId: questId as any,
+      designId: designId as any,
+      scores,
+    });
+  }
+
   public isNight(): boolean {
     const hours = Math.floor(this.currentGameMinutes / 60) % 24;
     return hours >= 20 || hours < 6;

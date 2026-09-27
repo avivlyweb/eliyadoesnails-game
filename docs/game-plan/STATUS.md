@@ -2,14 +2,15 @@
 
 _Last updated by: Lead · 2026-09-27_
 
-## Current step: **2 (Completed)** → Next: **3 (Quests v2)**
+## Current step: **3 (Completed)** → Next: **4 (Couture Nail Station & Photo Mode)**
 
 **Lead's goals for this step**
 - [x] Backend: Convex set up, schema + seed, bootstrap/state/savePosition, Vercel deploy keys (Step 0)
 - [x] Blender: batch 1 (B1 filler ×16, B3 pickups ×8) + `validate.mjs` + manifest (Step 1)
 - [x] Game: Step 1 planetoid densification, 5 districts, paths, instanced filler, camera (Step 1)
 - [x] Phase 2: Material pickups in world, server-side gathering (`gather.ts`), charm crafting (`craft.ts`), and Atelier Basket UI (`[I]`) (Step 2)
-- [ ] Phase 3: Quests v2: data-driven requests from 8 clients (4 existing + 4 new NPC models)
+- [x] Phase 3: Quests v2: data-driven requests from 8 clients, 8 NPC character GLB models + B5 UI props (quest diamond marker, delivery box, wicker basket), live accept/deliver/rewards loop, level-ups and district unlocks (Step 3)
+- [ ] Phase 4: Full 3D Nail Studio minigame Polish & Life4Cuts Photobooth export
 - [ ] Website: agree look slugs, answer the €18 vs €26 question (resolved: €18 is Base+Art, €26 is Base+Art+3D)
 
 ## Requests (anyone can add; the addressee removes when done)
@@ -22,6 +23,7 @@ _Last updated by: Lead · 2026-09-27_
 
 - 2026-09-27: Single player for now. Convex for saves + content + validation. Plan in `docs/game-plan/`.
 - 2026-09-27: Phase 2 completed: 8 material pickup types spawn across 5 districts, server validated harvest with respawn timers, instant charm crafting, and full Atelier Basket inventory UI.
+- 2026-09-27: Phase 3 completed: 8 NPC 3D characters placed in districts with animated bobbing quest diamond markers, full Convex quest board, distance-checked delivery, XP/Gloss/Friendship progression, and multi-level-up unlocks.
 
 ---
 
@@ -61,8 +63,8 @@ _Last updated by: Lead · 2026-09-27_
   - Pickups: [sakura-petal-bundle](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/sakura-petal-bundle.png), [daisy-sprig](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/daisy-sprig.png), [freshwater-pearl-oyster](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/freshwater-pearl-oyster.png), [chrome-droplet](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/chrome-droplet.png), [syrup-glass-vial](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/syrup-glass-vial.png), [aurora-crystal-shard](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/aurora-crystal-shard.png), [silk-ribbon-spool](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/silk-ribbon-spool.png), [gold-leaf-flake](file:///Users/avivly/Downloads/avivly/clients/Fysio%20utrecht%20oost/eliyadoesnails-game-blender/blender/previews/gold-leaf-flake.png)
 
 ## Game
-- **Branch:** `main` (merged `game/step-1` & Phase 2)
-- **Status:** Done (Step 0 game side + Step 1 + Step 2)
+- **Branch:** `main` (merged `game/step-1`, Phase 2 & Phase 3)
+- **Status:** Done (Step 0 + Step 1 + Step 2 + Step 3)
 - **Done:**
   - Connected Convex via vanilla browser `ConvexClient` (`src/net/convex.ts`)
   - Initialized `content.getAll` with offline fallback to `public/content-fallback.json`
@@ -81,9 +83,12 @@ _Last updated by: Lead · 2026-09-27_
   - Created Floating Material Harvest Toast (`#harvest-toast`) with Petal Rose branding and Korean nomenclature
   - Created Atelier Basket & Supplies overlay modal (`#inventory-modal-overlay` / `[I]`) with 4 tabs (Materials, Charms, Tools, Shades)
   - Built in-basket instant Charm Crafting with live ingredient checks and toast confirmations
-- **Next:** Step 3: Quests v2 (data-driven NPC requests, request board, deadlines)
-- **Blocked:** none
-- **Preview:** https://eliyadoesnails-game.vercel.app
+  - Integrated 8 NPC 3D Characters into the world (`mira-florist`, `nell-potter`, `pip-photo`, `joon-barista`, `sanne-stall`, `truus-tulips`, `lotte-junior`, `bea-houseboat`) with subtle idle breathing animations
+  - Created and placed floating faceted diamond Quest Markers (`quest-marker.glb`) above NPCs with continuous rotation and sinusoidal bobbing
+  - Wired live Quests v2 loop: `getQuestBoard`, `acceptQuest`, `startStudioDesign`, `finishStudioDesign`, and `deliverQuest`
+  - Implemented client dialogue interactions supporting Commission Offering (`🌸 Accept Commission`), Couture Box Delivery (`🎁 Deliver Couture Box`), and Friendship levels
+  - Connected reward calculations with star ratings, in-game deadlines, Gloss, XP, and multi-level-up unlocks (Level 2 $\rightarrow$ Market Square, Level 3 $\rightarrow$ Tulip Meadow, etc.)
+- **Next:** Phase 4: Full 3D Nail Studio minigame Polish & Life4Cuts Photobooth export
 - **Blocked:** none
 - **Preview:** https://eliyadoesnails-game.vercel.app
 

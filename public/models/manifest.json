@@ -1,5 +1,38 @@
 [
   {
+    "id": "clover-patch",
+    "path": "/models/filler/clover-patch.glb",
+    "category": "filler",
+    "tris": 144,
+    "bytes": 13108,
+    "instanced": true,
+    "nodes": [
+      "clover-patch"
+    ]
+  },
+  {
+    "id": "cobble-edge-stone",
+    "path": "/models/filler/cobble-edge-stone.glb",
+    "category": "filler",
+    "tris": 44,
+    "bytes": 4592,
+    "instanced": true,
+    "nodes": [
+      "cobble-edge-stone"
+    ]
+  },
+  {
+    "id": "fallen-petals",
+    "path": "/models/filler/fallen-petals.glb",
+    "category": "filler",
+    "tris": 96,
+    "bytes": 8972,
+    "instanced": true,
+    "nodes": [
+      "fallen-petals"
+    ]
+  },
+  {
     "id": "grass-tuft-a",
     "path": "/models/filler/grass-tuft-a.glb",
     "category": "filler",
@@ -33,6 +66,72 @@
     ]
   },
   {
+    "id": "lily-pad-set",
+    "path": "/models/filler/lily-pad-set.glb",
+    "category": "filler",
+    "tris": 160,
+    "bytes": 11764,
+    "instanced": true,
+    "nodes": [
+      "lily-pad-set"
+    ]
+  },
+  {
+    "id": "mushroom-pair",
+    "path": "/models/filler/mushroom-pair.glb",
+    "category": "filler",
+    "tris": 80,
+    "bytes": 6300,
+    "instanced": true,
+    "nodes": [
+      "mushroom-pair"
+    ]
+  },
+  {
+    "id": "pebble-set",
+    "path": "/models/filler/pebble-set.glb",
+    "category": "filler",
+    "tris": 60,
+    "bytes": 4716,
+    "instanced": true,
+    "nodes": [
+      "pebble-set"
+    ]
+  },
+  {
+    "id": "reed-clump",
+    "path": "/models/filler/reed-clump.glb",
+    "category": "filler",
+    "tris": 156,
+    "bytes": 12772,
+    "instanced": true,
+    "nodes": [
+      "reed-clump"
+    ]
+  },
+  {
+    "id": "round-bush-large",
+    "path": "/models/filler/round-bush-large.glb",
+    "category": "filler",
+    "tris": 80,
+    "bytes": 5496,
+    "instanced": true,
+    "nodes": [
+      "round-bush-large"
+    ]
+  },
+  {
+    "id": "round-bush-small",
+    "path": "/models/filler/round-bush-small.glb",
+    "category": "filler",
+    "tris": 80,
+    "bytes": 5504,
+    "instanced": true,
+    "nodes": [
+      "round-bush-small"
+    ]
+  },
+  {
     "id": "tulip-cluster-pink",
     "path": "/models/filler/tulip-cluster-pink.glb",
     "category": "filler",
@@ -55,17 +154,6 @@
     ]
   },
   {
-    "id": "tulip-cluster-yellow",
-    "path": "/models/filler/tulip-cluster-yellow.glb",
-    "category": "filler",
-    "tris": 324,
-    "bytes": 15024,
-    "instanced": true,
-    "nodes": [
-      "tulip-cluster-yellow"
-    ]
-  },
-  {
     "id": "tulip-cluster-white",
     "path": "/models/filler/tulip-cluster-white.glb",
     "category": "filler",
@@ -77,119 +165,48 @@
     ]
   },
   {
-    "id": "pebble-set",
-    "path": "/models/filler/pebble-set.glb",
+    "id": "tulip-cluster-yellow",
+    "path": "/models/filler/tulip-cluster-yellow.glb",
     "category": "filler",
-    "tris": 60,
-    "bytes": 4716,
+    "tris": 324,
+    "bytes": 15024,
     "instanced": true,
     "nodes": [
-      "pebble-set"
+      "tulip-cluster-yellow"
     ]
   },
   {
-    "id": "round-bush-small",
-    "path": "/models/filler/round-bush-small.glb",
-    "category": "filler",
-    "tris": 80,
-    "bytes": 5504,
-    "instanced": true,
-    "nodes": [
-      "round-bush-small"
-    ]
-  },
-  {
-    "id": "round-bush-large",
-    "path": "/models/filler/round-bush-large.glb",
-    "category": "filler",
-    "tris": 80,
-    "bytes": 5496,
-    "instanced": true,
-    "nodes": [
-      "round-bush-large"
-    ]
-  },
-  {
-    "id": "clover-patch",
-    "path": "/models/filler/clover-patch.glb",
-    "category": "filler",
-    "tris": 144,
-    "bytes": 13108,
-    "instanced": true,
-    "nodes": [
-      "clover-patch"
-    ]
-  },
-  {
-    "id": "reed-clump",
-    "path": "/models/filler/reed-clump.glb",
-    "category": "filler",
-    "tris": 156,
-    "bytes": 12772,
-    "instanced": true,
-    "nodes": [
-      "reed-clump"
-    ]
-  },
-  {
-    "id": "lily-pad-set",
-    "path": "/models/filler/lily-pad-set.glb",
-    "category": "filler",
-    "tris": 160,
-    "bytes": 11764,
-    "instanced": true,
-    "nodes": [
-      "lily-pad-set"
-    ]
-  },
-  {
-    "id": "fallen-petals",
-    "path": "/models/filler/fallen-petals.glb",
-    "category": "filler",
-    "tris": 96,
-    "bytes": 8972,
-    "instanced": true,
-    "nodes": [
-      "fallen-petals"
-    ]
-  },
-  {
-    "id": "cobble-edge-stone",
-    "path": "/models/filler/cobble-edge-stone.glb",
-    "category": "filler",
-    "tris": 44,
-    "bytes": 4592,
-    "instanced": true,
-    "nodes": [
-      "cobble-edge-stone"
-    ]
-  },
-  {
-    "id": "mushroom-pair",
-    "path": "/models/filler/mushroom-pair.glb",
-    "category": "filler",
-    "tris": 80,
-    "bytes": 6300,
-    "instanced": true,
-    "nodes": [
-      "mushroom-pair"
-    ]
-  },
-  {
-    "id": "sakura-petal-bundle",
-    "path": "/models/pickups/sakura-petal-bundle.glb",
+    "id": "aurora-crystal-shard",
+    "path": "/models/pickups/aurora-crystal-shard.glb",
     "category": "pickup",
-    "tris": 1368,
-    "bytes": 47280,
+    "tris": 216,
+    "bytes": 20148,
     "instanced": false,
     "nodes": [
-      "sakura_Glow",
-      "sakura_Petal_0",
-      "sakura_Petal_1",
-      "sakura_Petal_2",
-      "sakura_Petal_3",
-      "sakura_Petal_4",
-      "sakura_Tie"
+      "crystal_BaseCluster",
+      "crystal_Glow",
+      "crystal_Shard1_Body",
+      "crystal_Shard1_Tip",
+      "crystal_Shard2_Body",
+      "crystal_Shard2_Tip",
+      "crystal_Shard3_Body",
+      "crystal_Shard3_Tip",
+      "crystal_Root"
+    ]
+  },
+  {
+    "id": "chrome-droplet",
+    "path": "/models/pickups/chrome-droplet.glb",
+    "category": "pickup",
+    "tris": 564,
+    "bytes": 22352,
+    "instanced": false,
+    "nodes": [
+      "chrome_DropBase",
+      "chrome_DropTip",
+      "chrome_Glow",
+      "chrome_SplashRing",
+      "chrome_Root"
     ]
   },
   {
@@ -209,7 +226,8 @@
       "daisy_FlowerTop_Center",
       "daisy_FlowerTop_Petals",
       "daisy_Glow",
-      "daisy_MainStem"
+      "daisy_MainStem",
+      "daisy_Root"
     ]
   },
   {
@@ -223,55 +241,44 @@
       "pearl_Glow",
       "pearl_Pearl",
       "pearl_ShellBottom",
-      "pearl_ShellTop"
+      "pearl_ShellTop",
+      "pearl_Root"
     ]
   },
   {
-    "id": "chrome-droplet",
-    "path": "/models/pickups/chrome-droplet.glb",
+    "id": "gold-leaf-flake",
+    "path": "/models/pickups/gold-leaf-flake.glb",
     "category": "pickup",
-    "tris": 564,
-    "bytes": 22352,
+    "tris": 724,
+    "bytes": 56448,
     "instanced": false,
     "nodes": [
-      "chrome_DropBase",
-      "chrome_DropTip",
-      "chrome_Glow",
-      "chrome_SplashRing"
+      "gold_Flake1_a",
+      "gold_Flake1_b",
+      "gold_Flake2_a",
+      "gold_Flake2_b",
+      "gold_Flake3_a",
+      "gold_Flake3_b",
+      "gold_Glow",
+      "gold_Root"
     ]
   },
   {
-    "id": "syrup-glass-vial",
-    "path": "/models/pickups/syrup-glass-vial.glb",
+    "id": "sakura-petal-bundle",
+    "path": "/models/pickups/sakura-petal-bundle.glb",
     "category": "pickup",
-    "tris": 420,
-    "bytes": 26372,
+    "tris": 1368,
+    "bytes": 47280,
     "instanced": false,
     "nodes": [
-      "vial_Cork",
-      "vial_GlassBody",
-      "vial_GlassNeck",
-      "vial_GlassRim",
-      "vial_Glow",
-      "vial_Liquid"
-    ]
-  },
-  {
-    "id": "aurora-crystal-shard",
-    "path": "/models/pickups/aurora-crystal-shard.glb",
-    "category": "pickup",
-    "tris": 216,
-    "bytes": 20148,
-    "instanced": false,
-    "nodes": [
-      "crystal_BaseCluster",
-      "crystal_Glow",
-      "crystal_Shard1_Body",
-      "crystal_Shard1_Tip",
-      "crystal_Shard2_Body",
-      "crystal_Shard2_Tip",
-      "crystal_Shard3_Body",
-      "crystal_Shard3_Tip"
+      "sakura_Glow",
+      "sakura_Petal_0",
+      "sakura_Petal_1",
+      "sakura_Petal_2",
+      "sakura_Petal_3",
+      "sakura_Petal_4",
+      "sakura_Tie",
+      "sakura_Root"
     ]
   },
   {
@@ -290,24 +297,315 @@
       "spool_Tail_0",
       "spool_Tail_1",
       "spool_Tail_2",
-      "spool_Tail_3"
+      "spool_Tail_3",
+      "spool_Root"
     ]
   },
   {
-    "id": "gold-leaf-flake",
-    "path": "/models/pickups/gold-leaf-flake.glb",
+    "id": "syrup-glass-vial",
+    "path": "/models/pickups/syrup-glass-vial.glb",
     "category": "pickup",
-    "tris": 724,
-    "bytes": 56448,
+    "tris": 420,
+    "bytes": 26372,
     "instanced": false,
     "nodes": [
-      "gold_Flake1_a",
-      "gold_Flake1_b",
-      "gold_Flake2_a",
-      "gold_Flake2_b",
-      "gold_Flake3_a",
-      "gold_Flake3_b",
-      "gold_Glow"
+      "vial_Cork",
+      "vial_GlassBody",
+      "vial_GlassNeck",
+      "vial_GlassRim",
+      "vial_Glow",
+      "vial_Liquid",
+      "vial_Root"
+    ]
+  },
+  {
+    "id": "delivery-parcel",
+    "path": "/models/ui/delivery-parcel.glb",
+    "category": "ui",
+    "tris": 392,
+    "bytes": 21480,
+    "instanced": false,
+    "nodes": [
+      "parcel_Box",
+      "parcel_Knot",
+      "parcel_LoopL",
+      "parcel_LoopR",
+      "parcel_RibbonX",
+      "parcel_RibbonY",
+      "parcel_Root"
+    ]
+  },
+  {
+    "id": "material-basket",
+    "path": "/models/ui/material-basket.glb",
+    "category": "ui",
+    "tris": 332,
+    "bytes": 12528,
+    "instanced": false,
+    "nodes": [
+      "basket_Body",
+      "basket_Handle",
+      "basket_Rim",
+      "basket_Root"
+    ]
+  },
+  {
+    "id": "quest-marker",
+    "path": "/models/ui/quest-marker.glb",
+    "category": "ui",
+    "tris": 28,
+    "bytes": 4332,
+    "instanced": false,
+    "nodes": [
+      "marker_Gem"
+    ]
+  },
+  {
+    "id": "bea-houseboat",
+    "path": "/models/npcs/bea-houseboat.glb",
+    "category": "npcs",
+    "tris": 3164,
+    "bytes": 132568,
+    "instanced": false,
+    "nodes": [
+      "bea-houseboat_TraySocket",
+      "bea-houseboat_Body",
+      "bea-houseboat_Eye_L",
+      "bea-houseboat_Eye_R",
+      "bea-houseboat_HatBrim",
+      "bea-houseboat_HatCrown",
+      "bea-houseboat_Head",
+      "bea-houseboat_Hips",
+      "bea-houseboat_LeftHand",
+      "bea-houseboat_LeftHandSocket",
+      "bea-houseboat_LeftArm",
+      "bea-houseboat_LeftLeg",
+      "bea-houseboat_LeftShoe",
+      "bea-houseboat_Neck",
+      "bea-houseboat_RightHand",
+      "bea-houseboat_RightHandSocket",
+      "bea-houseboat_RightArm",
+      "bea-houseboat_RightLeg",
+      "bea-houseboat_RightShoe",
+      "bea-houseboat_Root"
+    ]
+  },
+  {
+    "id": "joon-barista",
+    "path": "/models/npcs/joon-barista.glb",
+    "category": "npcs",
+    "tris": 3408,
+    "bytes": 135936,
+    "instanced": false,
+    "nodes": [
+      "joon-barista_Apron",
+      "joon-barista_TraySocket",
+      "joon-barista_Body",
+      "joon-barista_Eye_L",
+      "joon-barista_Eye_R",
+      "joon-barista_GlassL",
+      "joon-barista_GlassR",
+      "joon-barista_Hair",
+      "joon-barista_Head",
+      "joon-barista_Hips",
+      "joon-barista_LeftHand",
+      "joon-barista_LeftHandSocket",
+      "joon-barista_LeftArm",
+      "joon-barista_LeftLeg",
+      "joon-barista_LeftShoe",
+      "joon-barista_Neck",
+      "joon-barista_RightHand",
+      "joon-barista_RightHandSocket",
+      "joon-barista_RightArm",
+      "joon-barista_RightLeg",
+      "joon-barista_RightShoe",
+      "joon-barista_Root"
+    ]
+  },
+  {
+    "id": "lotte-junior",
+    "path": "/models/npcs/lotte-junior.glb",
+    "category": "npcs",
+    "tris": 3304,
+    "bytes": 134708,
+    "instanced": false,
+    "nodes": [
+      "lotte-junior_Backpack",
+      "lotte-junior_TraySocket",
+      "lotte-junior_Body",
+      "lotte-junior_Eye_L",
+      "lotte-junior_Eye_R",
+      "lotte-junior_Hair",
+      "lotte-junior_PigtailL",
+      "lotte-junior_PigtailR",
+      "lotte-junior_Head",
+      "lotte-junior_Hips",
+      "lotte-junior_LeftHand",
+      "lotte-junior_LeftHandSocket",
+      "lotte-junior_LeftArm",
+      "lotte-junior_LeftLeg",
+      "lotte-junior_LeftShoe",
+      "lotte-junior_Neck",
+      "lotte-junior_RightHand",
+      "lotte-junior_RightHandSocket",
+      "lotte-junior_RightArm",
+      "lotte-junior_RightLeg",
+      "lotte-junior_RightShoe",
+      "lotte-junior_Root"
+    ]
+  },
+  {
+    "id": "mira-florist",
+    "path": "/models/npcs/mira-florist.glb",
+    "category": "npcs",
+    "tris": 5168,
+    "bytes": 167924,
+    "instanced": false,
+    "nodes": [
+      "mira-florist_Apron",
+      "mira-florist_TraySocket",
+      "mira-florist_Body",
+      "mira-florist_Eye_L",
+      "mira-florist_Eye_R",
+      "mira-florist_Flower",
+      "mira-florist_HairBun",
+      "mira-florist_HairTop",
+      "mira-florist_Head",
+      "mira-florist_Hips",
+      "mira-florist_LeftHand",
+      "mira-florist_LeftHandSocket",
+      "mira-florist_LeftArm",
+      "mira-florist_LeftLeg",
+      "mira-florist_LeftShoe",
+      "mira-florist_Neck",
+      "mira-florist_RightHand",
+      "mira-florist_RightHandSocket",
+      "mira-florist_RightArm",
+      "mira-florist_RightLeg",
+      "mira-florist_RightShoe",
+      "mira-florist_Root"
+    ]
+  },
+  {
+    "id": "nell-potter",
+    "path": "/models/npcs/nell-potter.glb",
+    "category": "npcs",
+    "tris": 3248,
+    "bytes": 136060,
+    "instanced": false,
+    "nodes": [
+      "nell-potter_Apron",
+      "nell-potter_TraySocket",
+      "nell-potter_Body",
+      "nell-potter_Eye_L",
+      "nell-potter_Eye_R",
+      "nell-potter_Hair",
+      "nell-potter_Head",
+      "nell-potter_Hips",
+      "nell-potter_LeftHand",
+      "nell-potter_LeftHandSocket",
+      "nell-potter_LeftArm",
+      "nell-potter_LeftLeg",
+      "nell-potter_LeftShoe",
+      "nell-potter_Neck",
+      "nell-potter_RightHand",
+      "nell-potter_RightHandSocket",
+      "nell-potter_RightArm",
+      "nell-potter_RightLeg",
+      "nell-potter_RightShoe",
+      "nell-potter_Root"
+    ]
+  },
+  {
+    "id": "pip-photo",
+    "path": "/models/npcs/pip-photo.glb",
+    "category": "npcs",
+    "tris": 3276,
+    "bytes": 132948,
+    "instanced": false,
+    "nodes": [
+      "pip-photo_TraySocket",
+      "pip-photo_Body",
+      "pip-photo_Eye_L",
+      "pip-photo_Eye_R",
+      "pip-photo_Hair",
+      "pip-photo_Head",
+      "pip-photo_Hips",
+      "pip-photo_LeftHand",
+      "pip-photo_LeftHandSocket",
+      "pip-photo_LeftArm",
+      "pip-photo_LeftLeg",
+      "pip-photo_LeftShoe",
+      "pip-photo_Neck",
+      "pip-photo_Lens",
+      "pip-photo_Camera",
+      "pip-photo_RightHand",
+      "pip-photo_RightHandSocket",
+      "pip-photo_RightArm",
+      "pip-photo_RightLeg",
+      "pip-photo_RightShoe",
+      "pip-photo_Root"
+    ]
+  },
+  {
+    "id": "sanne-stall",
+    "path": "/models/npcs/sanne-stall.glb",
+    "category": "npcs",
+    "tris": 4208,
+    "bytes": 149648,
+    "instanced": false,
+    "nodes": [
+      "sanne-stall_Apron",
+      "sanne-stall_TraySocket",
+      "sanne-stall_Body",
+      "sanne-stall_Eye_L",
+      "sanne-stall_Eye_R",
+      "sanne-stall_Scarf",
+      "sanne-stall_ScarfKnot",
+      "sanne-stall_Head",
+      "sanne-stall_Hips",
+      "sanne-stall_LeftHand",
+      "sanne-stall_LeftHandSocket",
+      "sanne-stall_LeftArm",
+      "sanne-stall_LeftLeg",
+      "sanne-stall_LeftShoe",
+      "sanne-stall_Neck",
+      "sanne-stall_RightHand",
+      "sanne-stall_RightHandSocket",
+      "sanne-stall_RightArm",
+      "sanne-stall_RightLeg",
+      "sanne-stall_RightShoe",
+      "sanne-stall_Root"
+    ]
+  },
+  {
+    "id": "truus-tulips",
+    "path": "/models/npcs/truus-tulips.glb",
+    "category": "npcs",
+    "tris": 4100,
+    "bytes": 140652,
+    "instanced": false,
+    "nodes": [
+      "truus-tulips_TraySocket",
+      "truus-tulips_Body",
+      "truus-tulips_Eye_L",
+      "truus-tulips_Eye_R",
+      "truus-tulips_HairBun",
+      "truus-tulips_HairTop",
+      "truus-tulips_Head",
+      "truus-tulips_Hips",
+      "truus-tulips_LeftHand",
+      "truus-tulips_LeftHandSocket",
+      "truus-tulips_LeftArm",
+      "truus-tulips_LeftLeg",
+      "truus-tulips_LeftShoe",
+      "truus-tulips_Neck",
+      "truus-tulips_RightHand",
+      "truus-tulips_RightHandSocket",
+      "truus-tulips_RightArm",
+      "truus-tulips_RightLeg",
+      "truus-tulips_RightShoe",
+      "truus-tulips_Root"
     ]
   }
 ]

@@ -17,7 +17,7 @@
     "kind": "story",
     "lookKey": "apricot_pearl",
     "minLevel": 1,
-    "minFriendship": 1,
+    "minFriendship": 0,
     "rewardGloss": 60,
     "rewardXp": 80,
     "rewardFriendship": 15,

@@ -13,7 +13,9 @@ import type * as craft from "../craft.js";
 import type * as gather from "../gather.js";
 import type * as lib_player from "../lib/player.js";
 import type * as players from "../players.js";
+import type * as quests from "../quests.js";
 import type * as seed from "../seed.js";
+import type * as studio from "../studio.js";
 
 import type {
   ApiFromModules,
@@ -27,7 +29,9 @@ declare const fullApi: ApiFromModules<{
   gather: typeof gather;
   "lib/player": typeof lib_player;
   players: typeof players;
+  quests: typeof quests;
   seed: typeof seed;
+  studio: typeof studio;
 }>;
 
 /**

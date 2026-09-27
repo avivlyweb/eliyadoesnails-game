@@ -1549,6 +1549,11 @@
         color: var(--text-primary);
       }
 
+      .ticket-badge.offered {
+        background: #fdf5e6;
+        color: #b78103;
+      }
+
       .ticket-badge.packed {
         background: #fff0f1;
         color: var(--accent-petal);
@@ -2149,7 +2154,10 @@
 
           let statusText = 'Needs Set';
           let badgeClass = '';
-          if (ticket.status === 'packed') {
+          if (ticket.status === 'offered') {
+            statusText = 'Available ✦';
+            badgeClass = 'offered';
+          } else if (ticket.status === 'packed') {
             statusText = 'Packed 🎁';
             badgeClass = 'packed';
           } else if (ticket.status === 'delivered') {
