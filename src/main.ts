@@ -10,6 +10,50 @@ import { AtelierCompanion } from "./engine/companion";
 import { gameConvex, PlayerStatePayload } from "./net/convex";
 import { DISTRICTS, sphericalToNormal } from "./engine/planet-layout";
 
+const MATERIAL_ICONS: Record<string, { icon: string; name: string; nameKo: string; district: string; price: number; desc: string }> = {
+  sakura_petal: { icon: "🌸", name: "Sakura Petal", nameKo: "벚꽃잎", district: "Canal & Meadow", price: 3, desc: "Delicate spring cherry blossom petals harvested from Amsterdam canal trees." },
+  freshwater_pearl: { icon: "🦪", name: "Freshwater Pearl", nameKo: "담수진주", district: "Canal", price: 5, desc: "Luminous organic pearls found along historic canal bridges." },
+  silk_ribbon: { icon: "🎀", name: "Silk Ribbon", nameKo: "실크 리본", district: "Market", price: 4, desc: "Fine blush-tinted coquette ribbons from the vintage haberdashery." },
+  syrup_base: { icon: "🍯", name: "Syrup Base", nameKo: "시럽 베이스", district: "Market", price: 4, desc: "Clear high-viscosity syrup lacquer formulated for glass jelly layering." },
+  daisy_sprig: { icon: "🌼", name: "Daisy Sprig", nameKo: "데이지", district: "Meadow", price: 3, desc: "Fresh petite wild daisies gathered from the sunny tulip pastures." },
+  chrome_drop: { icon: "💧", name: "Chrome Drop", nameKo: "크롬 방울", district: "Windmill", price: 8, desc: "Molten liquid mirror chrome droplets condensed near the windmill." },
+  aurora_crystal: { icon: "💎", name: "Aurora Crystal", nameKo: "오로라 크리스탈", district: "Windmill & Harbour", price: 12, desc: "Prismatic crystal shards refracting holographic northern lights." },
+  gold_leaf: { icon: "✨", name: "Gold Leaf", nameKo: "금박", district: "Harbour", price: 12, desc: "Micro-thin 24k gold leaf flakes collected from the harbour salon boat." },
+};
+
+const CHARM_RECIPES: Record<string, { name: string; nameKo: string; icon: string; level: number; recipe: Array<{ key: string; name: string; qty: number }>; desc: string }> = {
+  ribbon_bow: { name: "Ribbon Bow", nameKo: "리본 보우 파츠", icon: "🎀", level: 1, recipe: [{ key: "silk_ribbon", name: "Silk Ribbon", qty: 2 }, { key: "sakura_petal", name: "Sakura Petal", qty: 1 }], desc: "Hand-sculpted coquette ribbon bow charm." },
+  baroque_pearl: { name: "Baroque Pearl", nameKo: "바로크 진주 파츠", icon: "🦪", level: 1, recipe: [{ key: "freshwater_pearl", name: "Freshwater Pearl", qty: 3 }], desc: "Organic irregular nacre pearl cluster." },
+  molten_chrome_drops: { name: "Molten Chrome Drops", nameKo: "몰튼 크롬 드롭", icon: "💧", level: 5, recipe: [{ key: "chrome_drop", name: "Chrome Drop", qty: 3 }, { key: "syrup_base", name: "Syrup Base", qty: 1 }], desc: "Liquid metallic drops with mirror reflections." },
+  cyber_heart: { name: "Cyber Heart", nameKo: "사이버 하트 파츠", icon: "🩶", level: 6, recipe: [{ key: "chrome_drop", name: "Chrome Drop", qty: 2 }, { key: "silk_ribbon", name: "Silk Ribbon", qty: 1 }], desc: "Futuristic barbed-wire chrome heart." },
+  aurora_teardrop: { name: "Aurora Teardrop", nameKo: "오로라 티어드롭", icon: "💎", level: 6, recipe: [{ key: "aurora_crystal", name: "Aurora Crystal", qty: 2 }, { key: "freshwater_pearl", name: "Freshwater Pearl", qty: 1 }], desc: "Faceted iridescent teardrop jewel." },
+  y2k_stars: { name: "Y2K Stars", nameKo: "Y2K 사이버 스타", icon: "⭐", level: 8, recipe: [{ key: "gold_leaf", name: "Gold Leaf", qty: 1 }, { key: "daisy_sprig", name: "Daisy Sprig", qty: 2 }, { key: "syrup_base", name: "Syrup Base", qty: 1 }], desc: "Prismatic retro star cluster with golden accents." },
+  saturn_orbital: { name: "Saturn Orbital", nameKo: "토성 궤도 참", icon: "🪐", level: 8, recipe: [{ key: "aurora_crystal", name: "Aurora Crystal", qty: 1 }, { key: "gold_leaf", name: "Gold Leaf", qty: 1 }, { key: "chrome_drop", name: "Chrome Drop", qty: 1 }], desc: "Orbital ringed cosmic charm." },
+  chrome_monkey: { name: "Chrome Monkey", nameKo: "크롬 몽키 파츠", icon: "🐵", level: 10, recipe: [{ key: "chrome_drop", name: "Chrome Drop", qty: 2 }, { key: "gold_leaf", name: "Gold Leaf", qty: 2 }], desc: "Couture metallic miniature mascot charm." },
+};
+
+const TOOLS_DATA: Record<string, { name: string; nameKo: string; icon: string; level: number; effect: string; price: string }> = {
+  czech_glass_file: { name: "Czech Glass File", nameKo: "체코 글라스 파일", icon: "🪄", level: 1, effect: "Base step accuracy +10", price: "Starter Tool" },
+  micro_liner_brush: { name: "Micro Liner Brush", nameKo: "마이크로 라이너 브러쉬", icon: "🖌️", level: 1, effect: "Trace tolerance +30%", price: "Starter Tool" },
+  cuticle_serum_dropper: { name: "Cuticle Serum Dropper", nameKo: "큐티클 세럼 스포이트", icon: "🧴", level: 2, effect: "Spill penalty -50%", price: "90 Gloss" },
+  magnetic_cat_eye_wand: { name: "Magnetic Cat-Eye Wand", nameKo: "마그네틱 캣아이 자석", icon: "🧲", level: 4, effect: "Required for cat-eye prism art", price: "150 Gloss" },
+  precision_tweezers: { name: "Precision Tweezers", nameKo: "정밀 핀셋", icon: "🥢", level: 5, effect: "Required for molten chrome 3D drops", price: "180 Gloss" },
+  aura_airbrush: { name: "Aura Airbrush", nameKo: "오라 에어브러쉬", icon: "💨", level: 5, effect: "Required for constellation aura art", price: "200 Gloss" },
+  chrome_burnishing_pen: { name: "Chrome Burnishing Pen", nameKo: "크롬 버니싱 펜", icon: "🖋️", level: 6, effect: "Cure step green zone +25%", price: "160 Gloss" },
+  nail_sizing_wheel: { name: "Nail Sizing Wheel", nameKo: "사이징 휠", icon: "📐", level: 7, effect: "+15% Gloss on all deliveries", price: "300 Gloss" },
+};
+
+const SHADES_DATA: Record<string, { name: string; nameKo: string; hex: string; finish: string; level: number }> = {
+  rose_quartz: { name: "Rose Quartz Syrup", nameKo: "로즈 쿼츠 시럽", hex: "#e8b4b8", finish: "syrup", level: 1 },
+  cherry_blossom: { name: "Cherry Blossom Syrup", nameKo: "체리 블라썸 시럽", hex: "#f3c2c2", finish: "syrup", level: 1 },
+  apricot_peach: { name: "Apricot Peach Dew", nameKo: "살구 복숭아 이슬", hex: "#f5c5a3", finish: "syrup", level: 1 },
+  matcha_latte: { name: "Matcha Latte Glaze", nameKo: "말차 라떼 글레이즈", hex: "#b5c99a", finish: "syrup", level: 2 },
+  molten_sterling: { name: "Molten Sterling Chrome", nameKo: "몰튼 실버 리퀴드", hex: "#d9dce1", finish: "chrome", level: 5 },
+  lilac_prism: { name: "Lilac Prism Cat-Eye", nameKo: "라일락 오로라 캣아이", hex: "#c8b6ff", finish: "cateye", level: 4 },
+  moonlight_silver: { name: "Moonlight Silver Cat-Eye", nameKo: "문라이트 실버 캣아이", hex: "#e0e1dd", finish: "cateye", level: 6 },
+  emerald_nebula: { name: "Emerald Nebula Cat-Eye", nameKo: "에메랄드 네뷸라 캣아이", hex: "#52b788", finish: "cateye", level: 9 },
+};
+
 class EliyaCanalWorldGame {
   private renderer: THREE.WebGLRenderer;
   private scene: THREE.Scene;
@@ -23,6 +67,8 @@ class EliyaCanalWorldGame {
 
   // Delivery & Interaction State
   private pendingDeliveryTicketId: string | null = null;
+  private currentInvTab: "materials" | "charms" | "tools" | "shades" = "materials";
+  private harvestToastTimer: any = null;
 
   constructor() {
     const canvas = document.getElementById("scene") as HTMLCanvasElement;
@@ -70,8 +116,10 @@ class EliyaCanalWorldGame {
     questSystem.updateHUD();
 
     // 5. Connect to Convex Backend (or local content fallback if offline)
-    gameConvex.init().then(() => {
+    gameConvex.init().then(async () => {
       this.syncFromConvexState(gameConvex.currentState);
+      const states = await gameConvex.fetchNodeStates();
+      this.planet.syncNodeStates(states);
     });
     gameConvex.subscribe((state) => {
       this.syncFromConvexState(state);
@@ -123,6 +171,12 @@ class EliyaCanalWorldGame {
       if (e.code === "KeyE") {
         this.interactWithNearby();
       }
+      if (e.code === "KeyI") {
+        this.toggleInventory();
+      }
+      if (e.code === "Escape") {
+        this.closeAllModals();
+      }
       if (e.code === "KeyJ") {
         this.toggleOrderCard();
       }
@@ -158,6 +212,11 @@ class EliyaCanalWorldGame {
     if (!near) return;
 
     const lm = near.landmark;
+    if (lm.nodeKey) {
+      this.handleGatherNode(lm);
+      return;
+    }
+
     if (lm.id === "atelier") {
       this.openManicureStation();
       return;
@@ -184,6 +243,54 @@ class EliyaCanalWorldGame {
     } else {
       this.showDialogue(lm.name, lm.dialogue);
     }
+  }
+
+  private async handleGatherNode(lm: any) {
+    if (this.planet.depletedNodes.has(lm.nodeKey)) {
+      this.showToast(`⏳ ${lm.name} is regrowing... respawns soon!`);
+      return;
+    }
+
+    this.player.playGatherAnimation(0.8);
+    sound.playGlassFile();
+
+    await gameConvex.savePositionImmediate();
+
+    try {
+      const res = await gameConvex.harvestNode(lm.nodeKey);
+      this.planet.setNodeHarvested(lm.nodeKey, res.nextReadyAt);
+      this.showHarvestToast(res);
+      this.renderInventory();
+    } catch (err: any) {
+      if (err.message?.includes("NODE_DEPLETED")) {
+        this.showToast("⏳ Node has already been harvested!");
+      } else if (err.message?.includes("DISTRICT_LOCKED")) {
+        this.showToast("🔒 District is locked! Level up to access.");
+      } else if (err.message?.includes("TOO_FAR")) {
+        this.showToast("Step closer to gather this botanical node.");
+      } else {
+        this.showToast(`Harvest error: ${err.message || err}`);
+      }
+    }
+  }
+
+  private showHarvestToast(res: { materialKey: string; materialName: string; materialNameKo: string; qty: number }) {
+    const toast = document.getElementById("harvest-toast");
+    const iconEl = document.getElementById("harvest-toast-icon");
+    const titleEl = document.getElementById("harvest-toast-title");
+    const subEl = document.getElementById("harvest-toast-sub");
+    if (!toast || !titleEl || !subEl) return;
+
+    const meta = MATERIAL_ICONS[res.materialKey];
+    if (iconEl) iconEl.textContent = meta?.icon ?? "🌸";
+    titleEl.textContent = `+${res.qty} ${res.materialName}`;
+    subEl.textContent = `${res.materialNameKo} · Stored in Atelier Basket`;
+
+    toast.classList.add("show");
+    if (this.harvestToastTimer) clearTimeout(this.harvestToastTimer);
+    this.harvestToastTimer = setTimeout(() => {
+      toast.classList.remove("show");
+    }, 3200);
   }
 
   private showDeliveryDialogue(ticket: ClientTicket) {
@@ -365,6 +472,22 @@ class EliyaCanalWorldGame {
       });
     }
 
+    // Atelier Basket & Inventory Controls
+    const btnOpenInv = document.getElementById("btn-open-inventory");
+    if (btnOpenInv) btnOpenInv.addEventListener("click", () => this.toggleInventory());
+
+    const btnCloseInv = document.getElementById("btn-inventory-close");
+    if (btnCloseInv) btnCloseInv.addEventListener("click", () => this.toggleInventory(false));
+
+    document.querySelectorAll(".inv-tab-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        const target = (e.currentTarget as HTMLElement).getAttribute("data-tab") as any;
+        if (target) {
+          this.switchInventoryTab(target);
+        }
+      });
+    });
+
     // Completion Overlay Continue Button
     const btnComp = document.getElementById("btn-completion-continue");
     if (btnComp) {
@@ -375,6 +498,169 @@ class EliyaCanalWorldGame {
     }
   }
 
+  public toggleInventory(force?: boolean) {
+    const modal = document.getElementById("inventory-modal-overlay");
+    if (!modal) return;
+    const shouldOpen = force !== undefined ? force : modal.style.display !== "flex";
+    modal.style.display = shouldOpen ? "flex" : "none";
+    if (shouldOpen) {
+      sound.playTeaPour();
+      this.renderInventory();
+    }
+  }
+
+  public switchInventoryTab(tab: "materials" | "charms" | "tools" | "shades") {
+    this.currentInvTab = tab;
+    document.querySelectorAll(".inv-tab-btn").forEach((btn) => {
+      btn.classList.toggle("active", btn.getAttribute("data-tab") === tab);
+    });
+    this.renderInventory();
+  }
+
+  private closeAllModals() {
+    const invModal = document.getElementById("inventory-modal-overlay");
+    if (invModal) invModal.style.display = "none";
+    const studioModal = document.getElementById("eliya-modal-overlay");
+    if (studioModal) studioModal.style.display = "none";
+    const dialogBox = document.getElementById("dialogue-box");
+    if (dialogBox) dialogBox.style.display = "none";
+    const orderCard = document.getElementById("order-card");
+    if (orderCard) orderCard.style.display = "none";
+  }
+
+  private getInventoryQty(itemType: string, itemKey: string): number {
+    const inv = gameConvex.currentState?.inventory;
+    if (!inv) return 0;
+    const item = inv.find((i: any) => i.itemType === itemType && i.itemKey === itemKey);
+    return item?.qty ?? 0;
+  }
+
+  public renderInventory() {
+    const container = document.getElementById("inv-grid-container");
+    if (!container) return;
+
+    const player = gameConvex.currentState?.player;
+    const playerLevel = player?.level ?? 1;
+
+    container.innerHTML = "";
+
+    if (this.currentInvTab === "materials") {
+      for (const [key, mat] of Object.entries(MATERIAL_ICONS)) {
+        const count = this.getInventoryQty("material", key);
+        const card = document.createElement("div");
+        card.className = "inv-item-card";
+        card.innerHTML = `
+          <div class="inv-item-top">
+            <span class="inv-item-icon">${mat.icon}</span>
+            <span class="inv-item-qty">×${count}</span>
+          </div>
+          <div class="inv-item-name">${mat.name}</div>
+          <div class="inv-item-name-ko">${mat.nameKo}</div>
+          <div class="inv-item-desc">${mat.desc}</div>
+          <div style="margin-top:auto; font-size:10px; font-family:var(--font-mono); color:var(--text-muted); display:flex; justify-content:space-between; padding-top:6px; border-top:1px dashed var(--hairline);">
+            <span>${mat.district}</span>
+            <span style="color:#b8860b;">${mat.price} Gloss</span>
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    } else if (this.currentInvTab === "charms") {
+      for (const [key, charm] of Object.entries(CHARM_RECIPES)) {
+        const count = this.getInventoryQty("charm", key);
+        let canCraft = playerLevel >= charm.level;
+        let recipeHtml = "";
+
+        for (const ing of charm.recipe) {
+          const owned = this.getInventoryQty("material", ing.key);
+          const hasEnough = owned >= ing.qty;
+          if (!hasEnough) canCraft = false;
+          recipeHtml += `
+            <div style="display:flex; justify-content:space-between; color:${hasEnough ? 'var(--text-primary)' : 'var(--accent-petal)'};">
+              <span>${ing.name}</span>
+              <span style="font-family:var(--font-mono);">${owned}/${ing.qty} ${hasEnough ? '✓' : '✗'}</span>
+            </div>
+          `;
+        }
+
+        const card = document.createElement("div");
+        card.className = "inv-item-card";
+        card.innerHTML = `
+          <div class="inv-item-top">
+            <span class="inv-item-icon">${charm.icon}</span>
+            <span class="inv-item-qty">×${count}</span>
+          </div>
+          <div class="inv-item-name">${charm.name}</div>
+          <div class="inv-item-name-ko">${charm.nameKo}</div>
+          <div class="inv-item-desc">${charm.desc}</div>
+          <div class="inv-item-recipe">
+            <div style="font-weight:600; font-family:var(--font-mono); font-size:9px; letter-spacing:0.5px; text-transform:uppercase;">Recipe Requirements</div>
+            ${recipeHtml}
+          </div>
+          <button class="inv-craft-btn" ${canCraft ? "" : "disabled"} data-charm-key="${key}">
+            ${playerLevel < charm.level ? `🔒 Unlock at Lv.${charm.level}` : (canCraft ? `✦ Craft [만들기]` : `Missing Ingredients`)}
+          </button>
+        `;
+
+        const craftBtn = card.querySelector(".inv-craft-btn") as HTMLButtonElement;
+        if (craftBtn && canCraft) {
+          craftBtn.addEventListener("click", async () => {
+            craftBtn.disabled = true;
+            craftBtn.textContent = "Crafting...";
+            try {
+              await gameConvex.craftCharm(key);
+              sound.playTeaPour();
+              this.showToast(`✦ Successfully crafted bespoke ${charm.name}!`);
+              this.renderInventory();
+            } catch (err: any) {
+              this.showToast(`Crafting failed: ${err.message || err}`);
+              this.renderInventory();
+            }
+          });
+        }
+
+        container.appendChild(card);
+      }
+    } else if (this.currentInvTab === "tools") {
+      for (const [key, tool] of Object.entries(TOOLS_DATA)) {
+        const isOwned = key === "czech_glass_file" || key === "micro_liner_brush" || this.getInventoryQty("tool", key) > 0;
+        const card = document.createElement("div");
+        card.className = "inv-item-card";
+        card.innerHTML = `
+          <div class="inv-item-top">
+            <span class="inv-item-icon">${tool.icon}</span>
+            <span class="inv-item-qty" style="background:${isOwned ? '#edf7ed' : '#f5f5f5'}; border-color:${isOwned ? '#c8e6c9' : '#e0e0e0'}; color:${isOwned ? '#2e7d32' : '#757575'};">${isOwned ? "Equipped" : "Locked"}</span>
+          </div>
+          <div class="inv-item-name">${tool.name}</div>
+          <div class="inv-item-name-ko">${tool.nameKo}</div>
+          <div class="inv-item-desc" style="color:var(--text-primary); font-weight:500;">✦ ${tool.effect}</div>
+          <div style="margin-top:auto; font-size:10px; font-family:var(--font-mono); color:var(--text-muted); padding-top:6px; border-top:1px dashed var(--hairline);">
+            ${isOwned ? "Starter Atelier Kit" : `Atelier Lv.${tool.level} · ${tool.price}`}
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    } else if (this.currentInvTab === "shades") {
+      for (const [key, shade] of Object.entries(SHADES_DATA)) {
+        const isOwned = shade.level === 1 || this.getInventoryQty("shade", key) > 0;
+        const card = document.createElement("div");
+        card.className = "inv-item-card";
+        card.innerHTML = `
+          <div class="inv-item-top">
+            <div style="width:26px; height:26px; border-radius:50%; background:${shade.hex}; border:2px solid var(--surface); box-shadow:0 0 0 1px var(--hairline);"></div>
+            <span class="inv-item-qty" style="background:${isOwned ? '#edf7ed' : '#f5f5f5'}; border-color:${isOwned ? '#c8e6c9' : '#e0e0e0'}; color:${isOwned ? '#2e7d32' : '#757575'};">${isOwned ? "In Palette" : "Locked"}</span>
+          </div>
+          <div class="inv-item-name">${shade.name}</div>
+          <div class="inv-item-name-ko">${shade.nameKo}</div>
+          <div class="inv-item-desc" style="font-family:var(--font-mono); font-size:10px; text-transform:uppercase;">Finish: ${shade.finish}</div>
+          <div style="margin-top:auto; font-size:10px; font-family:var(--font-mono); color:var(--text-muted); padding-top:6px; border-top:1px dashed var(--hairline);">
+            ${isOwned ? "Starter Atelier Shade" : `Atelier Lv.${shade.level}`}
+          </div>
+        `;
+        container.appendChild(card);
+      }
+    }
+  }
+
   private syncFromConvexState(state: PlayerStatePayload | null) {
     if (!state?.player) return;
     const p = state.player;
@@ -382,6 +668,11 @@ class EliyaCanalWorldGame {
     if (levelEl) levelEl.textContent = `Lv. ${p.level}`;
     const glossEl = document.getElementById("hud-gloss");
     if (glossEl) glossEl.textContent = `${p.gloss} Gloss`;
+
+    const invModal = document.getElementById("inventory-modal-overlay");
+    if (invModal && invModal.style.display === "flex") {
+      this.renderInventory();
+    }
   }
 
   private updateHUD() {
@@ -415,7 +706,12 @@ class EliyaCanalWorldGame {
       const lm = near.landmark;
       let msg = `✦ Press [E] or Click to visit ${lm.name}`;
 
-      if (lm.id === "atelier") {
+      if (lm.nodeKey) {
+        const isDepleted = this.planet.depletedNodes.has(lm.nodeKey);
+        msg = isDepleted
+          ? `⏳ ${lm.name} is regrowing... respawns soon`
+          : `🌸 Press [E] or Click to Gather ${lm.name}`;
+      } else if (lm.id === "atelier") {
         msg = `✦ Press [E] or Click to Craft at Atelier Gloss`;
       } else if (lm.id === "photobooth") {
         msg = questSystem.isCompleted

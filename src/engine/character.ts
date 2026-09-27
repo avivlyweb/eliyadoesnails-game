@@ -31,6 +31,13 @@ export class SphericalCharacter {
   public verticalVelocity: number = 0;
   public isGrounded: boolean = true;
   public isOnPath: boolean = false;
+  public isGathering: boolean = false;
+  private gatherTimer: number = 0;
+
+  public playGatherAnimation(duration = 0.8) {
+    this.isGathering = true;
+    this.gatherTimer = duration;
+  }
 
   public walkCycle: number = 0;
   public currentSpeed: number = 0;
@@ -389,6 +396,20 @@ export class SphericalCharacter {
       // 3. WALKING & JUMPING ON FOOT
       this.model.position.set(0, 0, 0);
       this.model.rotation.set(0, 0, 0);
+
+      if (this.isGathering) {
+        this.gatherTimer -= delta;
+        if (this.gatherTimer <= 0) {
+          this.isGathering = false;
+        } else {
+          // Bend down 0.8s: torso lowers, pitches forward, arms reach toward ground
+          this.model.position.y = -0.22;
+          this.model.rotation.x = 0.45;
+          if (this.leftArm) this.leftArm.rotation.set(0.85, 0, -0.15);
+          if (this.rightArm) this.rightArm.rotation.set(0.85, 0, 0.15);
+          return;
+        }
+      }
 
       if (!this.isGrounded) {
         // Airborne jump silhouette: legs tuck back, arms balance

@@ -19,6 +19,7 @@ export interface PlanetLandmark {
   modelPath?: string;
   dialogue: string;
   districtKey?: string;
+  nodeKey?: string;
 }
 
 interface PathSample {
@@ -35,6 +36,10 @@ export class SphericalPlanet {
 
   public landmarks: PlanetLandmark[] = [];
   public npcs: THREE.Group[] = [];
+
+  // Material Pickups tracking
+  public pickupMeshes: Map<string, THREE.Group> = new Map();
+  public depletedNodes: Map<string, number> = new Map();
 
   // Procedural Paths data
   private pathSamples: PathSample[] = [];
@@ -481,8 +486,8 @@ export class SphericalPlanet {
     });
 
     // Material Pickups in Canal: Sakura Petals & Freshwater Pearl
-    this.spawnPickup("sakura-petal-bundle", 0.86, 0.86, "Sakura Petal Resource Node");
-    this.spawnPickup("freshwater-pearl-oyster", 0.76, 0.82, "Freshwater Pearl Oyster Node");
+    this.spawnPickup("sakura-petal-bundle", 0.86, 0.86, "Sakura Petal · 벚꽃잎", "node_canal_sakura_1");
+    this.spawnPickup("freshwater-pearl-oyster", 0.76, 0.82, "Freshwater Pearl Oyster · 담수진주", "node_canal_pearl_1");
 
     // -----------------------------------------------------------------------
     // DISTRICT 2: MARKET SQUARE (θ=2.1, φ=0.8)
@@ -542,8 +547,8 @@ export class SphericalPlanet {
     });
 
     // Material Pickups in Market: Silk Ribbon & Syrup Base
-    this.spawnPickup("silk-ribbon-spool", 2.08, 0.72, "Silk Ribbon Spool Node");
-    this.spawnPickup("syrup-glass-vial", 2.18, 0.88, "Syrup Glass Vial Node");
+    this.spawnPickup("silk-ribbon-spool", 2.08, 0.72, "Silk Ribbon Spool · 실크 리본", "node_market_ribbon_1");
+    this.spawnPickup("syrup-glass-vial", 2.18, 0.88, "Syrup Base Vial · 시럽 베이스", "node_market_syrup_1");
 
     // -----------------------------------------------------------------------
     // DISTRICT 3: TULIP MEADOW (θ=3.4, φ=0.8)
@@ -586,8 +591,8 @@ export class SphericalPlanet {
     });
 
     // Material Pickups in Meadow: Daisy Sprig & Sakura Petal
-    this.spawnPickup("daisy-sprig", 3.32, 0.82, "Daisy Sprig Node");
-    this.spawnPickup("sakura-petal-bundle", 3.45, 0.78, "Meadow Sakura Petal Node");
+    this.spawnPickup("daisy-sprig", 3.32, 0.82, "Daisy Sprig · 데이지", "node_meadow_daisy_1");
+    this.spawnPickup("sakura-petal-bundle", 3.45, 0.78, "Meadow Sakura Petal · 벚꽃잎", "node_meadow_sakura_1");
 
     // -----------------------------------------------------------------------
     // DISTRICT 4: WINDMILL HILL (θ=4.7, φ=0.8)
@@ -639,8 +644,8 @@ export class SphericalPlanet {
     });
 
     // Material Pickups in Windmill: Chrome Droplets & Aurora Crystals
-    this.spawnPickup("chrome-droplet", 4.65, 0.84, "Chrome Droplet Node");
-    this.spawnPickup("aurora-crystal-shard", 4.76, 0.72, "Aurora Crystal Shard Node");
+    this.spawnPickup("chrome-droplet", 4.65, 0.84, "Chrome Droplet · 크롬 방울", "node_windmill_chrome_1");
+    this.spawnPickup("aurora-crystal-shard", 4.76, 0.72, "Aurora Crystal Shard · 오로라 크리스탈", "node_windmill_aurora_1");
 
     // -----------------------------------------------------------------------
     // DISTRICT 5: HARBOUR (θ=5.9, φ=1.05)
@@ -683,14 +688,20 @@ export class SphericalPlanet {
     });
 
     // Material Pickups in Harbour: Gold Leaf & Aurora Crystal
-    this.spawnPickup("gold-leaf-flake", 5.86, 0.98, "Gold Leaf Flake Node");
-    this.spawnPickup("aurora-crystal-shard", 5.98, 1.12, "Harbour Aurora Crystal Node");
+    this.spawnPickup("gold-leaf-flake", 5.86, 0.98, "Gold Leaf Flake · 금박", "node_harbour_gold_1");
+    this.spawnPickup("aurora-crystal-shard", 5.98, 1.12, "Harbour Aurora Crystal · 오로라 크리스탈", "node_harbour_aurora_1");
   }
 
   // =========================================================================
   // 5. MATERIAL PICKUPS WITH GLOW NODES (Spec B3)
   // =========================================================================
-  private spawnPickup(modelName: string, theta: number, phi: number, label: string) {
+  private spawnPickup(
+    modelName: string,
+    theta: number,
+    phi: number,
+    label: string,
+    nodeKey: string
+  ) {
     const { pos, norm } = this.getSphericalPoint(theta, phi, 0.05);
     const path = `/models/pickups/${modelName}.glb`;
 
@@ -707,17 +718,36 @@ export class SphericalPlanet {
         }
       });
 
+      this.pickupMeshes.set(nodeKey, model);
       this.root.add(model);
     });
 
     this.landmarks.push({
-      id: `pickup_${modelName}_${theta.toFixed(2)}`,
+      id: `pickup_${nodeKey}`,
       name: label,
       role: "Crafting Resource Pickup",
       normal: norm,
       position: pos,
       dialogue: `Collected material for your manicure charms!`,
+      nodeKey,
     });
+  }
+
+  public setNodeHarvested(nodeKey: string, readyAt: number) {
+    this.depletedNodes.set(nodeKey, readyAt);
+    const mesh = this.pickupMeshes.get(nodeKey);
+    if (mesh) {
+      mesh.visible = false;
+    }
+  }
+
+  public syncNodeStates(states: Array<{ nodeKey: string; readyAt: number }>) {
+    const now = Date.now();
+    for (const s of states) {
+      if (s.readyAt > now) {
+        this.setNodeHarvested(s.nodeKey, s.readyAt);
+      }
+    }
   }
 
   // =========================================================================
@@ -985,6 +1015,18 @@ export class SphericalPlanet {
     const pulse = 1.0 + Math.sin(this.windUniforms.uTime.value * 3.5) * 0.15;
     for (const glow of this.pickupGlows) {
       glow.scale.set(pulse, pulse, pulse);
+    }
+
+    // Respawn depleted pickups when timer expires
+    const now = Date.now();
+    for (const [key, readyAt] of this.depletedNodes.entries()) {
+      if (now >= readyAt) {
+        this.depletedNodes.delete(key);
+        const mesh = this.pickupMeshes.get(key);
+        if (mesh) {
+          mesh.visible = true;
+        }
+      }
     }
 
     // Switch lanterns on at night (game time >= 20:00 or < 06:00)

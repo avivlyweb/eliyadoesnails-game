@@ -241,6 +241,75 @@ class GameConvexService {
     return `${hours.toString().padStart(2, "0")}:${minutes.toString().padStart(2, "0")}`;
   }
 
+  public async harvestNode(nodeKey: string) {
+    if (!this.isOnline) {
+      // Offline fallback: simulate local harvest
+      return {
+        success: true,
+        materialKey: nodeKey.includes("pearl")
+          ? "freshwater_pearl"
+          : nodeKey.includes("ribbon")
+          ? "silk_ribbon"
+          : nodeKey.includes("syrup")
+          ? "syrup_base"
+          : nodeKey.includes("daisy")
+          ? "daisy_sprig"
+          : nodeKey.includes("chrome")
+          ? "chrome_drop"
+          : nodeKey.includes("crystal")
+          ? "aurora_crystal"
+          : nodeKey.includes("gold")
+          ? "gold_leaf"
+          : "sakura_petal",
+        materialName: "Crafting Botanical",
+        materialNameKo: "식물 & 원석",
+        qty: 2,
+        nextReadyAt: Date.now() + 240000,
+      };
+    }
+    return await convex.mutation(api.gather.harvest, {
+      guestToken: this.guestToken,
+      nodeKey,
+    });
+  }
+
+  public async savePositionImmediate(): Promise<void> {
+    if (!this.isOnline) return;
+    this.lastSaveTime = Date.now();
+    this.savePending = false;
+    try {
+      await convex.mutation(api.players.savePosition, {
+        guestToken: this.guestToken,
+        theta: this.currentCoord.theta,
+        phi: this.currentCoord.phi,
+        gameMinutes: Math.floor(this.currentGameMinutes),
+      });
+    } catch (err) {
+      console.warn("[Convex] savePositionImmediate error:", err);
+    }
+  }
+
+  public async craftCharm(charmKey: string) {
+    if (!this.isOnline) {
+      return { success: true, charmKey, charmName: charmKey.replace(/_/g, " ") };
+    }
+    return await convex.mutation(api.craft.craftCharm, {
+      guestToken: this.guestToken,
+      charmKey,
+    });
+  }
+
+  public async fetchNodeStates(): Promise<Array<{ nodeKey: string; readyAt: number }>> {
+    if (!this.isOnline) return [];
+    try {
+      return await convex.query(api.gather.nodeStates, {
+        guestToken: this.guestToken,
+      });
+    } catch {
+      return [];
+    }
+  }
+
   public isNight(): boolean {
     const hours = Math.floor(this.currentGameMinutes / 60) % 24;
     return hours >= 20 || hours < 6;

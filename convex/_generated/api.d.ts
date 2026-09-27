@@ -9,6 +9,8 @@
  */
 
 import type * as content from "../content.js";
+import type * as craft from "../craft.js";
+import type * as gather from "../gather.js";
 import type * as lib_player from "../lib/player.js";
 import type * as players from "../players.js";
 import type * as seed from "../seed.js";
@@ -21,6 +23,8 @@ import type {
 
 declare const fullApi: ApiFromModules<{
   content: typeof content;
+  craft: typeof craft;
+  gather: typeof gather;
   "lib/player": typeof lib_player;
   players: typeof players;
   seed: typeof seed;
