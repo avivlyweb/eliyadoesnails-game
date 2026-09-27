@@ -1559,7 +1559,7 @@
 
     <!-- Controls Key Hint -->
     <div id="controls-hint">
-      WASD to walk · Space to jump · B to ride bicycle · E or Click to interact
+      WASD to walk · Space to jump · B to ride bike · C companion · E interact
     </div>
 
     <!-- MASTER 3D MANICURE STUDIO MODAL -->
@@ -1963,6 +1963,7 @@
         document.getElementById('btn-creator-uv-cure')?.addEventListener('click', () => {
           isCured = true;
           sound.playUVLampCure();
+          window.dispatchEvent(new CustomEvent('uv-cured'));
           const card = document.querySelector('.eliya-modal-card');
           if (card) {
             card.style.boxShadow = '0 0 60px rgba(151, 117, 250, 0.6)';

@@ -6,6 +6,7 @@ import { ManicureStation } from "./station/manicure-table";
 import { photobooth } from "./photobooth/life4cuts";
 import { sound } from "./engine/audio";
 import { questSystem, ClientTicket } from "./engine/game-quest";
+import { AtelierCompanion } from "./engine/companion";
 
 class EliyaCanalWorldGame {
   private renderer: THREE.WebGLRenderer;
@@ -15,6 +16,7 @@ class EliyaCanalWorldGame {
   private planet: SphericalPlanet;
   private player: SphericalCharacter;
   private manicureStation: ManicureStation;
+  private companion: AtelierCompanion;
   private clock: THREE.Clock;
 
   // Delivery & Interaction State
@@ -55,6 +57,9 @@ class EliyaCanalWorldGame {
     // 3. Initialize Manicure Station (Macro studio)
     this.manicureStation = new ManicureStation(this.scene);
     this.manicureStation.setVisible(false);
+
+    // 4. Initialize Living Atelier Companion & Golden Hour Spores (Inspired by HeyMossy)
+    this.companion = new AtelierCompanion();
 
     this.setupEventListeners();
     this.setupHUDControls();
@@ -114,6 +119,9 @@ class EliyaCanalWorldGame {
       if (e.code === "KeyB") {
         this.player.toggleBicycle();
         document.getElementById("btn-toggle-bike")?.classList.toggle("active", this.player.isRidingBicycle);
+      }
+      if (e.code === "KeyC") {
+        this.companion.toggle();
       }
     });
 
@@ -316,6 +324,17 @@ class EliyaCanalWorldGame {
       btnDeliver.addEventListener("click", () => {
         if (!this.pendingDeliveryTicketId) return;
         const res = questSystem.deliverToClient(this.pendingDeliveryTicketId);
+
+        // Notify companion mascot
+        window.dispatchEvent(
+          new CustomEvent("delivery-completed", {
+            detail: {
+              clientName: this.pendingDeliveryTicketId.toUpperCase(),
+              rewardCharm: res.reward,
+            },
+          })
+        );
+
         const textEl = document.getElementById("dialogue-text");
         if (textEl) {
           textEl.innerHTML = `${res.dialogue}<br/><br/><strong style="color:#a8505e;">✦ Received Reward: ${res.reward}!</strong>`;
