@@ -1,0 +1,313 @@
+[
+  {
+    "id": "grass-tuft-a",
+    "path": "/models/filler/grass-tuft-a.glb",
+    "category": "filler",
+    "tris": 84,
+    "bytes": 8096,
+    "instanced": true,
+    "nodes": [
+      "grass-tuft-a"
+    ]
+  },
+  {
+    "id": "grass-tuft-b",
+    "path": "/models/filler/grass-tuft-b.glb",
+    "category": "filler",
+    "tris": 72,
+    "bytes": 7248,
+    "instanced": true,
+    "nodes": [
+      "grass-tuft-b"
+    ]
+  },
+  {
+    "id": "grass-tuft-c",
+    "path": "/models/filler/grass-tuft-c.glb",
+    "category": "filler",
+    "tris": 96,
+    "bytes": 8932,
+    "instanced": true,
+    "nodes": [
+      "grass-tuft-c"
+    ]
+  },
+  {
+    "id": "tulip-cluster-pink",
+    "path": "/models/filler/tulip-cluster-pink.glb",
+    "category": "filler",
+    "tris": 324,
+    "bytes": 15020,
+    "instanced": true,
+    "nodes": [
+      "tulip-cluster-pink"
+    ]
+  },
+  {
+    "id": "tulip-cluster-red",
+    "path": "/models/filler/tulip-cluster-red.glb",
+    "category": "filler",
+    "tris": 324,
+    "bytes": 15020,
+    "instanced": true,
+    "nodes": [
+      "tulip-cluster-red"
+    ]
+  },
+  {
+    "id": "tulip-cluster-yellow",
+    "path": "/models/filler/tulip-cluster-yellow.glb",
+    "category": "filler",
+    "tris": 324,
+    "bytes": 15024,
+    "instanced": true,
+    "nodes": [
+      "tulip-cluster-yellow"
+    ]
+  },
+  {
+    "id": "tulip-cluster-white",
+    "path": "/models/filler/tulip-cluster-white.glb",
+    "category": "filler",
+    "tris": 324,
+    "bytes": 15020,
+    "instanced": true,
+    "nodes": [
+      "tulip-cluster-white"
+    ]
+  },
+  {
+    "id": "pebble-set",
+    "path": "/models/filler/pebble-set.glb",
+    "category": "filler",
+    "tris": 60,
+    "bytes": 4716,
+    "instanced": true,
+    "nodes": [
+      "pebble-set"
+    ]
+  },
+  {
+    "id": "round-bush-small",
+    "path": "/models/filler/round-bush-small.glb",
+    "category": "filler",
+    "tris": 80,
+    "bytes": 5504,
+    "instanced": true,
+    "nodes": [
+      "round-bush-small"
+    ]
+  },
+  {
+    "id": "round-bush-large",
+    "path": "/models/filler/round-bush-large.glb",
+    "category": "filler",
+    "tris": 80,
+    "bytes": 5496,
+    "instanced": true,
+    "nodes": [
+      "round-bush-large"
+    ]
+  },
+  {
+    "id": "clover-patch",
+    "path": "/models/filler/clover-patch.glb",
+    "category": "filler",
+    "tris": 144,
+    "bytes": 13108,
+    "instanced": true,
+    "nodes": [
+      "clover-patch"
+    ]
+  },
+  {
+    "id": "reed-clump",
+    "path": "/models/filler/reed-clump.glb",
+    "category": "filler",
+    "tris": 156,
+    "bytes": 12772,
+    "instanced": true,
+    "nodes": [
+      "reed-clump"
+    ]
+  },
+  {
+    "id": "lily-pad-set",
+    "path": "/models/filler/lily-pad-set.glb",
+    "category": "filler",
+    "tris": 160,
+    "bytes": 11764,
+    "instanced": true,
+    "nodes": [
+      "lily-pad-set"
+    ]
+  },
+  {
+    "id": "fallen-petals",
+    "path": "/models/filler/fallen-petals.glb",
+    "category": "filler",
+    "tris": 96,
+    "bytes": 8972,
+    "instanced": true,
+    "nodes": [
+      "fallen-petals"
+    ]
+  },
+  {
+    "id": "cobble-edge-stone",
+    "path": "/models/filler/cobble-edge-stone.glb",
+    "category": "filler",
+    "tris": 44,
+    "bytes": 4592,
+    "instanced": true,
+    "nodes": [
+      "cobble-edge-stone"
+    ]
+  },
+  {
+    "id": "mushroom-pair",
+    "path": "/models/filler/mushroom-pair.glb",
+    "category": "filler",
+    "tris": 80,
+    "bytes": 6300,
+    "instanced": true,
+    "nodes": [
+      "mushroom-pair"
+    ]
+  },
+  {
+    "id": "sakura-petal-bundle",
+    "path": "/models/pickups/sakura-petal-bundle.glb",
+    "category": "pickup",
+    "tris": 1368,
+    "bytes": 47280,
+    "instanced": false,
+    "nodes": [
+      "sakura_Glow",
+      "sakura_Petal_0",
+      "sakura_Petal_1",
+      "sakura_Petal_2",
+      "sakura_Petal_3",
+      "sakura_Petal_4",
+      "sakura_Tie"
+    ]
+  },
+  {
+    "id": "daisy-sprig",
+    "path": "/models/pickups/daisy-sprig.glb",
+    "category": "pickup",
+    "tris": 368,
+    "bytes": 31556,
+    "instanced": false,
+    "nodes": [
+      "daisy_Branch1",
+      "daisy_Branch2",
+      "daisy_FlowerLeft_Center",
+      "daisy_FlowerLeft_Petals",
+      "daisy_FlowerRight_Center",
+      "daisy_FlowerRight_Petals",
+      "daisy_FlowerTop_Center",
+      "daisy_FlowerTop_Petals",
+      "daisy_Glow",
+      "daisy_MainStem"
+    ]
+  },
+  {
+    "id": "freshwater-pearl-oyster",
+    "path": "/models/pickups/freshwater-pearl-oyster.glb",
+    "category": "pickup",
+    "tris": 1084,
+    "bytes": 32932,
+    "instanced": false,
+    "nodes": [
+      "pearl_Glow",
+      "pearl_Pearl",
+      "pearl_ShellBottom",
+      "pearl_ShellTop"
+    ]
+  },
+  {
+    "id": "chrome-droplet",
+    "path": "/models/pickups/chrome-droplet.glb",
+    "category": "pickup",
+    "tris": 564,
+    "bytes": 22352,
+    "instanced": false,
+    "nodes": [
+      "chrome_DropBase",
+      "chrome_DropTip",
+      "chrome_Glow",
+      "chrome_SplashRing"
+    ]
+  },
+  {
+    "id": "syrup-glass-vial",
+    "path": "/models/pickups/syrup-glass-vial.glb",
+    "category": "pickup",
+    "tris": 420,
+    "bytes": 26372,
+    "instanced": false,
+    "nodes": [
+      "vial_Cork",
+      "vial_GlassBody",
+      "vial_GlassNeck",
+      "vial_GlassRim",
+      "vial_Glow",
+      "vial_Liquid"
+    ]
+  },
+  {
+    "id": "aurora-crystal-shard",
+    "path": "/models/pickups/aurora-crystal-shard.glb",
+    "category": "pickup",
+    "tris": 216,
+    "bytes": 20148,
+    "instanced": false,
+    "nodes": [
+      "crystal_BaseCluster",
+      "crystal_Glow",
+      "crystal_Shard1_Body",
+      "crystal_Shard1_Tip",
+      "crystal_Shard2_Body",
+      "crystal_Shard2_Tip",
+      "crystal_Shard3_Body",
+      "crystal_Shard3_Tip"
+    ]
+  },
+  {
+    "id": "silk-ribbon-spool",
+    "path": "/models/pickups/silk-ribbon-spool.glb",
+    "category": "pickup",
+    "tris": 1112,
+    "bytes": 74876,
+    "instanced": false,
+    "nodes": [
+      "spool_FlangeBottom",
+      "spool_FlangeTop",
+      "spool_Glow",
+      "spool_Knob",
+      "spool_Ribbon",
+      "spool_Tail_0",
+      "spool_Tail_1",
+      "spool_Tail_2",
+      "spool_Tail_3"
+    ]
+  },
+  {
+    "id": "gold-leaf-flake",
+    "path": "/models/pickups/gold-leaf-flake.glb",
+    "category": "pickup",
+    "tris": 724,
+    "bytes": 56448,
+    "instanced": false,
+    "nodes": [
+      "gold_Flake1_a",
+      "gold_Flake1_b",
+      "gold_Flake2_a",
+      "gold_Flake2_b",
+      "gold_Flake3_a",
+      "gold_Flake3_b",
+      "gold_Glow"
+    ]
+  }
+]
