@@ -513,7 +513,55 @@ def build_character(mats):
         sub_boot.levels = 1
 
     # ----------------------------------------------------
-    # 10. STUDIO BACKDROP & GROUND
+    # 10. ARTICULATED LIMB HIERARCHY (For Game Engine)
+    # ----------------------------------------------------
+    # Setup standard socket empties matching game engine animation rig
+    scene = bpy.context.scene
+
+    def create_empty(name, loc):
+        emp = bpy.data.objects.new(name, None)
+        emp.empty_display_type = 'PLAIN_AXES'
+        emp.empty_display_size = 0.08
+        emp.location = loc
+        scene.collection.objects.link(emp)
+        return emp
+
+    def parent_to(child_names, parent_obj):
+        for name in child_names:
+            obj = bpy.data.objects.get(name)
+            if obj:
+                obj.parent = parent_obj
+                obj.matrix_parent_inverse = parent_obj.matrix_world.inverted()
+
+    # 1. Left Arm (Shoulder pivot)
+    arm_l = create_empty("eliya_LeftArm", (-0.115, -0.012, 0.46))
+    parent_to(["Sleeve_L", "SleeveCuff_L", "Hand_L", "Thumb_L"], arm_l)
+
+    # 2. Right Arm (Shoulder pivot)
+    arm_r = create_empty("eliya_RightArm", (0.115, -0.012, 0.46))
+    parent_to(["Sleeve_R", "SleeveCuff_R", "Hand_R", "Thumb_R"], arm_r)
+
+    # 3. Left Leg (Hip pivot)
+    leg_l = create_empty("eliya_LeftLeg", (-0.048, -0.012, 0.22))
+    parent_to(["Leg_L", "Boot_L"], leg_l)
+
+    # 4. Right Leg (Hip pivot)
+    leg_r = create_empty("eliya_RightLeg", (0.048, -0.012, 0.22))
+    parent_to(["Leg_R", "Boot_R"], leg_r)
+
+    # 5. Head & Hair (Neck pivot)
+    head_emp = create_empty("eliya_Head", (0, -0.02, 0.60))
+    parent_to([
+        "Head", "Nose", "Eye_L", "Eye_R", 
+        "Lash1_L", "Lash2_L", "Lash1_R", "Lash2_R", 
+        "Hair_Afro_Cloud", "Headband"
+    ], head_emp)
+
+    # 6. Tray Socket (For courier couture box stack)
+    create_empty("eliya_TraySocket", (0, -0.22, 0.48))
+
+    # ----------------------------------------------------
+    # 11. STUDIO BACKDROP & GROUND
     # ----------------------------------------------------
     bpy.ops.mesh.primitive_plane_add(size=12.0, location=(0, 0, 0))
     ground = bpy.context.active_object
@@ -646,7 +694,7 @@ def render_and_export(output_dir):
     bpy.ops.object.select_all(action='DESELECT')
     char_objects = [
         o for o in scene.objects 
-        if o.type == 'MESH' and o.name != "Studio_Ground"
+        if o.type in ('MESH', 'EMPTY') and o.name not in ("Studio_Ground", "Cam_Target")
     ]
     for o in char_objects:
         o.select_set(True)
