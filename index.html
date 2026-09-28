@@ -365,39 +365,356 @@
         margin-left: 20px;
       }
 
-      .steaming-matcha-cup {
-        width: 72px;
-        height: 60px;
-        background: var(--surface);
-        border: 1px solid var(--hairline);
-        border-radius: 12px 12px 28px 28px;
+      /* LUXURY ATELIER NAIL LACQUER & BOTTLE PROP (Replaces Coffee Cup) */
+      .atelier-lacquer-prop {
         position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        justify-content: center;
-        box-shadow: 0 6px 18px rgba(28, 25, 23, 0.04);
-        margin-right: 20px;
+        margin-right: 24px;
+        filter: drop-shadow(0 10px 22px rgba(28, 25, 23, 0.12));
+        pointer-events: auto;
+        transform: rotate(3deg);
+        transition: transform 0.3s ease;
       }
 
-      .matcha-latte-art {
-        width: 48px;
-        height: 14px;
-        background: #9bb591;
-        border-radius: 50%;
+      .atelier-lacquer-prop:hover {
+        transform: rotate(0deg) scale(1.06);
+      }
+
+      .lacquer-sparkle-star {
         position: absolute;
-        top: 6px;
+        color: #f59e0b;
+        font-size: 11px;
+        pointer-events: none;
+        animation: sparkleGleam 2.4s infinite ease-in-out;
+      }
+
+      .lacquer-sparkle-star.s1 {
+        top: -10px;
+        left: -8px;
+        color: #ec4899;
+        animation-delay: 0.3s;
+      }
+
+      .lacquer-sparkle-star.s2 {
+        top: 14px;
+        right: -10px;
+        color: #8b5cf6;
+        font-size: 9px;
+        animation-delay: 1.2s;
+      }
+
+      @keyframes sparkleGleam {
+        0%, 100% { opacity: 0.3; transform: scale(0.8) rotate(0deg); }
+        50% { opacity: 1; transform: scale(1.3) rotate(45deg); filter: drop-shadow(0 0 6px rgba(236, 72, 153, 0.7)); }
+      }
+
+      .lacquer-cap {
+        width: 20px;
+        height: 25px;
+        background: linear-gradient(135deg, #fdf2f4 0%, #e2b4be 60%, #c48b98 100%);
+        border: 1px solid rgba(168, 80, 94, 0.35);
+        border-radius: 4px 4px 1px 1px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        box-shadow: inset 1px 0 2px rgba(255, 255, 255, 0.9), inset -1px 0 2px rgba(0, 0, 0, 0.1);
+      }
+
+      .lacquer-gold-collar {
+        width: 24px;
+        height: 5px;
+        background: linear-gradient(90deg, #d4af37, #fff4cc, #b8860b, #ffe082, #996515);
+        border-radius: 2px;
+        margin-bottom: -2px;
+        box-shadow: 0 1px 3px rgba(184, 134, 11, 0.35);
+        z-index: 2;
+      }
+
+      .lacquer-glass-body {
+        width: 58px;
+        height: 58px;
+        background: rgba(255, 255, 255, 0.55);
+        border: 1.5px solid rgba(255, 255, 255, 0.85);
+        outline: 1px solid rgba(168, 80, 94, 0.2);
+        border-radius: 10px 10px 14px 14px;
+        position: relative;
+        overflow: hidden;
+        backdrop-filter: blur(8px);
+        box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.9),
+                    inset 0 -3px 8px rgba(168, 80, 94, 0.15),
+                    0 8px 24px rgba(28, 25, 23, 0.08);
         display: flex;
         align-items: center;
         justify-content: center;
-        font-size: 9px;
-        color: white;
       }
 
-      .cup-smile {
-        margin-top: 12px;
-        font-size: 13px;
+      .lacquer-liquid-fill {
+        position: absolute;
+        bottom: 3px;
+        left: 3px;
+        right: 3px;
+        height: 44px;
+        background: linear-gradient(135deg, #f472b6 0%, #c084fc 40%, #818cf8 80%, #38bdf8 100%);
+        border-radius: 4px 4px 10px 10px;
+        opacity: 0.9;
+        overflow: hidden;
+        box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.4);
+      }
+
+      .lacquer-liquid-fill::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -50%;
+        right: -50%;
+        height: 8px;
+        background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0.7) 0%, transparent 80%);
+        border-radius: 50%;
+      }
+
+      .lacquer-shimmer-highlight {
+        position: absolute;
+        top: 3px;
+        left: 5px;
+        width: 6px;
+        height: 34px;
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 100%);
+        border-radius: 3px;
+        filter: blur(0.5px);
+      }
+
+      .lacquer-gold-label {
+        position: relative;
+        z-index: 3;
+        background: rgba(255, 255, 255, 0.94);
+        border: 1px solid rgba(212, 175, 55, 0.65);
+        padding: 4px 6px;
+        border-radius: 4px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+      }
+
+      .lacquer-gold-label .label-brand {
+        font-family: var(--font-sans);
+        font-size: 7.5px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        color: #92400e;
+        line-height: 1;
+      }
+
+      .lacquer-gold-label .label-shade {
+        font-family: var(--font-mono);
+        font-size: 5.5px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        color: #a8505e;
+        margin-top: 2px;
+        text-transform: uppercase;
+      }
+
+      .lacquer-brush-stem {
+        position: absolute;
+        right: -8px;
+        bottom: 2px;
+        width: 4px;
+        height: 48px;
+        background: linear-gradient(180deg, #d4af37 0%, #fff 30%, #a8505e 100%);
+        border-radius: 2px;
+        transform: rotate(24deg);
+        box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.15);
+      }
+
+      .lacquer-droplet {
+        position: absolute;
+        bottom: -4px;
+        left: -1px;
+        width: 6px;
+        height: 6px;
+        background: radial-gradient(circle at 35% 35%, #fff, #f472b6 60%, #c084fc 100%);
+        border-radius: 50% 50% 50% 0;
+        transform: rotate(-45deg);
+        box-shadow: 0 0 6px rgba(244, 114, 182, 0.8);
+      }
+
+      /* START SCREEN JUKEBOX / SOUNDTRACK SELECTOR */
+      .start-music-bar {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .music-pill {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        padding: 5px 12px;
+        border-radius: 999px;
+        box-shadow: 0 2px 10px rgba(28, 25, 23, 0.04);
+      }
+
+      .music-pill .music-icon {
+        font-size: 14px;
+        animation: pulseIcon 2s infinite ease-in-out;
+      }
+
+      @keyframes pulseIcon {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.15); }
+      }
+
+      .music-pill .music-meta {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .music-pill .music-label {
+        font-family: var(--font-mono);
+        font-size: 8px;
+        letter-spacing: 1px;
         color: var(--text-muted);
+        text-transform: uppercase;
+      }
+
+      .music-pill .music-select {
+        background: transparent;
+        border: none;
+        outline: none;
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text-primary);
+        cursor: pointer;
+        padding-right: 6px;
+      }
+
+      .music-nav-btn {
+        background: rgba(168, 80, 94, 0.08);
+        border: 1px solid rgba(168, 80, 94, 0.15);
+        color: var(--text-primary);
+        border-radius: 6px;
+        width: 24px;
+        height: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .music-nav-btn:hover {
+        background: var(--accent-petal);
+        color: white;
+        border-color: var(--accent-petal);
+      }
+
+      /* IN-GAME HUD MUSIC JUKEBOX */
+      .hud-music-dock {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 999px;
+        padding: 3px 6px;
+        box-shadow: 0 4px 14px rgba(28, 25, 23, 0.04);
+        pointer-events: auto;
+      }
+
+      .btn-dock-icon {
+        background: transparent;
+        border: none;
+        color: var(--text-muted);
+        width: 22px;
+        height: 22px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 10px;
+        cursor: pointer;
+        border-radius: 50%;
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .btn-dock-icon:hover {
+        background: rgba(168, 80, 94, 0.12);
+        color: var(--text-primary);
+      }
+
+      .hud-music-dock .btn-dock {
+        box-shadow: none;
+        border: none;
+        padding: 5px 10px;
+      }
+
+      .hud-music-dropdown {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        background: var(--surface);
+        border: 1px solid var(--hairline);
+        border-radius: 12px;
+        box-shadow: 0 12px 32px rgba(28, 25, 23, 0.14);
+        padding: 6px;
+        min-width: 230px;
+        display: none;
+        flex-direction: column;
+        gap: 3px;
+        z-index: 100;
+        backdrop-filter: blur(12px);
+      }
+
+      .hud-music-dock:hover .hud-music-dropdown,
+      .hud-music-dropdown.open {
+        display: flex;
+      }
+
+      .music-dropdown-header {
+        font-family: var(--font-mono);
+        font-size: 8.5px;
+        letter-spacing: 1px;
+        color: var(--text-muted);
+        padding: 4px 8px;
+        border-bottom: 1px solid var(--hairline);
+        margin-bottom: 3px;
+      }
+
+      .music-dropdown-item {
+        font-size: 11px;
+        padding: 7px 10px;
+        border-radius: 6px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        cursor: pointer;
+        color: var(--text-primary);
+        transition: background 0.15s, color 0.15s;
+      }
+
+      .music-dropdown-item span {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        color: var(--text-muted);
+      }
+
+      .music-dropdown-item:hover {
+        background: rgba(168, 80, 94, 0.08);
+      }
+
+      .music-dropdown-item.active {
+        background: rgba(168, 80, 94, 0.15);
+        color: var(--accent-rose);
+        font-weight: 600;
       }
 
       /* IN-GAME HUD */
@@ -2079,20 +2396,41 @@
           </svg>
           <div class="brand-text-col">
             <span class="brand-wordmark">eliyadoesnails</span>
-            <span class="brand-mono-sub">NAIL ATELIER · AMSTERDAM</span>
+            <span class="brand-mono-sub">3D NAIL ATELIER & PLANETOID</span>
           </div>
         </div>
-        <button id="btn-start-sound" class="start-sound-toggle">
-          <span>SOUND ON</span>
-        </button>
+
+        <div class="start-music-bar" id="start-music-bar">
+          <div class="music-pill">
+            <span class="music-icon" id="start-track-icon">☕</span>
+            <div class="music-meta">
+              <span class="music-label">SOUNDTRACK</span>
+              <select id="start-track-select" class="music-select" title="Choose Music Vibe">
+                <option value="lofi-chill">☕ Atelier Lo-Fi Chill (78 BPM)</option>
+                <option value="sparkle-glass">✨ Sparkle Glass Aura (84 BPM)</option>
+                <option value="canal-breeze">🚲 Canal Bicycle Breeze (120 BPM)</option>
+                <option value="cat-eye-velvet">🌌 Midnight Cat-Eye Velvet (72 BPM)</option>
+                <option value="tea-ritual">🍵 Slow Beauty Tea Ritual (65 BPM)</option>
+              </select>
+            </div>
+            <button id="start-btn-prev-track" class="music-nav-btn" title="Previous Track">⏮</button>
+            <button id="btn-start-sound" class="start-sound-toggle" title="Toggle Soundtrack">
+              <span>🎵 MUSIC ON</span>
+            </button>
+            <button id="start-btn-next-track" class="music-nav-btn" title="Next Track">⏭</button>
+          </div>
+        </div>
       </header>
 
       <main class="start-main-stage">
         <div class="start-title-column">
+          <div style="font-size: 11px; font-weight: 600; letter-spacing: 2px; color: var(--accent-rose); text-transform: uppercase; margin-bottom: 4px;">
+            ✦ 3D Planetoid Nail Atelier ✦
+          </div>
           <h1 class="start-big-title">eliyadoesnails</h1>
-          <div class="start-sub-title">little ritual</div>
+          <div class="start-sub-title">Bespoke 3D Nail Artistry · Botanical Foraging · Canal Bicycle Rides</div>
           <div class="start-prompt-hint">
-            <span>Enter the atelier · 아틀리에 입장</span>
+            <span>Enter the Atelier & World · 아틀리에 & 운하 세계 입장</span>
             <span class="start-key-badge">Enter ↵</span>
           </div>
         </div>
@@ -2108,54 +2446,82 @@
                   <div class="crt-dot"></div>
                   <div class="crt-dot"></div>
                 </div>
-                <span>atelier / console</span>
-                <span>⌁</span>
+                <span>atelier / console v2.4</span>
+                <span style="color: #10b981;">⌁ ONLINE</span>
               </div>
 
               <div class="crt-inner-box">
-                <div style="font-weight: 500; margin-bottom: 8px; color: var(--text-primary); font-size: 11.5px; letter-spacing: 0.5px;">
-                  &gt;_ eliyadoesnails <span style="color: var(--text-muted); font-size: 10px;">atelier lab edition</span>
+                <div style="font-weight: 600; margin-bottom: 8px; color: var(--text-primary); font-size: 11.5px; letter-spacing: 0.5px; display: flex; justify-content: space-between;">
+                  <span>&gt;_ eliyadoesnails <span style="color: var(--accent-rose); font-size: 10px; font-weight: 500;">3D spherical world</span></span>
+                  <span style="color: #10b981; font-size: 10px;">● READY</span>
                 </div>
                 <div class="crt-row">
-                  <span class="crt-label">directory</span>
-                  <span style="color: var(--text-primary);">~/atelier-gloss</span>
+                  <span class="crt-label">avatar</span>
+                  <span style="color: var(--text-primary); font-weight: 500;">Eliya Cloud Mascot <span style="color: var(--text-muted); font-size: 9.5px;">([M] toggle skin)</span></span>
                 </div>
                 <div class="crt-row">
-                  <span class="crt-label">mode</span>
-                  <span style="color: var(--accent-petal); font-weight: 500;">slow beauty <span style="font-family: var(--font-kr); font-size: 10px; color: var(--text-muted);">(슬로우 뷰티)</span></span>
+                  <span class="crt-label">world</span>
+                  <span style="color: var(--text-primary);">Amsterdam Canal Planetoid · 3D Atelier</span>
+                </div>
+                <div class="crt-row">
+                  <span class="crt-label">missions</span>
+                  <span style="color: var(--accent-petal); font-weight: 500;">Botanical Foraging · Bespoke 3D Nails · Bicycle Courier</span>
+                </div>
+                <div class="crt-row">
+                  <span class="crt-label">controls</span>
+                  <span style="color: var(--text-muted); font-size: 10px;">WASD Walk · [B] Bicycle · [E] Gather & Interact · [N] Nail Studio</span>
                 </div>
               </div>
 
               <div class="crt-command-line">
                 <span class="crt-prompt-symbol">&gt;</span>
-                <span>eliya craft bespoke glass nails</span>
+                <span>eliya start --world planetoid --nails bespoke --bike omafiets</span>
                 <span class="crt-cursor"></span>
               </div>
 
-              <div style="display: flex; justify-content: flex-end; font-size: 10.5px; color: var(--text-muted); letter-spacing: 1px; text-transform: uppercase;">
-                <span>local · single player</span>
+              <div style="display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--text-muted); letter-spacing: 0.5px;">
+                <span>🎧 5 Synth Soundtracks · 3D Physics · ASMR</span>
+                <span style="color: var(--accent-rose); font-weight: 600;">CLICK OR PRESS ENTER ↵</span>
               </div>
             </div>
 
             <div class="desk-props-layer">
               <div class="paper-order-receipt">
-                <div style="font-weight: 600; margin-bottom: 4px; letter-spacing: 1px;">ORDER No. 001</div>
-                <div style="border-top: 1px dashed var(--accent-rose); margin-bottom: 4px;"></div>
-                <div>1 × bespoke glass nails <span style="color: var(--accent-petal);">♡</span></div>
+                <div style="font-weight: 700; margin-bottom: 3px; letter-spacing: 1px; color: var(--accent-rose); font-size: 10px;">COUTURE ORDER No. 042</div>
+                <div style="border-top: 1px dashed var(--accent-rose); margin-bottom: 4px; opacity: 0.7;"></div>
+                <div style="font-size: 10px; margin-bottom: 2px;">1 × Bespoke Glass Aura Nails <span style="color: var(--accent-petal);">♡</span></div>
+                <div style="font-size: 9px; color: var(--text-muted);">Client: Luna · Prinsengracht Canal</div>
+                <div style="font-size: 9px; color: #10b981; font-weight: 500; margin-top: 2px;">🚲 Bicycle Courier Ready</div>
               </div>
 
-              <div class="steaming-matcha-cup">
-                <div class="matcha-latte-art">♡</div>
-                <div class="cup-smile">◡̈</div>
+              <!-- LUXURY ATELIER NAIL LACQUER & BOTTLE PROP (Replaces Coffee Cup) -->
+              <div class="atelier-lacquer-prop" title="Eliya Gel Couture · Aurora Glass Lacquer">
+                <div class="lacquer-sparkle-star s1">✦</div>
+                <div class="lacquer-sparkle-star s2">✧</div>
+                <div class="lacquer-cap">
+                  <div class="lacquer-gold-collar"></div>
+                </div>
+                <div class="lacquer-glass-body">
+                  <div class="lacquer-liquid-fill">
+                    <div class="lacquer-shimmer-highlight"></div>
+                  </div>
+                  <div class="lacquer-gold-label">
+                    <span class="label-brand">ELIYA</span>
+                    <span class="label-shade">GEL COUTURE</span>
+                  </div>
+                </div>
+                <div class="lacquer-brush-stem">
+                  <div class="lacquer-droplet"></div>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </main>
 
-      <footer style="opacity: 0.75; font-size: 11px; text-align: center; color: var(--text-muted); font-family: var(--font-sans); display: flex; flex-direction: column; gap: 4px;">
-        <span>A slow afternoon, bespoke glass nails, a little canal world.</span>
-        <span style="font-family: var(--font-kr); font-size: 10px; color: var(--accent-petal); opacity: 0.85;">(느린 오후, 맞춤형 유리알 네일, 작은 운하 마을)</span>
+      <footer style="opacity: 0.85; font-size: 11px; text-align: center; color: var(--text-muted); font-family: var(--font-sans); display: flex; flex-direction: column; gap: 4px;">
+        <span>Forage botanical flora & shimmering mica gems, craft bespoke 3D glass nails, and ride your bicycle across Amsterdam's bridges.</span>
+        <span style="font-family: var(--font-kr); font-size: 10px; color: var(--accent-petal); opacity: 0.9;">(희귀 식물과 프리즘 광석을 채집하고, 맞춤형 3D 유리알 네일을 조제하여 운하 마을에 배달하세요.)</span>
       </footer>
     </div>
 
@@ -2206,11 +2572,25 @@
           <svg class="ui-icon" viewBox="0 0 24 24"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
           <span>Life4Cuts</span>
         </button>
-        <button id="btn-toggle-sound" class="btn-dock active" title="Toggle Lo-Fi Piano & ASMR">
-          <svg class="ui-icon" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-          <span>Music</span>
-        </button>
-      </div>
+        
+        <!-- ATELIER JUKEBOX DOCK -->
+        <div class="hud-music-dock" id="hud-music-dock">
+          <button id="btn-music-prev" class="btn-dock-icon" title="Previous Soundtrack">⏮</button>
+          <button id="btn-toggle-sound" class="btn-dock active" title="Toggle Lo-Fi Piano & ASMR (Hover for Tracks)">
+            <svg class="ui-icon" viewBox="0 0 24 24"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+            <span id="hud-music-title">Lo-Fi Chill</span>
+          </button>
+          <button id="btn-music-next" class="btn-dock-icon" title="Next Soundtrack">⏭</button>
+          
+          <div class="hud-music-dropdown" id="hud-music-dropdown">
+            <div class="music-dropdown-header">ATELIER SOUNDTRACKS</div>
+            <div class="music-dropdown-item active" data-track="lofi-chill">☕ Atelier Lo-Fi Chill <span>78 BPM</span></div>
+            <div class="music-dropdown-item" data-track="sparkle-glass">✨ Sparkle Glass Aura <span>84 BPM</span></div>
+            <div class="music-dropdown-item" data-track="canal-breeze">🚲 Canal Bicycle Breeze <span>120 BPM</span></div>
+            <div class="music-dropdown-item" data-track="cat-eye-velvet">🌌 Midnight Cat-Eye Velvet <span>72 BPM</span></div>
+            <div class="music-dropdown-item" data-track="tea-ritual">🍵 Slow Beauty Tea Ritual <span>65 BPM</span></div>
+          </div>
+        </div>
     </div>
 
     <!-- Atelier Client Ledger / Order Card (Little Ritual Style) -->
@@ -2567,10 +2947,79 @@
       import { nailMinigame } from '/src/engine/nail-studio-minigame.ts';
       import { marketShop } from '/src/engine/market-shop.ts';
 
-      // 1. Start Screen
+      // 1. Start Screen & Jukebox Controls
       const startScreen = document.getElementById('eliya-start-screen');
       const terminalBox = document.getElementById('start-terminal-box');
       const btnSound = document.getElementById('btn-start-sound');
+      const startTrackSelect = document.getElementById('start-track-select');
+      const startTrackIcon = document.getElementById('start-track-icon');
+      const btnStartPrev = document.getElementById('start-btn-prev-track');
+      const btnStartNext = document.getElementById('start-btn-next-track');
+
+      // HUD Jukebox Elements
+      const hudMusicTitle = document.getElementById('hud-music-title');
+      const btnHudPrev = document.getElementById('btn-music-prev');
+      const btnHudNext = document.getElementById('btn-music-next');
+      const hudDropdown = document.getElementById('hud-music-dropdown');
+
+      const syncJukeboxUI = (track) => {
+        if (!track) track = sound.getCurrentTrack();
+        if (startTrackSelect) startTrackSelect.value = track.id;
+        if (startTrackIcon) startTrackIcon.textContent = track.icon;
+        if (hudMusicTitle) {
+          hudMusicTitle.textContent = track.title.replace('Atelier ', '').replace('Midnight ', '').trim();
+        }
+        if (hudDropdown) {
+          hudDropdown.querySelectorAll('.music-dropdown-item').forEach((item) => {
+            item.classList.toggle('active', item.getAttribute('data-track') === track.id);
+          });
+        }
+        if (btnSound) {
+          btnSound.innerHTML = sound.isMuted ? '<span>🔇 MUTED</span>' : '<span>🎵 MUSIC ON</span>';
+        }
+      };
+
+      sound.onTrackChange((track) => syncJukeboxUI(track));
+
+      startTrackSelect?.addEventListener('change', (e) => {
+        sound.setTrack(e.target.value);
+        if (!sound.isPlayingMusic) sound.startMusic();
+      });
+
+      btnStartPrev?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const t = sound.prevTrack();
+        syncJukeboxUI(t);
+      });
+
+      btnStartNext?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const t = sound.nextTrack();
+        syncJukeboxUI(t);
+      });
+
+      btnHudPrev?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const t = sound.prevTrack();
+        syncJukeboxUI(t);
+      });
+
+      btnHudNext?.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const t = sound.nextTrack();
+        syncJukeboxUI(t);
+      });
+
+      hudDropdown?.querySelectorAll('.music-dropdown-item').forEach((item) => {
+        item.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const tid = item.getAttribute('data-track');
+          if (tid) {
+            sound.setTrack(tid);
+            if (!sound.isPlayingMusic) sound.startMusic();
+          }
+        });
+      });
 
       document.getElementById('btn-open-shop')?.addEventListener('click', () => {
         marketShop.open();
@@ -2579,7 +3028,9 @@
       const enterGame = () => {
         if (!startScreen || startScreen.classList.contains('hidden')) return;
         sound.playTeaPour();
-        sound.startLoFiMusic();
+        if (!sound.isPlayingMusic && !sound.isMuted) {
+          sound.startMusic();
+        }
         startScreen.classList.add('hidden');
       };
 
@@ -2591,7 +3042,12 @@
       btnSound?.addEventListener('click', (e) => {
         e.stopPropagation();
         sound.isMuted = !sound.isMuted;
-        btnSound.textContent = sound.isMuted ? '🔇 Sound off' : '🎵 Sound on •';
+        if (sound.isMuted) {
+          sound.stopMusic();
+        } else {
+          sound.startMusic();
+        }
+        syncJukeboxUI(sound.getCurrentTrack());
       });
 
       // 2. Soundboard Event Listeners

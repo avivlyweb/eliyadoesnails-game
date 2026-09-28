@@ -130,9 +130,14 @@ class EliyaCanalWorldGame {
     // Expose game on window for UI interactions
     (window as any).gameInstance = this;
 
-    // Start background lo-fi music automatically or on first click
-    window.addEventListener("pointerdown", () => sound.startLoFiMusic(), { once: true });
-    window.addEventListener("keydown", () => sound.startLoFiMusic(), { once: true });
+    // Start soundtrack on first interaction if inside game
+    const tryAutoStartMusic = () => {
+      const startScreen = document.getElementById("eliya-start-screen");
+      if (startScreen && !startScreen.classList.contains("hidden")) return;
+      if (!sound.isPlayingMusic && !sound.isMuted) sound.startMusic();
+    };
+    window.addEventListener("pointerdown", tryAutoStartMusic, { once: true });
+    window.addEventListener("keydown", tryAutoStartMusic, { once: true });
 
     this.animate();
   }
@@ -191,6 +196,10 @@ class EliyaCanalWorldGame {
       }
       if (e.code === "KeyC") {
         this.companion.toggle();
+      }
+      if (e.code === "KeyT") {
+        const next = sound.nextTrack();
+        this.showToast(`🎵 Soundtrack: ${next.icon} ${next.title} (${next.tempo})`);
       }
     });
 
@@ -431,7 +440,14 @@ class EliyaCanalWorldGame {
       btnSound.addEventListener("click", () => {
         sound.isMuted = !sound.isMuted;
         btnSound.classList.toggle("active", !sound.isMuted);
-        if (!sound.isMuted) sound.startLoFiMusic();
+        if (sound.isMuted) {
+          sound.stopMusic();
+          this.showToast("🔇 Soundtrack Muted");
+        } else {
+          sound.startMusic();
+          const trk = sound.getCurrentTrack();
+          this.showToast(`🎵 Playing: ${trk.icon} ${trk.title}`);
+        }
       });
     }
 
