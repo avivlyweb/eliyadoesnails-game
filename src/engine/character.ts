@@ -65,9 +65,9 @@ export class SphericalCharacter {
     this.setupCourierBoxes();
   }
 
-  public currentModelKey: "cloud-mascot" | "artisan" = "cloud-mascot";
+  public currentModelKey: "cloud-mascot" | "mochi-bunny" | "artisan" = "cloud-mascot";
 
-  public setCharacterModel(modelKey: "cloud-mascot" | "artisan") {
+  public setCharacterModel(modelKey: "cloud-mascot" | "mochi-bunny" | "artisan") {
     if (this.model) {
       this.root.remove(this.model);
       this.model = null;
@@ -79,10 +79,14 @@ export class SphericalCharacter {
       this.traySocket = null;
     }
     this.currentModelKey = modelKey;
-    const modelPath = modelKey === "cloud-mascot"
-      ? "/models/characters/eliya-cloud-mascot.glb"
-      : "/models/eliyadoesnails/eliya-artisan.glb";
-    const modelScale = modelKey === "cloud-mascot" ? 1.20 : 0.95;
+    const modelPath =
+      modelKey === "cloud-mascot"
+        ? "/models/characters/eliya-cloud-mascot.glb"
+        : modelKey === "mochi-bunny"
+        ? "/models/characters/peach-mochi-bunny.glb"
+        : "/models/eliyadoesnails/eliya-artisan.glb";
+    const modelScale =
+      modelKey === "cloud-mascot" ? 1.20 : modelKey === "mochi-bunny" ? 1.25 : 0.95;
 
     this.loader.load(
       modelPath,
@@ -116,8 +120,30 @@ export class SphericalCharacter {
   }
 
   public toggleAvatarSkin() {
-    const nextKey = this.currentModelKey === "cloud-mascot" ? "artisan" : "cloud-mascot";
+    const skins: ("cloud-mascot" | "mochi-bunny" | "artisan")[] = [
+      "cloud-mascot",
+      "mochi-bunny",
+      "artisan",
+    ];
+    const currentIndex = skins.indexOf(this.currentModelKey);
+    const nextKey = skins[(currentIndex + 1) % skins.length];
     this.setCharacterModel(nextKey);
+
+    const labels: Record<string, string> = {
+      "cloud-mascot": "✨ Eliya Cloud Mascot (Atelier Edition)",
+      "mochi-bunny": "🐰 Peach Mochi Bunny (Korean 3D Creature)",
+      "artisan": "🌸 Eliya Classic Artisan",
+    };
+    const toast = document.createElement("div");
+    toast.style.cssText =
+      "position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:rgba(36,19,14,0.88);color:#faf7f5;padding:8px 18px;border-radius:999px;font-family:var(--font-sans, sans-serif);font-size:12px;font-weight:600;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:9999;pointer-events:none;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);transition:opacity 0.3s ease;";
+    toast.textContent = `Avatar Skin: ${labels[nextKey] || nextKey}`;
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 300);
+    }, 2200);
+
     return nextKey;
   }
 
@@ -421,8 +447,10 @@ export class SphericalCharacter {
         this.carriedBoxesGroup.position.set(fwd.x * 0.58, 1.02, fwd.z * 0.58);
       } else {
         const bounce = this.model ? this.model.position.y : 0;
-        const boxFwd = this.currentModelKey === "cloud-mascot" ? 0.26 : 0.32;
-        const boxY = this.currentModelKey === "cloud-mascot" ? 0.72 : 0.88;
+        const isBunny = this.currentModelKey === "mochi-bunny";
+        const isCloud = this.currentModelKey === "cloud-mascot";
+        const boxFwd = isBunny ? 0.28 : isCloud ? 0.26 : 0.32;
+        const boxY = isBunny ? 0.58 : isCloud ? 0.72 : 0.88;
         this.carriedBoxesGroup.position.set(fwd.x * boxFwd, boxY + bounce, fwd.z * boxFwd);
       }
     }
@@ -431,11 +459,15 @@ export class SphericalCharacter {
   private animateCharacter(hasInput: boolean, steerInput: number, delta: number) {
     if (!this.model) return;
 
+    const isBunny = this.currentModelKey === "mochi-bunny";
+    const isCloud = this.currentModelKey === "cloud-mascot";
+
     if (this.isRidingBicycle) {
       // 1. RIDING BICYCLE POSE & PEDALING
-      const isCloud = this.currentModelKey === "cloud-mascot";
-      this.model.position.set(0, isCloud ? 0.36 : 0.44, isCloud ? -0.06 : -0.12);
-      this.model.rotation.set(0.18, 0, 0);
+      const bikeY = isBunny ? 0.32 : isCloud ? 0.36 : 0.44;
+      const bikeZ = isBunny ? -0.05 : isCloud ? -0.06 : -0.12;
+      this.model.position.set(0, bikeY, bikeZ);
+      this.model.rotation.set(isBunny ? 0.12 : 0.18, 0, 0);
 
       // Hands hold swept Dutch handlebars
       if (this.leftArm) this.leftArm.rotation.set(-0.72, 0.12, 0.15);
@@ -473,7 +505,7 @@ export class SphericalCharacter {
           this.isGathering = false;
         } else {
           // Bend down 0.8s: torso lowers, pitches forward, arms reach toward ground
-          this.model.position.y = this.currentModelKey === "cloud-mascot" ? -0.15 : -0.22;
+          this.model.position.y = isBunny ? -0.12 : isCloud ? -0.15 : -0.22;
           this.model.rotation.x = 0.40;
           if (this.leftArm) this.leftArm.rotation.set(0.85, 0, -0.15);
           if (this.rightArm) this.rightArm.rotation.set(0.85, 0, 0.15);
@@ -497,12 +529,22 @@ export class SphericalCharacter {
 
         // Subtle realistic torso bounce
         this.model.position.y = Math.abs(Math.sin(this.walkCycle * 2)) * 0.055;
+
+        // Playful ear/head wobble for peach bunny
+        if (this.head && isBunny) {
+          this.head.rotation.z = Math.sin(this.walkCycle) * 0.08;
+          this.head.rotation.x = Math.abs(Math.sin(this.walkCycle * 2)) * 0.06;
+        }
       } else {
         // Relaxed idle breathing
         if (this.leftLeg) this.leftLeg.rotation.x = THREE.MathUtils.lerp(this.leftLeg.rotation.x, 0, delta * 6);
         if (this.rightLeg) this.rightLeg.rotation.x = THREE.MathUtils.lerp(this.rightLeg.rotation.x, 0, delta * 6);
         if (this.leftArm) this.leftArm.rotation.x = THREE.MathUtils.lerp(this.leftArm.rotation.x, 0, delta * 6);
         if (this.rightArm) this.rightArm.rotation.x = THREE.MathUtils.lerp(this.rightArm.rotation.x, 0, delta * 6);
+        if (this.head && isBunny) {
+          this.head.rotation.z = THREE.MathUtils.lerp(this.head.rotation.z, 0, delta * 6);
+          this.head.rotation.x = THREE.MathUtils.lerp(this.head.rotation.x, 0, delta * 6);
+        }
         this.model.position.y = THREE.MathUtils.lerp(this.model.position.y, 0, delta * 6);
       }
 
