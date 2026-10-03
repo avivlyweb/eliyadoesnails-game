@@ -148,6 +148,8 @@ def build_model(mats):
     # ----------------------------------------------------
     # 3. FACE (Eyes, Inverted-Y Mouth, Soft Blush)
     # ----------------------------------------------------
+    # 3. FACIAL FEATURES & MORPH TARGETS (Wink & Smile)
+    # ----------------------------------------------------
     bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=20, radius=0.022, location=(-0.088, -0.232, 0.54))
     eye_l = bpy.context.active_object
     eye_l.name = "Eye_L"
@@ -155,6 +157,16 @@ def build_model(mats):
     bpy.ops.object.transform_apply(scale=True)
     eye_l.data.materials.append(mats["eyes_mouth"])
     for p in eye_l.data.polygons: p.use_smooth = True
+    
+    # Left eye wink shape key (squishes into playful curved crescent)
+    eye_l.shape_key_add(name="Basis")
+    sk_wink_l = eye_l.shape_key_add(name="wink")
+    for v in sk_wink_l.data:
+        dz = v.co.z - 0.54
+        dx = abs(v.co.x - (-0.088))
+        v.co.z = 0.54 + dz * 0.05 + dx * 0.40
+        v.co.y -= 0.0015
+    sk_wink_l.value = 0.0
     
     bpy.ops.mesh.primitive_uv_sphere_add(segments=32, ring_count=20, radius=0.022, location=(0.088, -0.232, 0.54))
     eye_r = bpy.context.active_object
@@ -164,8 +176,17 @@ def build_model(mats):
     eye_r.data.materials.append(mats["eyes_mouth"])
     for p in eye_r.data.polygons: p.use_smooth = True
 
+    # Right eye wink shape key
+    eye_r.shape_key_add(name="Basis")
+    sk_wink_r = eye_r.shape_key_add(name="wink")
+    for v in sk_wink_r.data:
+        dz = v.co.z - 0.54
+        dx = abs(v.co.x - 0.088)
+        v.co.z = 0.54 + dz * 0.05 + dx * 0.40
+        v.co.y -= 0.0015
+    sk_wink_r.value = 0.0
+
     # Mouth: Smooth organic inverted-Y (人 shape)
-    # Central soft sphere
     bpy.ops.mesh.primitive_uv_sphere_add(segments=16, ring_count=12, radius=0.009, location=(0, -0.236, 0.536))
     mouth_top = bpy.context.active_object
     mouth_top.scale = (1.0, 0.7, 1.1)
@@ -177,9 +198,6 @@ def build_model(mats):
     wing_l = bpy.context.active_object
     wing_l.rotation_euler = Euler((0, math.radians(45), 0), 'XYZ')
     bpy.ops.object.transform_apply(rotation=True)
-    bev_w1 = wing_l.modifiers.new("Bevel", type="BEVEL")
-    bev_w1.width = 0.004
-    bev_w1.segments = 3
     wing_l.data.materials.append(mats["eyes_mouth"])
 
     # Right wing
@@ -187,9 +205,6 @@ def build_model(mats):
     wing_r = bpy.context.active_object
     wing_r.rotation_euler = Euler((0, math.radians(-45), 0), 'XYZ')
     bpy.ops.object.transform_apply(rotation=True)
-    bev_w2 = wing_r.modifiers.new("Bevel", type="BEVEL")
-    bev_w2.width = 0.004
-    bev_w2.segments = 3
     wing_r.data.materials.append(mats["eyes_mouth"])
 
     # Join mouth elements
@@ -203,8 +218,21 @@ def build_model(mats):
     mouth.name = "Mouth"
     for p in mouth.data.polygons: p.use_smooth = True
 
+    # Mouth smile shape key (curls wings up and outward into happy smile)
+    mouth.shape_key_add(name="Basis")
+    sk_smile = mouth.shape_key_add(name="smile")
+    for v in sk_smile.data:
+        dx = abs(v.co.x)
+        if dx > 0.004:
+            v.co.z += (dx - 0.004) * 1.1
+            v.co.x += (0.003 if v.co.x > 0 else -0.003)
+            v.co.y -= 0.001
+        else:
+            v.co.z -= 0.0015
+    sk_smile.value = 0.0
+
     # Soft Cheek Blush Decals
-    def create_blush(name, pos):
+    def create_blush(name, pos, x_sign):
         bpy.ops.mesh.primitive_cylinder_add(radius=0.028, depth=0.004, vertices=24, location=pos)
         b = bpy.context.active_object
         b.name = name
@@ -213,10 +241,17 @@ def build_model(mats):
         bpy.ops.object.transform_apply(scale=True, rotation=True)
         b.data.materials.append(mats["blush"])
         for p in b.data.polygons: p.use_smooth = True
+
+        b.shape_key_add(name="Basis")
+        sk_b = b.shape_key_add(name="smile")
+        for v in sk_b.data:
+            v.co.z += 0.008
+            v.co.x = pos[0] + (v.co.x - pos[0]) * 1.15
+        sk_b.value = 0.0
         return b
 
-    blush_l = create_blush("Blush_L", (-0.138, -0.225, 0.51))
-    blush_r = create_blush("Blush_R", (0.138, -0.225, 0.51))
+    blush_l = create_blush("Blush_L", (-0.138, -0.225, 0.51), -1)
+    blush_r = create_blush("Blush_R", (0.138, -0.225, 0.51), 1)
 
     # ----------------------------------------------------
     # 4. ARMS / PAWS (Smooth Peach Nubs on sides)
@@ -345,21 +380,83 @@ def main():
     rim_obj.rotation_euler = Euler((math.radians(-48), 0, 0), 'XYZ')
     bpy.context.scene.collection.objects.link(rim_obj)
 
-    # Camera framing 1:1 square centered on character
-    cam_data = bpy.data.cameras.new(name="Studio_Camera")
-    cam_data.lens = 52
-    cam_obj = bpy.data.objects.new("Studio_Camera", cam_data)
-    cam_obj.location = (0, -2.35, 0.52)
-    cam_obj.rotation_euler = Euler((math.radians(90), 0, 0), 'XYZ')
-    bpy.context.scene.collection.objects.link(cam_obj)
-    bpy.context.scene.camera = cam_obj
+    # Camera 1: Front Studio Camera
+    cam_front_data = bpy.data.cameras.new(name="Cam_Front")
+    cam_front_data.lens = 52
+    cam_front = bpy.data.objects.new("Cam_Front", cam_front_data)
+    cam_front.location = (0, -2.35, 0.52)
+    cam_front.rotation_euler = Euler((math.radians(90), 0, 0), 'XYZ')
+    bpy.context.scene.collection.objects.link(cam_front)
+    
+    # Camera 2: 3/4 Perspective Beauty Camera
+    cam_34_data = bpy.data.cameras.new(name="Cam_34")
+    cam_34_data.lens = 65
+    cam_34 = bpy.data.objects.new("Cam_34", cam_34_data)
+    cam_34.location = (1.5, -2.1, 0.75)
+    bpy.context.scene.collection.objects.link(cam_34)
+    target = bpy.data.objects.new("Cam_Target", None)
+    target.location = (0, 0, 0.45)
+    bpy.context.scene.collection.objects.link(target)
+    track = cam_34.constraints.new(type='TRACK_TO')
+    track.target = target
+    track.track_axis = 'TRACK_NEGATIVE_Z'
+    track.up_axis = 'UP_Y'
 
     # Render settings: 1024x1024
     bpy.context.scene.render.resolution_x = 1024
     bpy.context.scene.render.resolution_y = 1024
     bpy.context.scene.render.resolution_percentage = 100
-
     out_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # 1. Render Front Neutral Shot
+    bpy.context.scene.camera = cam_front
+    front_path = os.path.join(out_dir, "preview-front.png")
+    bpy.context.scene.render.filepath = front_path
+    bpy.ops.render.render(write_still=True)
+    print(f"Rendered Front Neutral: {front_path}")
+
+    # 2. Render Winking & Smiling Expression Shot
+    eye_l = bpy.data.objects.get("Eye_L")
+    eye_r = bpy.data.objects.get("Eye_R")
+    mouth = bpy.data.objects.get("Mouth")
+    blush_l = bpy.data.objects.get("Blush_L")
+    blush_r = bpy.data.objects.get("Blush_R")
+    
+    if eye_r and eye_r.data.shape_keys:
+        eye_r.data.shape_keys.key_blocks["wink"].value = 1.0
+    if eye_l and eye_l.data.shape_keys:
+        eye_l.data.shape_keys.key_blocks["wink"].value = 0.0
+    if mouth and mouth.data.shape_keys:
+        mouth.data.shape_keys.key_blocks["smile"].value = 1.0
+    if blush_l and blush_l.data.shape_keys:
+        blush_l.data.shape_keys.key_blocks["smile"].value = 0.5
+    if blush_r and blush_r.data.shape_keys:
+        blush_r.data.shape_keys.key_blocks["smile"].value = 1.0
+
+    wink_path = os.path.join(out_dir, "preview-wink-smile.png")
+    bpy.context.scene.render.filepath = wink_path
+    bpy.ops.render.render(write_still=True)
+    print(f"Rendered Wink & Smile Expression: {wink_path}")
+
+    # 3. Render 3/4 Perspective Beauty Shot
+    bpy.context.scene.camera = cam_34
+    beauty_path = os.path.join(out_dir, "preview-34-beauty.png")
+    bpy.context.scene.render.filepath = beauty_path
+    bpy.ops.render.render(write_still=True)
+    print(f"Rendered 3/4 Beauty Angle: {beauty_path}")
+
+    # Reset shape keys back to neutral (0.0) before saving and exporting
+    if eye_l and eye_l.data.shape_keys:
+        eye_l.data.shape_keys.key_blocks["wink"].value = 0.0
+    if eye_r and eye_r.data.shape_keys:
+        eye_r.data.shape_keys.key_blocks["wink"].value = 0.0
+    if mouth and mouth.data.shape_keys:
+        mouth.data.shape_keys.key_blocks["smile"].value = 0.0
+    if blush_l and blush_l.data.shape_keys:
+        blush_l.data.shape_keys.key_blocks["smile"].value = 0.0
+    if blush_r and blush_r.data.shape_keys:
+        blush_r.data.shape_keys.key_blocks["smile"].value = 0.0
+
     blend_path = os.path.join(out_dir, "peach-mochi-bunny.blend")
     bpy.ops.wm.save_as_mainfile(filepath=blend_path)
     print(f"Saved blend file to: {blend_path}")
@@ -370,15 +467,16 @@ def main():
         backdrop.hide_render = True
         backdrop.hide_set(True)
 
-    # Export standalone character GLB
+    # Export standalone character GLB with morph targets enabled
     glb_path = os.path.join(out_dir, "peach-mochi-bunny.glb")
     bpy.ops.export_scene.gltf(
         filepath=glb_path,
         export_format='GLB',
         use_selection=False,
-        export_materials='EXPORT'
+        export_materials='EXPORT',
+        export_morph=True
     )
-    print(f"Exported GLB to: {glb_path}")
+    print(f"Exported GLB with morph targets to: {glb_path}")
 
     # Unhide backdrop for Blender viewport session
     if backdrop:

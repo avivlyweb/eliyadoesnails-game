@@ -15,6 +15,18 @@ export class SphericalCharacter {
   public rightLeg: THREE.Object3D | null = null;
   public head: THREE.Object3D | null = null;
   public traySocket: THREE.Object3D | null = null;
+  // Facial Morph Targets (Wink & Smile)
+  public eyeLMesh: THREE.Mesh | null = null;
+  public eyeRMesh: THREE.Mesh | null = null;
+  public mouthMesh: THREE.Mesh | null = null;
+  public blushLMesh: THREE.Mesh | null = null;
+  public blushRMesh: THREE.Mesh | null = null;
+  private blinkTimer: number = 2.2;
+  private isBlinking: boolean = false;
+  private blinkProgress: number = 0;
+  private winkMode: "both" | "right" | "left" = "both";
+  private emoteWinkTimer: number = 0;
+  private currentSmile: number = 0;
 
   // Bicycle Model & Sub-nodes
   public bicycle: THREE.Group | null = null;
@@ -77,6 +89,11 @@ export class SphericalCharacter {
       this.rightLeg = null;
       this.head = null;
       this.traySocket = null;
+      this.eyeLMesh = null;
+      this.eyeRMesh = null;
+      this.mouthMesh = null;
+      this.blushLMesh = null;
+      this.blushRMesh = null;
     }
     this.currentModelKey = modelKey;
     const modelPath =
@@ -109,6 +126,13 @@ export class SphericalCharacter {
         this.head = this.model.getObjectByName("eliya_Head") || null;
         this.traySocket = this.model.getObjectByName("eliya_TraySocket") || null;
 
+        // Facial Morph Target Meshes (Wink & Smile)
+        this.eyeLMesh = (this.model.getObjectByName("Eye_L") as THREE.Mesh) || null;
+        this.eyeRMesh = (this.model.getObjectByName("Eye_R") as THREE.Mesh) || null;
+        this.mouthMesh = (this.model.getObjectByName("Mouth") as THREE.Mesh) || null;
+        this.blushLMesh = (this.model.getObjectByName("Blush_L") as THREE.Mesh) || null;
+        this.blushRMesh = (this.model.getObjectByName("Blush_R") as THREE.Mesh) || null;
+
         this.root.add(this.model);
       },
       undefined,
@@ -117,6 +141,28 @@ export class SphericalCharacter {
         this.createProceduralAvatar();
       }
     );
+  }
+
+  public triggerWinkEmote() {
+    this.emoteWinkTimer = 1.4;
+    sound.playGlassFile();
+    const toast = document.createElement("div");
+    toast.style.cssText =
+      "position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:rgba(36,19,14,0.88);color:#faf7f5;padding:8px 18px;border-radius:999px;font-family:var(--font-sans, sans-serif);font-size:12px;font-weight:600;letter-spacing:0.5px;box-shadow:0 4px 16px rgba(0,0,0,0.2);z-index:9999;pointer-events:none;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.15);transition:opacity 0.3s ease;";
+    toast.textContent = "🐰 Wink & Radiant Smile! ♡ (Key: P / J)";
+    document.body.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = "0";
+      setTimeout(() => toast.remove(), 300);
+    }, 1800);
+  }
+
+  public setFacialExpression(winkL: number, winkR: number, smile: number) {
+    if (this.eyeLMesh?.morphTargetInfluences) this.eyeLMesh.morphTargetInfluences[0] = winkL;
+    if (this.eyeRMesh?.morphTargetInfluences) this.eyeRMesh.morphTargetInfluences[0] = winkR;
+    if (this.mouthMesh?.morphTargetInfluences) this.mouthMesh.morphTargetInfluences[0] = smile;
+    if (this.blushLMesh?.morphTargetInfluences) this.blushLMesh.morphTargetInfluences[0] = smile * 0.8;
+    if (this.blushRMesh?.morphTargetInfluences) this.blushRMesh.morphTargetInfluences[0] = smile * 0.8;
   }
 
   public toggleAvatarSkin() {
@@ -217,6 +263,9 @@ export class SphericalCharacter {
       }
       if (e.code === "KeyM") {
         this.toggleAvatarSkin();
+      }
+      if (e.code === "KeyP" || e.code === "KeyJ") {
+        this.triggerWinkEmote();
       }
     });
 
@@ -553,6 +602,50 @@ export class SphericalCharacter {
         if (this.leftArm) this.leftArm.rotation.set(-0.62, 0.22, 0.12);
         if (this.rightArm) this.rightArm.rotation.set(-0.62, -0.22, -0.12);
       }
+    }
+
+    // 4. DYNAMIC FACIAL ANIMATIONS (Winking & Smiling)
+    if (this.currentModelKey === "mochi-bunny") {
+      let targetSmile =
+        this.isRidingBicycle || this.packedBoxCount > 0 || this.isGathering
+          ? 1.0
+          : this.moving
+          ? 0.35
+          : 0.0;
+      let targetWinkL = 0;
+      let targetWinkR = 0;
+
+      if (this.emoteWinkTimer > 0) {
+        this.emoteWinkTimer -= delta;
+        targetSmile = 1.0;
+        targetWinkR = 1.0; // Playful one-eye wink!
+      } else {
+        // Natural blink & auto-wink loop
+        this.blinkTimer -= delta;
+        if (this.blinkTimer <= 0) {
+          if (!this.isBlinking) {
+            this.isBlinking = true;
+            this.blinkProgress = 0;
+            const rand = Math.random();
+            this.winkMode = rand < 0.22 ? "right" : rand < 0.35 ? "left" : "both";
+          }
+        }
+
+        if (this.isBlinking) {
+          this.blinkProgress += delta / 0.16;
+          if (this.blinkProgress >= 1.0) {
+            this.isBlinking = false;
+            this.blinkTimer = 2.4 + Math.random() * 3.5;
+          } else {
+            const blinkValue = Math.sin(this.blinkProgress * Math.PI);
+            if (this.winkMode === "both" || this.winkMode === "left") targetWinkL = blinkValue;
+            if (this.winkMode === "both" || this.winkMode === "right") targetWinkR = blinkValue;
+          }
+        }
+      }
+
+      this.currentSmile = THREE.MathUtils.lerp(this.currentSmile, targetSmile, delta * 8.0);
+      this.setFacialExpression(targetWinkL, targetWinkR, this.currentSmile);
     }
   }
 
