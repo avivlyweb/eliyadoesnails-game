@@ -1,5 +1,4 @@
 import { sound } from "../engine/audio";
-import { GameDatabase } from "../backend/convex-client";
 
 export interface PhotoStripOptions {
   clientName: string;
@@ -101,15 +100,6 @@ export class Life4CutsPhotobooth {
     ctx.fillText("SLOW NAILS, MADE WITH INTENTION", w / 2, footerY + 80);
 
     sound.playCameraShutter();
-
-    // Save to Convex backend in background
-    GameDatabase.saveStrip({
-      clientName: opts.clientName,
-      setDesignName: opts.setDesignName,
-      frameColor: opts.frameColor,
-      poses: opts.snapshots,
-      stickers: [],
-    });
 
     return canvas.toDataURL("image/png");
   }

@@ -92,8 +92,8 @@ describe("Quests v2 and Delivery mutations", () => {
 
     // 6. Verify player state after delivery: Level 2 reached, Market Square unlocked!
     const updatedState = await t.query(api.players.state, { guestToken: token });
-    expect(updatedState.player.level).toBe(2);
-    expect(updatedState.player.unlocks).toContain("district:market");
+    expect(updatedState!.player.level).toBe(2);
+    expect(updatedState!.player.unlocks).toContain("district:market");
 
     // 7. Verify next quest offered for Mira (quest_mira_2)
     const nextBoard = await t.query(api.quests.board, {

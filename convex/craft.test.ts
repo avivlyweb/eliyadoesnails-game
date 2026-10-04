@@ -39,14 +39,14 @@ describe("Crafting mutations", () => {
 
     // Check inventory state
     const state = await t.query(api.players.state, { guestToken: token });
-    const craftedCharm = state.inventory.find(
+    const craftedCharm = state!.inventory.find(
       (i) => i.itemType === "charm" && i.itemKey === "ribbon_bow"
     );
     expect(craftedCharm).toBeDefined();
     expect(craftedCharm?.qty).toBe(1);
 
     // Verify silk ribbon was consumed
-    const silkRibbon = state.inventory.find(
+    const silkRibbon = state!.inventory.find(
       (i) => i.itemType === "material" && i.itemKey === "silk_ribbon"
     );
     expect(silkRibbon?.qty).toBe(0);

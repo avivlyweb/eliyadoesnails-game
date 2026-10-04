@@ -11,6 +11,7 @@ import { gameConvex, PlayerStatePayload } from "./net/convex";
 import { DISTRICTS, sphericalToNormal } from "./engine/planet-layout";
 import { marketShop } from "./engine/market-shop";
 import { nailMinigame } from "./engine/nail-studio-minigame";
+import { isGameplayInputBlocked, isTypingInField, isOnStartScreen } from "./engine/input-guard";
 
 const MATERIAL_ICONS: Record<string, { icon: string; name: string; nameKo: string; district: string; price: number; desc: string }> = {
   sakura_petal: { icon: "🌸", name: "Sakura Petal", nameKo: "벚꽃잎", district: "Canal & Meadow", price: 3, desc: "Delicate spring cherry blossom petals harvested from Amsterdam canal trees." },
@@ -175,14 +176,20 @@ class EliyaCanalWorldGame {
     });
 
     window.addEventListener("keydown", (e) => {
-      if (e.code === "KeyE") {
-        this.interactWithNearby();
-      }
-      if (e.code === "KeyI") {
-        this.toggleInventory();
-      }
+      // Escape always closes menus, even when gameplay keys are blocked.
       if (e.code === "Escape") {
         this.closeAllModals();
+        return;
+      }
+      // [I] toggles the basket, so it must also work while the basket is open.
+      if (e.code === "KeyI" && !e.repeat && !isTypingInField(e) && !isOnStartScreen()) {
+        this.toggleInventory();
+        return;
+      }
+      if (e.repeat || isGameplayInputBlocked(e)) return;
+
+      if (e.code === "KeyE") {
+        this.interactWithNearby();
       }
       if (e.code === "KeyJ") {
         this.toggleOrderCard();
@@ -191,9 +198,8 @@ class EliyaCanalWorldGame {
         this.player.toggleBicycle();
         document.getElementById("btn-toggle-bike")?.classList.toggle("active", this.player.isRidingBicycle);
       }
-      if (e.code === "KeyS" && !e.ctrlKey && !e.metaKey) {
-        marketShop.open();
-      }
+      // (Market stall used to be on [S], which clashed with walking backwards.
+      //  Open it with the HUD "Market Shop" button or by visiting Sanne's stall.)
       if (e.code === "KeyC") {
         this.companion.toggle();
       }

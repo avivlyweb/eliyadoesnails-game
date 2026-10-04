@@ -2429,7 +2429,7 @@
           </div>
           <h1 class="start-big-title">eliyadoesnails</h1>
           <div class="start-sub-title">Bespoke 3D Nail Artistry · Botanical Foraging · Canal Bicycle Rides</div>
-          <div class="start-prompt-hint">
+          <div class="start-prompt-hint" id="start-enter-hint" role="button" tabindex="0" style="cursor: pointer;">
             <span>Enter the Atelier & World · 아틀리에 & 운하 세계 입장</span>
             <span class="start-key-badge">Enter ↵</span>
           </div>
@@ -2560,7 +2560,7 @@
           <svg class="ui-icon" viewBox="0 0 24 24"><circle cx="5.5" cy="17.5" r="3.5"/><circle cx="18.5" cy="17.5" r="3.5"/><path d="M15 6a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-3 11.5L9 11l4-5h3m-7 5.5h6l2.5 6"/></svg>
           <span>Ride Bike [B]</span>
         </button>
-        <button id="btn-open-shop" class="btn-dock" title="Open Sanne's Slow Market Stall [S]">
+        <button id="btn-open-shop" class="btn-dock" title="Open Sanne's Slow Market Stall">
           <svg class="ui-icon" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span>Market Shop</span>
         </button>
@@ -3035,6 +3035,7 @@
       };
 
       terminalBox?.addEventListener('click', enterGame);
+      document.getElementById('start-enter-hint')?.addEventListener('click', enterGame);
       window.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') enterGame();
       });

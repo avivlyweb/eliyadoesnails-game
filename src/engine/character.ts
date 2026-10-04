@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { sound } from "./audio";
+import { isGameplayInputBlocked } from "./input-guard";
 
 export class SphericalCharacter {
   public scene: THREE.Scene;
@@ -254,23 +255,33 @@ export class SphericalCharacter {
 
   private setupInput() {
     window.addEventListener("keydown", (e) => {
+      if (isGameplayInputBlocked(e)) {
+        // Don't walk around behind open menus or on the start screen.
+        this.keys = {};
+        return;
+      }
       this.keys[e.code] = true;
+      if (e.repeat) return; // one action per key press, not per auto-repeat
       if (e.code === "Space") {
+        e.preventDefault();
         this.jump();
       }
-      if (e.code === "KeyB") {
-        this.toggleBicycle();
-      }
+      // NOTE: [B] (bicycle) is handled in main.ts so the HUD button stays in sync.
       if (e.code === "KeyM") {
         this.toggleAvatarSkin();
       }
-      if (e.code === "KeyP" || e.code === "KeyJ") {
+      if (e.code === "KeyP") {
         this.triggerWinkEmote();
       }
     });
 
     window.addEventListener("keyup", (e) => {
       this.keys[e.code] = false;
+    });
+
+    // Releasing keys while the tab is unfocused would otherwise leave the player walking forever.
+    window.addEventListener("blur", () => {
+      this.keys = {};
     });
   }
 

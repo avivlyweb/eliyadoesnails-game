@@ -3,9 +3,20 @@ import { api } from "../../convex/_generated/api";
 
 const CONVEX_URL =
   (import.meta as any).env?.VITE_CONVEX_URL ||
-  "https://incredible-snake-136.convex.cloud";
+  "https://incredible-snake-136.eu-west-1.convex.cloud";
 
 export const convex = new ConvexClient(CONVEX_URL);
+
+/** Reject if a Convex call hasn't settled in `ms` (so the game never hangs on a dead connection). */
+function withTimeout<T>(promise: Promise<T>, ms: number, label: string): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timer = setTimeout(() => reject(new Error(`[Convex] ${label} timed out after ${ms}ms`)), ms);
+    promise.then(
+      (v) => { clearTimeout(timer); resolve(v); },
+      (e) => { clearTimeout(timer); reject(e); }
+    );
+  });
+}
 export { api };
 
 const GUEST_TOKEN_KEY = "eliyadoesnails_guest_token";
@@ -74,7 +85,7 @@ class GameConvexService {
   public async init(): Promise<void> {
     // 1. Fetch content from Convex with fallback to /content-fallback.json
     try {
-      this.content = await convex.query(api.content.getAll, {});
+      this.content = await withTimeout(convex.query(api.content.getAll, {}), 8000, "content.getAll");
       this.isOnline = true;
       console.log("[Convex] Content loaded from Convex server.");
     } catch (err) {
@@ -87,14 +98,18 @@ class GameConvexService {
         console.error("[Convex] Failed to load offline fallback content:", fallbackErr);
       }
       this.isOnline = false;
+      // Stop the client from retrying forever in the background while we play offline.
+      convex.close().catch(() => {});
     }
 
     // 2. Bootstrap Player
     if (this.isOnline) {
       try {
-        const bootstrapped = await convex.mutation(api.players.bootstrap, {
-          guestToken: this.guestToken,
-        });
+        const bootstrapped = await withTimeout(
+          convex.mutation(api.players.bootstrap, { guestToken: this.guestToken }),
+          8000,
+          "players.bootstrap"
+        );
         this.currentState = bootstrapped as any;
         this.currentGameMinutes = bootstrapped.player.gameMinutes || 480;
         this.currentCoord = {

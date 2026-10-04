@@ -285,7 +285,9 @@ export class MarketShopController {
       return;
     }
 
-    const items = SHOP_ITEMS.filter((i) => i.type === this.currentTab);
+    // Tabs are plural ("shades", "tools", "decor") but item types are singular ("shade", "tool", "decor").
+    const TAB_TO_TYPE: Record<string, string> = { shades: "shade", tools: "tool", decor: "decor" };
+    const items = SHOP_ITEMS.filter((i) => i.type === TAB_TO_TYPE[this.currentTab]);
     for (const item of items) {
       const isOwned = this.isItemOwned(item.type, item.key);
       const isLevelUnlocked = playerLevel >= item.level;
