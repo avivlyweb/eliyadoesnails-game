@@ -154,9 +154,21 @@ export class NailDecorator {
     this.renderer.domElement.style.cursor = id ? "copy" : "grab";
   }
 
-  public clearCharms(notify = true) {
-    for (const p of this.placed) p.object.parent?.remove(p.object);
-    this.placed = [];
+  public clearCharms(notify = true, keepCharmId?: string) {
+    if (keepCharmId) {
+      const kept = [];
+      for (const p of this.placed) {
+        if (p.charmId === keepCharmId && kept.length === 0) {
+          kept.push(p);
+        } else {
+          p.object.parent?.remove(p.object);
+        }
+      }
+      this.placed = kept;
+    } else {
+      for (const p of this.placed) p.object.parent?.remove(p.object);
+      this.placed = [];
+    }
     if (notify) this.onChange(this.placed);
   }
 

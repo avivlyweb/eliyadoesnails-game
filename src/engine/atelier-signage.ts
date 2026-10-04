@@ -141,12 +141,13 @@ export function addAtelierSignage(house: THREE.Object3D) {
 
   // 2. Hanging blade sign: wrought-iron bracket sticking out from the facade at first-floor height
   const iron = new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.5, metalness: 0.6 });
-  const bracket = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.78, 10), iron);
+  const SIGN_X = 0.90;
+  const bracket = new THREE.Mesh(new THREE.CylinderGeometry(0.018, 0.018, 0.95, 10), iron);
   bracket.rotation.x = Math.PI / 2;
-  bracket.position.set(1.0, 2.62, FRONT_Z - 0.39);
+  bracket.position.set(SIGN_X, 2.62, FRONT_Z - 0.48);
   group.add(bracket);
-  const brace = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.6, 8), iron);
-  brace.position.set(1.0, 2.42, FRONT_Z - 0.2);
+  const brace = new THREE.Mesh(new THREE.CylinderGeometry(0.012, 0.012, 0.65, 8), iron);
+  brace.position.set(SIGN_X, 2.42, FRONT_Z - 0.24);
   brace.rotation.x = 0.75;
   group.add(brace);
   const blade = new THREE.Group();
@@ -167,7 +168,7 @@ export function addAtelierSignage(house: THREE.Object3D) {
     chain.position.set(0, -0.02, dz);
     blade.add(chain);
   }
-  blade.position.set(1.0, 2.6, FRONT_Z - 0.48);
+  blade.position.set(SIGN_X, 2.6, FRONT_Z - 0.58);
   blade.name = "atelier_BladeSign";
   group.add(blade);
 

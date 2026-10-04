@@ -3404,7 +3404,11 @@
           const clearBtn = document.createElement('button');
           clearBtn.className = 'charm-clear-btn';
           clearBtn.textContent = 'Remove all charms';
-          clearBtn.addEventListener('click', () => decorator?.clearCharms());
+          clearBtn.addEventListener('click', () => {
+            const ticket = activeClientTicketId ? questSystem.getTicket(activeClientTicketId) : null;
+            const wanted = ticket ? charmForRequest(ticket.requestedCharm) : null;
+            decorator?.clearCharms(true, wanted?.id);
+          });
           charmGrid.parentElement?.appendChild(clearBtn);
           refreshCharmUI();
         }
