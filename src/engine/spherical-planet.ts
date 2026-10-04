@@ -475,21 +475,21 @@ export class SphericalPlanet {
       districtKey: "canal",
     });
 
-    // 2 Petal Trees along Canal
+    // 2 Blossom Trees along Canal (§5.1 blossom-tree-canal)
     const { pos: ptPos1, norm: ptNorm1 } = this.getSphericalPoint(0.88, 0.88, 0);
-    this.loader.load("/models/discoveries/petal-tree.glb", (gltf) => {
+    this.loader.load("/models/discoveries/blossom-tree-canal.glb", (gltf) => {
       const tree = gltf.scene;
       tree.position.copy(ptPos1);
-      tree.scale.setScalar(0.85);
+      tree.scale.setScalar(0.95);
       this.orientToNormal(tree, ptNorm1, 0.3);
       this.root.add(tree);
     });
 
     const { pos: ptPos2, norm: ptNorm2 } = this.getSphericalPoint(0.68, 0.72, 0);
-    this.loader.load("/models/discoveries/petal-tree.glb", (gltf) => {
+    this.loader.load("/models/discoveries/blossom-tree-canal.glb", (gltf) => {
       const tree = gltf.scene;
       tree.position.copy(ptPos2);
-      tree.scale.setScalar(0.75);
+      tree.scale.setScalar(0.85);
       this.orientToNormal(tree, ptNorm2, 1.4);
       this.root.add(tree);
     });
@@ -579,12 +579,12 @@ export class SphericalPlanet {
       districtKey: "meadow",
     });
 
-    // Flower Patches & Wind Chime
+    // Flower Patches & Wind Chime (§5.1 greenhouse-wind-chime)
     const { pos: chimePos, norm: chimeNorm } = this.getSphericalPoint(3.48, 0.86, 0.02);
-    this.loader.load("/models/discoveries/wind-chime.glb", (gltf) => {
+    this.loader.load("/models/discoveries/greenhouse-wind-chime.glb", (gltf) => {
       const chime = gltf.scene;
       chime.position.copy(chimePos);
-      chime.scale.setScalar(0.7);
+      chime.scale.setScalar(1.0);
       this.orientToNormal(chime, chimeNorm, 0);
       this.root.add(chime);
     });
@@ -606,17 +606,17 @@ export class SphericalPlanet {
     // -----------------------------------------------------------------------
     // DISTRICT 4: WINDMILL HILL (θ=4.7, φ=0.8)
     // -----------------------------------------------------------------------
-    // Historic Windmill (Tall Landmark)
+    // Historic Windmill (§5.1 windmill-de-gooyer: Amsterdam De Gooyer)
     const { pos: millPos, norm: millNorm } = this.getSphericalPoint(4.7, 0.78, 0);
-    this.loader.load("/models/world/windmill.glb", (gltf) => {
+    this.loader.load("/models/world/windmill-de-gooyer.glb", (gltf) => {
       const mill = gltf.scene;
       mill.position.copy(millPos);
-      mill.scale.setScalar(1.2);
+      mill.scale.setScalar(0.70); // 14m real height -> ~9.8m landmark in-game
       this.orientToNormal(mill, millNorm, 1.2);
 
       // Find rotating sails
       mill.traverse((c) => {
-        if (c.name.toLowerCase().includes("blade") || c.name.toLowerCase().includes("sail")) {
+        if (c.name === "windmill_Sails" || c.name.toLowerCase().includes("sail") || c.name.toLowerCase().includes("blade")) {
           this.windmillBlades = c;
         }
       });
@@ -633,23 +633,23 @@ export class SphericalPlanet {
       districtKey: "windmill",
     });
 
-    // Pines & Bird Tree
-    const { pos: btPos, norm: btNorm } = this.getSphericalPoint(4.82, 0.86, 0);
-    this.loader.load("/models/discoveries/bird-tree.glb", (gltf) => {
-      const bt = gltf.scene;
-      bt.position.copy(btPos);
-      bt.scale.setScalar(0.75);
-      this.orientToNormal(bt, btNorm, 0.5);
-      this.root.add(bt);
+    // Linden Tree (§5.1 linden-tree) & Poplar Tree (§5.1 poplar-tree)
+    const { pos: ltPos, norm: ltNorm } = this.getSphericalPoint(4.82, 0.86, 0);
+    this.loader.load("/models/discoveries/linden-tree.glb", (gltf) => {
+      const lt = gltf.scene;
+      lt.position.copy(ltPos);
+      lt.scale.setScalar(0.90);
+      this.orientToNormal(lt, ltNorm, 0.5);
+      this.root.add(lt);
     });
 
-    const { pos: pinePos, norm: pineNorm } = this.getSphericalPoint(4.58, 0.74, 0);
-    this.loader.load("/models/discoveries/forest-pine.glb", (gltf) => {
-      const pine = gltf.scene;
-      pine.position.copy(pinePos);
-      pine.scale.setScalar(0.85);
-      this.orientToNormal(pine, pineNorm, 1.0);
-      this.root.add(pine);
+    const { pos: poplarPos, norm: poplarNorm } = this.getSphericalPoint(4.58, 0.74, 0);
+    this.loader.load("/models/discoveries/poplar-tree.glb", (gltf) => {
+      const poplar = gltf.scene;
+      poplar.position.copy(poplarPos);
+      poplar.scale.setScalar(0.95);
+      this.orientToNormal(poplar, poplarNorm, 0.2);
+      this.root.add(poplar);
     });
 
     // Material Pickups in Windmill: Chrome Droplets & Aurora Crystals
