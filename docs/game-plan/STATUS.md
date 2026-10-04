@@ -27,6 +27,7 @@ _Last updated by: Lead · 2026-09-27_
 - 2026-09-27: Phase 3 completed: 8 NPC 3D characters placed in districts with animated bobbing quest diamond markers, full Convex quest board, distance-checked delivery, XP/Gloss/Friendship progression, and multi-level-up unlocks.
 - 2026-09-27: Phase 4 completed: 3-step Nail Studio minigame (Base Coat Syrup Fill coverage tracking, Micro-Liner art tracing, UV Tunnel Lamp sweep timing cure) resulting in star score and packaging into Couture Delivery Box.
 - 2026-09-27: Phase 5 & 6 completed: Sanne's Market Trading Stall opened (`[S]` key / interaction), 7 Companion Pets (`dewey`, `fireball`, `hoots`, `null-signal`, `rocky`, `seedy`, `codex`) following Eliya on tangent plane with perk bonuses, and direct real-world Amsterdam Atelier booking link integration.
+- 2026-10-04: Approved and initiated `06-WORLD-REBUILD.md`: Original models, genuine mochi bunny rebuild, replacement of copied assets, district densification, and CI validation. Step 0 (bunny backdrop patch) applied and verified.
 
 ---
 
