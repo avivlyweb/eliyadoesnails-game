@@ -67,9 +67,9 @@ export class SphericalCharacter {
     this.scene.add(this.root);
     this.loader = new GLTFLoader();
 
-    // Start on planet surface near Atelier Gloss cobblestone street
-    this.normal.set(0, 0.7071, 0.7071).normalize();
-    this.facing.set(1, 0, 0).projectOnPlane(this.normal).normalize();
+    // Start on planet surface directly on Canal Street facing Atelier Gloss
+    this.normal.set(0.4914, 0.8320, 0.2566).normalize();
+    this.facing.set(0.15, -0.37, 0.92).projectOnPlane(this.normal).normalize();
     this.updatePosition();
 
     this.loadEliyaModel();

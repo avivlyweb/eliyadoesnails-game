@@ -421,10 +421,10 @@ export class SphericalPlanet {
       districtKey: "canal",
     });
 
-    // 2. Additional Canal Houses along the waterfront quay
-    this.spawnProp("/models/architecture/canal-house-neck-gable.glb", 0.98, 0.78, 0.8, 1.05);
-    this.spawnProp("/models/architecture/canal-house-narrow-a.glb", 0.62, 0.82, 2.1, 0.95); // Bakery
-    this.spawnProp("/models/architecture/canal-house-narrow-b.glb", 1.04, 0.74, 0.5, 0.95); // Bookshop
+    // 2. Additional Canal Houses along the waterfront quay (rescaled so Eliya's Atelier is the hero building)
+    this.spawnProp("/models/architecture/canal-house-neck-gable.glb", 0.68, 0.66, 0.2, 0.88); // Left neighbour
+    this.spawnProp("/models/architecture/canal-house-narrow-a.glb", 0.52, 0.61, 0.2, 0.45); // Bakery (further left)
+    this.spawnProp("/models/architecture/canal-house-narrow-b.glb", 1.06, 0.86, 0.2, 0.45); // Bookshop (right neighbour, clear of blade sign)
 
     // 3. Bell Gable (Nell the Potter)
     const { pos: bellPos, norm: bellNorm } = this.getSphericalPoint(0.72, 0.86, 0);
@@ -739,7 +739,7 @@ export class SphericalPlanet {
     this.spawnProp("/models/discoveries/book-crate-sale.glb", 4.08, 0.82, 0.4, 0.90);
 
     // Gap 4: Windmill Hill ➔ Harbour (θ ~ 5.3 - 5.5)
-    this.spawnProp("/models/architecture/canal-house-narrow-c.glb", 5.35, 0.92, 0.8, 0.95);
+    this.spawnProp("/models/architecture/canal-house-narrow-c.glb", 5.35, 0.92, 0.8, 0.46);
   }
 
   // =========================================================================
