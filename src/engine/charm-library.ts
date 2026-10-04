@@ -197,8 +197,8 @@ function buildWhisk(): THREE.Group {
 }
 
 export const CHARMS: CharmDef[] = [
-  // --- New procedural charms ---
-  { id: "charm-tulip", name: "Dutch Tulip", icon: "🌷", matches: ["Dutch Tulip Bulb Charm", "Tulip Petal Press"],
+  // --- Batch A 3D Blender charms (with procedural fallback) ---
+  { id: "charm-tulip", name: "Dutch Tulip", icon: "🌷", src: "/models/charms/charm-tulip.glb", matches: ["Dutch Tulip Bulb Charm", "Tulip Petal Press"],
     build: () => {
       const g = new THREE.Group();
       const red = mat(0xe8577a, 0.3);
@@ -217,13 +217,13 @@ export const CHARMS: CharmDef[] = [
       g.add(stem);
       return flatFace(g);
     } },
-  { id: "charm-daisy", name: "Daisy", icon: "🌼", build: () => flower(10, 0xffffff, 0xf6c445, 0.42, 0.13) },
-  { id: "charm-sakura", name: "Sakura Blossom", icon: "🌸", build: () => flower(5, 0xf9c2d2, 0xf2d27a, 0.46, 0.27, true) },
-  { id: "charm-puffy-heart", name: "Puffy Heart", icon: "💗", build: () => flatFace(extruded(heartShape(), 0.12, GLOSS_PINK(), 0.09)) },
-  { id: "charm-kitty", name: "Ginger Kitty", icon: "🐱", build: buildCat },
-  { id: "charm-star", name: "Glitter Star", icon: "⭐", matches: ["Glitter Star Shard"],
+  { id: "charm-daisy", name: "Daisy", icon: "🌼", src: "/models/charms/charm-daisy.glb", build: () => flower(10, 0xffffff, 0xf6c445, 0.42, 0.13) },
+  { id: "charm-sakura", name: "Sakura Blossom", icon: "🌸", src: "/models/charms/charm-sakura.glb", build: () => flower(5, 0xf9c2d2, 0xf2d27a, 0.46, 0.27, true) },
+  { id: "charm-puffy-heart", name: "Puffy Heart", icon: "💗", src: "/models/charms/charm-puffy-heart.glb", build: () => flatFace(extruded(heartShape(), 0.12, GLOSS_PINK(), 0.09)) },
+  { id: "charm-kitty", name: "Ginger Kitty", icon: "🐱", src: "/models/charms/charm-kitty.glb", build: buildCat },
+  { id: "charm-star", name: "Glitter Star", icon: "⭐", src: "/models/charms/charm-star.glb", matches: ["Glitter Star Shard"],
     build: () => flatFace(extruded(starShape(), 0.1, mat(0xf6d77a, 0.2, 0.6), 0.05)) },
-  { id: "charm-pearl", name: "Freshwater Pearl", icon: "🤍",
+  { id: "charm-pearl", name: "Freshwater Pearl", icon: "🤍", src: "/models/charms/charm-pearl.glb",
     build: () => {
       const g = new THREE.Group();
       const p = new THREE.Mesh(new THREE.SphereGeometry(0.5, 32, 24), PEARL());
@@ -231,8 +231,8 @@ export const CHARMS: CharmDef[] = [
       g.add(p);
       return g;
     } },
-  { id: "charm-satin-bow", name: "Satin Bow", icon: "🎀", matches: ["Fine Silk Ribbon", "Silk Ribbon Spool"], build: () => buildBow() },
-  { id: "charm-matcha-whisk", name: "Matcha Whisk", icon: "🍵", matches: ["Ceremonial Whisk Charm", "Matcha Ceramic Whisk"], build: buildWhisk },
+  { id: "charm-satin-bow", name: "Satin Bow", icon: "🎀", src: "/models/charms/charm-satin-bow.glb", matches: ["Fine Silk Ribbon", "Silk Ribbon Spool"], build: () => buildBow() },
+  { id: "charm-matcha-whisk", name: "Matcha Whisk", icon: "🍵", src: "/models/charms/charm-matcha-whisk.glb", matches: ["Ceremonial Whisk Charm", "Matcha Ceramic Whisk"], build: buildWhisk },
 
   // --- Existing Blender charms ---
   { id: "sculpted-ribbon-bow", name: "Sculpted Ribbon Bow", icon: "🎀", src: "/models/high-detail/charms/sculpted-ribbon-bow.glb", matches: ["Sculpted Ribbon Bow"] },

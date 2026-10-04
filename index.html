@@ -3075,6 +3075,10 @@
       import { NailDecorator } from '/src/engine/nail-decorator.ts';
       import { CHARMS, charmForRequest } from '/src/engine/charm-library.ts';
 
+      window.CHARMS = CHARMS;
+      window.nailMinigame = nailMinigame;
+      window.questSystem = questSystem;
+
       // 1. Start Screen & Jukebox Controls
       const startScreen = document.getElementById('eliya-start-screen');
       const terminalBox = document.getElementById('start-terminal-box');

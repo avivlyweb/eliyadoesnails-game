@@ -315,6 +315,33 @@
     "nodes": []
   },
   {
+    "id": "charm-daisy",
+    "path": "/models/charms/charm-daisy.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 80244,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-kitty",
+    "path": "/models/charms/charm-kitty.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 58120,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-matcha-whisk",
+    "path": "/models/charms/charm-matcha-whisk.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 17604,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "charm-molten-chrome-drops",
     "path": "/models/charms/charm-molten-chrome-drops.glb",
     "category": "charms",
@@ -333,6 +360,42 @@
     "nodes": []
   },
   {
+    "id": "charm-pearl",
+    "path": "/models/charms/charm-pearl.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 27820,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-puffy-heart",
+    "path": "/models/charms/charm-puffy-heart.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 33716,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-sakura",
+    "path": "/models/charms/charm-sakura.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 92084,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-satin-bow",
+    "path": "/models/charms/charm-satin-bow.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 36100,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "charm-sculpted-ribbon-bow",
     "path": "/models/charms/charm-sculpted-ribbon-bow.glb",
     "category": "charms",
@@ -347,6 +410,24 @@
     "category": "high-detail",
     "tris": 0,
     "bytes": 95172,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-star",
+    "path": "/models/charms/charm-star.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 43508,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-tulip",
+    "path": "/models/charms/charm-tulip.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 47760,
     "instanced": false,
     "nodes": []
   },
