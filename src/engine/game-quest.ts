@@ -23,6 +23,15 @@ export interface ClientTicket {
   icon: string;
 }
 
+export interface QuestObjective {
+  /** Which part of the loop the player is in: meet -> craft -> deliver */
+  phase: "meet" | "craft" | "deliver" | "finale";
+  title: string;
+  detail: string;
+  /** Landmark id the waypoint should point at (npc_mira, atelier, photobooth...) */
+  targetId: string | null;
+}
+
 export class AtelierQuestSystem {
   public roundTitle: string = "The Slow Beauty Round";
   public roundSubtitle: string = "A bespoke set crafted with care for every neighbor.";
@@ -55,7 +64,7 @@ export class AtelierQuestSystem {
       setDesignName: "Rose Quartz French",
       requestedCharm: "Molten Chrome Drops",
       baseModelPath: "/models/high-detail/sets/cyberpunk-liquid-chrome-set.glb",
-      status: "unprepared",
+      status: "offered",
       greeting: "Eliya! Normal polish chips in five seconds at the pottery wheel. I need your sculptured nail armor!",
       deliveryDialogue: "Mirror-reflective, solid and pure artisanal luxury! The pottery wheel won't stand a chance. I threw this scalloped ceramic palette for you!",
       rewardCharm: "Molten Chrome Drops",
@@ -358,6 +367,51 @@ export class AtelierQuestSystem {
       levelUps,
       newUnlocks,
     };
+  }
+
+  /**
+   * The one thing the player should do next. Drives the always-visible
+   * objective tracker and the 3D waypoint, so the player is never lost.
+   * Priority: deliver a packed box > craft an accepted order > meet the next client.
+   */
+  public getCurrentObjective(): QuestObjective {
+    const list = Object.values(this.tickets);
+    if (this.isCompleted) {
+      return {
+        phase: "finale",
+        title: "Print your celebration strip",
+        detail: "Every neighbour is served! Visit the Life4Cuts photobooth in Market Square and press E.",
+        targetId: "photobooth",
+      };
+    }
+    const packed = list.find((t) => t.status === "packed");
+    if (packed) {
+      return {
+        phase: "deliver",
+        title: `Deliver to ${packed.clientName}`,
+        detail: `Bring the ${packed.setDesignName} box to ${packed.locationName}, then press E.`,
+        targetId: packed.landmarkId,
+      };
+    }
+    const accepted = list.find((t) => t.status === "unprepared");
+    if (accepted) {
+      return {
+        phase: "craft",
+        title: `Craft ${accepted.clientName}'s nails`,
+        detail: `Go to Eliya's Atelier Gloss and press E. ${accepted.clientName}'s ticket is selected, so press Pack and play the 3 nail steps.`,
+        targetId: "atelier",
+      };
+    }
+    const offered = list.find((t) => t.status === "offered");
+    if (offered) {
+      return {
+        phase: "meet",
+        title: `Meet ${offered.clientName} the ${offered.role}`,
+        detail: `Follow the pink arrow to ${offered.locationName} and press E to take the order.`,
+        targetId: offered.landmarkId,
+      };
+    }
+    return { phase: "meet", title: "Explore the canal world", detail: "Gather flowers with E and visit the market.", targetId: null };
   }
 
   // Update in-game HUD elements

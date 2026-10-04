@@ -435,7 +435,7 @@ export class SphericalCharacter {
     }
 
     const petSpeedMult = (this.isRidingBicycle && this.activePetKey === "fireball") ? 1.15 : 1.0;
-    const baseSpeed = (this.isRidingBicycle ? (this.isOnPath ? 4.95 : 4.5) : 2.4) * petSpeedMult;
+    const baseSpeed = (this.isRidingBicycle ? (this.isOnPath ? 6.6 : 6.0) : 3.3) * petSpeedMult;
     const targetSpeed = hasInput ? baseSpeed : 0;
     const accelRate = this.isRidingBicycle ? 6.0 : 12.0;
     this.currentSpeed = THREE.MathUtils.lerp(this.currentSpeed, targetSpeed, delta * accelRate);

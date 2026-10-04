@@ -11,6 +11,7 @@ import { gameConvex, PlayerStatePayload } from "./net/convex";
 import { DISTRICTS, sphericalToNormal } from "./engine/planet-layout";
 import { marketShop } from "./engine/market-shop";
 import { nailMinigame } from "./engine/nail-studio-minigame";
+import { QuestWaypoint } from "./engine/waypoint";
 import { isGameplayInputBlocked, isTypingInField, isOnStartScreen } from "./engine/input-guard";
 
 const MATERIAL_ICONS: Record<string, { icon: string; name: string; nameKo: string; district: string; price: number; desc: string }> = {
@@ -108,6 +109,9 @@ class EliyaCanalWorldGame {
     // 3. Initialize Manicure Station (Macro studio)
     this.manicureStation = new ManicureStation(this.scene);
     this.manicureStation.setVisible(false);
+
+    // 3b. Quest waypoint (beam at the target + arrow at the player's feet)
+    this.waypoint = new QuestWaypoint(this.scene, this.planet.radius);
 
     // 4. Initialize Living Atelier Companion & Golden Hour Spores (Inspired by HeyMossy)
     this.companion = new AtelierCompanion();
@@ -227,8 +231,66 @@ class EliyaCanalWorldGame {
     }
   }
 
+  private waypoint!: QuestWaypoint;
+  private objectiveKey = "";
+
+  /** Always-visible "what to do next" card + waypoint target. */
+  private updateObjective(delta: number) {
+    const start = document.getElementById("eliya-start-screen");
+    document.body.classList.toggle("in-game", !start || start.classList.contains("hidden"));
+    const obj = questSystem.getCurrentObjective();
+    const target = obj.targetId ? this.planet.landmarks.find((l) => l.id === obj.targetId) ?? null : null;
+    const distance = this.waypoint.update(delta, this.player.normal, target);
+
+    const key = obj.phase + "|" + obj.title;
+    if (key !== this.objectiveKey) {
+      this.objectiveKey = key;
+      const titleEl = document.getElementById("objective-title");
+      const detailEl = document.getElementById("objective-detail");
+      const card = document.getElementById("objective-tracker");
+      if (titleEl) titleEl.textContent = obj.title;
+      if (detailEl) detailEl.textContent = obj.detail;
+      const order = ["meet", "craft", "deliver"];
+      const idx = order.indexOf(obj.phase);
+      document.querySelectorAll<HTMLElement>("#objective-tracker [data-phase]").forEach((el) => {
+        const i = order.indexOf(el.dataset.phase || "");
+        el.classList.toggle("active", i === idx);
+        el.classList.toggle("done", obj.phase === "finale" || i < idx);
+      });
+      if (card) {
+        card.classList.remove("pulse");
+        void card.offsetWidth; // restart animation
+        card.classList.add("pulse");
+      }
+    }
+    const distEl = document.getElementById("objective-distance");
+    if (distEl) {
+      if (distance === null) distEl.textContent = "";
+      else if (distance < 2.6) distEl.textContent = "You're here · press E";
+      else distEl.textContent = `${Math.round(distance)} m away${this.player.isRidingBicycle ? "" : " · B to bike"}`;
+    }
+  }
+
+  /**
+   * Nearest interactable, but the current quest target wins when it is in range,
+   * so a flower pickup next to a client can never block taking/delivering her order.
+   */
+  private getInteractTarget(): { landmark: any; distance: number } | null {
+    const pos = this.player.getPosition();
+    const near = this.planet.getNearestLandmark(pos);
+    const obj = questSystem.getCurrentObjective();
+    if (obj.targetId) {
+      const lm = this.planet.landmarks.find((l) => l.id === obj.targetId);
+      if (lm) {
+        const d = pos.distanceTo(lm.position);
+        if (d < 3.2) return { landmark: lm, distance: d };
+      }
+    }
+    return near;
+  }
+
   public interactWithNearby() {
-    const near = this.planet.getNearestLandmark(this.player.getPosition());
+    const near = this.getInteractTarget();
     if (!near) return;
 
     const lm = near.landmark;
@@ -767,7 +829,7 @@ class EliyaCanalWorldGame {
       districtEl.textContent = `${closest.name} · ${closest.nameKo}`;
     }
 
-    const near = this.planet.getNearestLandmark(this.player.getPosition());
+    const near = this.getInteractTarget();
     const dock = document.getElementById("interact-dock");
     const actionText = document.getElementById("interaction-action-text");
     const prompt = document.getElementById("interaction-prompt");
@@ -842,6 +904,7 @@ class EliyaCanalWorldGame {
     );
 
     this.updateHUD();
+    this.updateObjective(delta);
 
     // Render WebGL
     this.renderer.render(this.scene, this.camera);

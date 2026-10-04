@@ -2381,6 +2381,74 @@
         background: #3b824b;
       }
 
+      /* ---------------------------------------------------- */
+      /* OBJECTIVE TRACKER (always visible: what to do next)  */
+      /* ---------------------------------------------------- */
+      #objective-tracker {
+        position: fixed;
+        top: 92px;
+        left: 20px;
+        width: 300px;
+        z-index: 12;
+        background: rgba(255, 253, 251, 0.94);
+        border: 1px solid var(--hairline);
+        border-left: 3px solid var(--accent-petal);
+        border-radius: 14px;
+        padding: 12px 14px 12px 14px;
+        box-shadow: 0 10px 28px -16px rgba(28, 25, 23, 0.45);
+        backdrop-filter: blur(10px);
+        pointer-events: none;
+        font-family: var(--font-sans);
+        display: none;
+      }
+      body.in-game #objective-tracker { display: block; }
+      #objective-tracker .obj-steps {
+        display: flex;
+        gap: 6px;
+        margin-bottom: 8px;
+      }
+      #objective-tracker .obj-steps span {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 999px;
+        background: #f3ede9;
+        color: var(--text-muted);
+      }
+      #objective-tracker .obj-steps span.active { background: var(--accent-petal); color: #fff; }
+      #objective-tracker .obj-steps span.done { background: #e4efe2; color: #2e7d32; }
+      #objective-title {
+        font-family: var(--font-serif);
+        font-size: 18px;
+        color: var(--espresso);
+        line-height: 1.2;
+      }
+      #objective-detail {
+        font-size: 12px;
+        color: var(--text-muted);
+        line-height: 1.45;
+        margin-top: 4px;
+      }
+      #objective-distance {
+        margin-top: 8px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        color: var(--accent-petal);
+        font-weight: 600;
+      }
+      #objective-tracker.pulse { animation: objPulse 0.9s ease; }
+      @keyframes objPulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(168, 80, 94, 0.45); }
+        40% { transform: scale(1.03); box-shadow: 0 0 0 10px rgba(168, 80, 94, 0); }
+        100% { transform: scale(1); }
+      }
+      @media (max-width: 720px) {
+        #objective-tracker { top: auto; bottom: 64px; left: 12px; right: 12px; width: auto; padding: 10px 12px; }
+        #objective-title { font-size: 15px; }
+        #objective-detail { font-size: 11px; }
+      }
     </style>
   </head>
   <body>
@@ -2591,6 +2659,7 @@
             <div class="music-dropdown-item" data-track="tea-ritual">🍵 Slow Beauty Tea Ritual <span>65 BPM</span></div>
           </div>
         </div>
+      </div>
     </div>
 
     <!-- Atelier Client Ledger / Order Card (Little Ritual Style) -->
@@ -2750,6 +2819,18 @@
           <!-- Dynamically populated by MarketShopController -->
         </div>
       </div>
+    </div>
+
+    <!-- OBJECTIVE TRACKER: always tells the player what to do next -->
+    <div id="objective-tracker" aria-live="polite">
+      <div class="obj-steps">
+        <span data-phase="meet">1 Meet</span>
+        <span data-phase="craft">2 Craft</span>
+        <span data-phase="deliver">3 Deliver</span>
+      </div>
+      <div id="objective-title">Meet your first client</div>
+      <div id="objective-detail">Follow the pink arrow and press E.</div>
+      <div id="objective-distance"></div>
     </div>
 
     <!-- Controls Key Hint -->
@@ -3334,6 +3415,17 @@
         const modal = document.getElementById('eliya-modal-overlay');
         if (modal && modal.style.display !== 'none') {
           renderClientTickets();
+          // Pre-select the order the player is working on, so "Pack" just works
+          const current = activeClientTicketId ? questSystem.getTicket(activeClientTicketId) : null;
+          if (!current || current.status === 'delivered' || current.status === 'packed') {
+            const ids = Object.keys(questSystem.tickets);
+            const idx = ids.findIndex(id => questSystem.tickets[id].status === 'unprepared');
+            if (idx >= 0) {
+              const cards = document.querySelectorAll('#client-tickets-container .client-ticket-card');
+              const card = cards[idx];
+              if (card) card.click();
+            }
+          }
         }
       });
       const modalEl = document.getElementById('eliya-modal-overlay');
