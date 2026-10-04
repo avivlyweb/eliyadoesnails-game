@@ -27,6 +27,15 @@
     "nodes": []
   },
   {
+    "id": "amsterdammertje",
+    "path": "/models/street/amsterdammertje.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 246272,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "ar-hand-mannequin-pedestal",
     "path": "/models/furniture/ar-hand-mannequin-pedestal.glb",
     "category": "furniture",
@@ -162,6 +171,15 @@
     "nodes": []
   },
   {
+    "id": "bike-rack-with-bikes",
+    "path": "/models/street/bike-rack-with-bikes.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 1433240,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "blossom-tree-canal",
     "path": "/models/discoveries/blossom-tree-canal.glb",
     "category": "discoveries",
@@ -189,6 +207,15 @@
     "nodes": []
   },
   {
+    "id": "book-crate-sale",
+    "path": "/models/discoveries/book-crate-sale.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 48048,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "brass-arc-floor-lamp",
     "path": "/models/furniture/brass-arc-floor-lamp.glb",
     "category": "furniture",
@@ -207,6 +234,24 @@
     "nodes": []
   },
   {
+    "id": "cafe-terrace-set",
+    "path": "/models/street/cafe-terrace-set.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 541176,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-bench",
+    "path": "/models/street/canal-bench.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 200504,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "canal-house-bell-gable",
     "path": "/models/architecture/canal-house-bell-gable.glb",
     "category": "architecture",
@@ -221,6 +266,33 @@
     "category": "high-detail",
     "tris": 0,
     "bytes": 95068,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-narrow-a",
+    "path": "/models/architecture/canal-house-narrow-a.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 143880,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-narrow-b",
+    "path": "/models/architecture/canal-house-narrow-b.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 125416,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-narrow-c",
+    "path": "/models/architecture/canal-house-narrow-c.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 193600,
     "instanced": false,
     "nodes": []
   },
@@ -261,6 +333,15 @@
     "nodes": []
   },
   {
+    "id": "canal-railing",
+    "path": "/models/street/canal-railing.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 258928,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "cast-iron-mooring-bollard",
     "path": "/models/high-detail/street/cast-iron-mooring-bollard.glb",
     "category": "high-detail",
@@ -275,6 +356,15 @@
     "category": "street",
     "tris": 0,
     "bytes": 67144,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cat-on-crate",
+    "path": "/models/discoveries/cat-on-crate.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 518596,
     "instanced": false,
     "nodes": []
   },
@@ -603,6 +693,15 @@
     "nodes": []
   },
   {
+    "id": "crate-stack",
+    "path": "/models/street/crate-stack.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 799944,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "cuticle-serum-dropper",
     "path": "/models/high-detail/tools/cuticle-serum-dropper.glb",
     "category": "high-detail",
@@ -702,6 +801,15 @@
     "nodes": []
   },
   {
+    "id": "duck-family",
+    "path": "/models/discoveries/duck-family.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 967172,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "eliya-artisan",
     "path": "/models/eliyadoesnails/eliya-artisan.glb",
     "category": "eliyadoesnails",
@@ -792,6 +900,15 @@
     "nodes": []
   },
   {
+    "id": "flower-box-window",
+    "path": "/models/street/flower-box-window.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 1078240,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "freshwater-pearl-oyster",
     "path": "/models/pickups/freshwater-pearl-oyster.glb",
     "category": "pickups",
@@ -855,11 +972,38 @@
     "nodes": []
   },
   {
+    "id": "greenhouse-glass",
+    "path": "/models/architecture/greenhouse-glass.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 247604,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "greenhouse-wind-chime",
     "path": "/models/discoveries/greenhouse-wind-chime.glb",
     "category": "discoveries",
     "tris": 0,
     "bytes": 26044,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "harbour-crane",
+    "path": "/models/architecture/harbour-crane.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 171472,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "heart-lock-railing",
+    "path": "/models/street/heart-lock-railing.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 910244,
     "instanced": false,
     "nodes": []
   },
@@ -878,6 +1022,15 @@
     "category": "station",
     "tris": 0,
     "bytes": 26100,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "herring-cart",
+    "path": "/models/street/herring-cart.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 432224,
     "instanced": false,
     "nodes": []
   },
@@ -909,11 +1062,38 @@
     "nodes": []
   },
   {
+    "id": "houseboat-small",
+    "path": "/models/street/houseboat-small.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 103708,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "ice-cream-cart",
+    "path": "/models/street/ice-cream-cart.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 472532,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "joon-barista",
     "path": "/models/npcs/joon-barista.glb",
     "category": "npcs",
     "tris": 0,
     "bytes": 135936,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "lantern-string",
+    "path": "/models/street/lantern-string.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 561512,
     "instanced": false,
     "nodes": []
   },
@@ -1035,6 +1215,33 @@
     "nodes": []
   },
   {
+    "id": "market-stall-cheese",
+    "path": "/models/street/market-stall-cheese.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 218040,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "market-stall-flowers",
+    "path": "/models/street/market-stall-flowers.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 437732,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "market-stall-stroopwafel",
+    "path": "/models/street/market-stall-stroopwafel.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 269236,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "matcha-moth",
     "path": "/models/pets/matcha-moth.glb",
     "category": "pets",
@@ -1152,6 +1359,15 @@
     "nodes": []
   },
   {
+    "id": "painter-easel-canal",
+    "path": "/models/discoveries/painter-easel-canal.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 39608,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "peach-mochi-bunny",
     "path": "/models/characters/peach-mochi-bunny.glb",
     "category": "characters",
@@ -1197,6 +1413,24 @@
     "nodes": []
   },
   {
+    "id": "picnic-blanket",
+    "path": "/models/discoveries/picnic-blanket.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 133688,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "pigeon-pair",
+    "path": "/models/discoveries/pigeon-pair.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 633872,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "pip-photo",
     "path": "/models/npcs/pip-photo.glb",
     "category": "npcs",
@@ -1211,6 +1445,15 @@
     "category": "discoveries",
     "tris": 0,
     "bytes": 33516,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "post-box-dutch",
+    "path": "/models/street/post-box-dutch.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 38624,
     "instanced": false,
     "nodes": []
   },
@@ -1320,6 +1563,15 @@
     "tris": 0,
     "bytes": 5504,
     "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "rowboat-moored",
+    "path": "/models/street/rowboat-moored.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 120424,
+    "instanced": false,
     "nodes": []
   },
   {
@@ -1521,6 +1773,24 @@
     "nodes": []
   },
   {
+    "id": "street-planter-tulips",
+    "path": "/models/street/street-planter-tulips.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 418432,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "street-sign-amsterdam",
+    "path": "/models/street/street-sign-amsterdam.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 99116,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "stylist-swivel-stool",
     "path": "/models/furniture/stylist-swivel-stool.glb",
     "category": "furniture",
@@ -1544,6 +1814,15 @@
     "category": "pickups",
     "tris": 0,
     "bytes": 26372,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "tram-stop-shelter",
+    "path": "/models/street/tram-stop-shelter.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 33192,
     "instanced": false,
     "nodes": []
   },
@@ -1593,6 +1872,15 @@
     "nodes": []
   },
   {
+    "id": "tulip-field-rows",
+    "path": "/models/street/tulip-field-rows.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 1034832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
     "id": "vintage-bicycle-eliya",
     "path": "/models/high-detail/street/vintage-bicycle-eliya.glb",
     "category": "high-detail",
@@ -1634,6 +1922,15 @@
     "category": "world",
     "tris": 0,
     "bytes": 64576,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "wooden-jetty",
+    "path": "/models/architecture/wooden-jetty.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 662052,
     "instanced": false,
     "nodes": []
   }

@@ -382,21 +382,30 @@ export class SphericalPlanet {
   }
 
   // =========================================================================
-  // 4. DISTRICT ANCHORS & LANDMARKS (Spec §2 & §5)
+  // 4. DISTRICT ANCHORS, DRESSING & GAP MOMENTS (Spec §5 & §6)
   // =========================================================================
+  private spawnProp(modelPath: string, theta: number, phi: number, yaw = 0, scale = 1.0, heightOffset = 0) {
+    const { pos, norm } = this.getSphericalPoint(theta, phi, heightOffset);
+    this.loader.load(modelPath, (gltf) => {
+      const obj = gltf.scene;
+      obj.position.copy(pos);
+      obj.scale.setScalar(scale);
+      this.orientToNormal(obj, norm, yaw);
+      this.root.add(obj);
+    });
+  }
+
   private spawnDistrictAnchors() {
     // -----------------------------------------------------------------------
     // DISTRICT 1: CANAL STREET (θ=0.8, φ=0.8)
     // -----------------------------------------------------------------------
-    // Eliya's Atelier Gloss (Stepped Gable Canal House)
+    // 1. Eliya's Atelier Gloss (Stepped Gable Canal House)
     const { pos: atPos, norm: atNorm } = this.getSphericalPoint(0.86, 0.74, 0);
     this.loader.load("/models/architecture/canal-house-stepped-gable.glb", (gltf) => {
       const house = gltf.scene;
       house.position.copy(atPos);
       house.scale.setScalar(1.15);
       this.orientToNormal(house, atNorm, 0.2);
-
-      // Shop front: name board, hanging logo sign, window decal and awning (on the street side, local -Z)
       addAtelierSignage(house);
       this.atelierHouse = house;
       this.root.add(house);
@@ -412,27 +421,12 @@ export class SphericalPlanet {
       districtKey: "canal",
     });
 
-    // Parked Vintage Bicycle
-    const { pos: bikePos, norm: bikeNorm } = this.getSphericalPoint(0.83, 0.78, 0.02);
-    this.loader.load("/models/street/vintage-bicycle-eliya.glb", (gltf) => {
-      const bike = gltf.scene;
-      bike.position.copy(bikePos);
-      bike.scale.setScalar(0.7);
-      this.orientToNormal(bike, bikeNorm, 0.4);
-      this.root.add(bike);
-    });
+    // 2. Additional Canal Houses along the waterfront quay
+    this.spawnProp("/models/architecture/canal-house-neck-gable.glb", 0.98, 0.78, 0.8, 1.05);
+    this.spawnProp("/models/architecture/canal-house-narrow-a.glb", 0.62, 0.82, 2.1, 0.95); // Bakery
+    this.spawnProp("/models/architecture/canal-house-narrow-b.glb", 1.04, 0.74, 0.5, 0.95); // Bookshop
 
-    // Canal House Neck Gable
-    const { pos: neckPos, norm: neckNorm } = this.getSphericalPoint(0.98, 0.78, 0);
-    this.loader.load("/models/architecture/canal-house-neck-gable.glb", (gltf) => {
-      const neck = gltf.scene;
-      neck.position.copy(neckPos);
-      neck.scale.setScalar(1.05);
-      this.orientToNormal(neck, neckNorm, 0.8);
-      this.root.add(neck);
-    });
-
-    // Canal House Bell Gable (Nell the Potter)
+    // 3. Bell Gable (Nell the Potter)
     const { pos: bellPos, norm: bellNorm } = this.getSphericalPoint(0.72, 0.86, 0);
     this.loader.load("/models/architecture/canal-house-bell-gable.glb", (gltf) => {
       const bell = gltf.scene;
@@ -451,6 +445,40 @@ export class SphericalPlanet {
       dialogue: "My pottery studio! Short almond nails with molten chrome drops that won't chip even at the wheel.",
       districtKey: "canal",
     });
+
+    // 4. Houseboat in canal water
+    this.spawnProp("/models/street/houseboat-small.glb", 0.78, 0.64, 1.3, 0.90, -0.04);
+
+    // 5. Canal Street Dressing: Bike Racks, Benches, Railings, Planters, Bollards
+    this.spawnProp("/models/street/vintage-bicycle-eliya.glb", 0.83, 0.78, 0.4, 0.7, 0.02);
+    this.spawnProp("/models/street/bike-rack-with-bikes.glb", 0.89, 0.78, 0.2, 0.85);
+    this.spawnProp("/models/street/bike-rack-with-bikes.glb", 0.70, 0.84, 2.2, 0.85);
+    this.spawnProp("/models/street/canal-bench.glb", 0.92, 0.82, 0.6, 0.85);
+    this.spawnProp("/models/street/canal-bench.glb", 0.66, 0.75, 1.8, 0.85);
+
+    // Flower boxes on window sills
+    this.spawnProp("/models/street/flower-box-window.glb", 0.85, 0.75, 0.2, 0.9, 0.8);
+    this.spawnProp("/models/street/flower-box-window.glb", 0.71, 0.85, 2.4, 0.9, 0.8);
+
+    // Continuous canal railings along the quay edge
+    this.spawnProp("/models/street/canal-railing.glb", 0.73, 0.70, 1.2, 0.9);
+    this.spawnProp("/models/street/canal-railing.glb", 0.81, 0.68, 1.2, 0.9);
+    this.spawnProp("/models/street/canal-railing.glb", 0.89, 0.68, 1.2, 0.9);
+    this.spawnProp("/models/street/canal-railing.glb", 0.97, 0.70, 1.2, 0.9);
+
+    // Amsterdammertje bollards along the canal street curb
+    this.spawnProp("/models/street/amsterdammertje.glb", 0.75, 0.73, 0, 0.85);
+    this.spawnProp("/models/street/amsterdammertje.glb", 0.80, 0.72, 0, 0.85);
+    this.spawnProp("/models/street/amsterdammertje.glb", 0.85, 0.72, 0, 0.85);
+    this.spawnProp("/models/street/amsterdammertje.glb", 0.90, 0.73, 0, 0.85);
+    this.spawnProp("/models/street/amsterdammertje.glb", 0.95, 0.74, 0, 0.85);
+
+    // Street planters, postbox, and street name sign
+    this.spawnProp("/models/street/street-planter-tulips.glb", 0.82, 0.80, 0.3, 0.85);
+    this.spawnProp("/models/street/street-planter-tulips.glb", 0.95, 0.82, -0.4, 0.85);
+    this.spawnProp("/models/street/street-sign-amsterdam.glb", 0.87, 0.79, 0.2, 0.9);
+    this.spawnProp("/models/street/post-box-dutch.glb", 0.84, 0.82, 0.1, 0.85);
+    this.spawnProp("/models/street/lantern-string.glb", 0.85, 0.76, 1.2, 1.0, 3.8);
 
     // Florist Flower Cart (Mira the Florist)
     const { pos: cartPos, norm: cartNorm } = this.getSphericalPoint(0.74, 0.76, 0.02);
@@ -473,23 +501,8 @@ export class SphericalPlanet {
     });
 
     // 2 Blossom Trees along Canal (§5.1 blossom-tree-canal)
-    const { pos: ptPos1, norm: ptNorm1 } = this.getSphericalPoint(0.88, 0.88, 0);
-    this.loader.load("/models/discoveries/blossom-tree-canal.glb", (gltf) => {
-      const tree = gltf.scene;
-      tree.position.copy(ptPos1);
-      tree.scale.setScalar(0.95);
-      this.orientToNormal(tree, ptNorm1, 0.3);
-      this.root.add(tree);
-    });
-
-    const { pos: ptPos2, norm: ptNorm2 } = this.getSphericalPoint(0.68, 0.72, 0);
-    this.loader.load("/models/discoveries/blossom-tree-canal.glb", (gltf) => {
-      const tree = gltf.scene;
-      tree.position.copy(ptPos2);
-      tree.scale.setScalar(0.85);
-      this.orientToNormal(tree, ptNorm2, 1.4);
-      this.root.add(tree);
-    });
+    this.spawnProp("/models/discoveries/blossom-tree-canal.glb", 0.88, 0.88, 0.3, 0.95);
+    this.spawnProp("/models/discoveries/blossom-tree-canal.glb", 0.68, 0.72, 1.4, 0.85);
 
     // Material Pickups in Canal: Sakura Petals & Freshwater Pearl
     this.spawnPickup("sakura-petal-bundle", 0.86, 0.86, "Sakura Petal · 벚꽃잎", "node_canal_sakura_1");
@@ -518,12 +531,15 @@ export class SphericalPlanet {
       districtKey: "market",
     });
 
-    // Cafe Table Set & Market Stall Booths (Market Square center)
+    // Sanne's Atelier Market Stall (3D Blender market-stall-cheese)
     const { pos: mktPos, norm: mktNorm } = this.getSphericalPoint(2.05, 0.84, 0.02);
-    const marketStall = this.createStylizedMarketStall();
-    marketStall.position.copy(mktPos);
-    this.orientToNormal(marketStall, mktNorm, 0.5);
-    this.root.add(marketStall);
+    this.loader.load("/models/street/market-stall-cheese.glb", (gltf) => {
+      const stall = gltf.scene;
+      stall.position.copy(mktPos);
+      stall.scale.setScalar(0.95);
+      this.orientToNormal(stall, mktNorm, 0.5);
+      this.root.add(stall);
+    });
 
     this.landmarks.push({
       id: "market_stall",
@@ -535,12 +551,19 @@ export class SphericalPlanet {
       districtKey: "market",
     });
 
-    // Joon's Cafe Kiosk
-    const { pos: cafePos, norm: cafeNorm } = this.getSphericalPoint(2.2, 0.84, 0.02);
-    const cafeKiosk = this.createStylizedCafeKiosk();
-    cafeKiosk.position.copy(cafePos);
-    this.orientToNormal(cafeKiosk, cafeNorm, -0.4);
-    this.root.add(cafeKiosk);
+    // Market stalls: Flower Stall & Stroopwafel Stall
+    this.spawnProp("/models/street/market-stall-flowers.glb", 2.15, 0.88, -0.3, 0.95);
+    this.spawnProp("/models/street/market-stall-stroopwafel.glb", 2.25, 0.80, 1.1, 0.95);
+
+    // Joon's Slow Matcha Kiosk Terrace (3D Blender cafe-terrace-set)
+    const { pos: cafePos, norm: cafeNorm } = this.getSphericalPoint(2.20, 0.84, 0.02);
+    this.loader.load("/models/street/cafe-terrace-set.glb", (gltf) => {
+      const terrace = gltf.scene;
+      terrace.position.copy(cafePos);
+      terrace.scale.setScalar(0.90);
+      this.orientToNormal(terrace, cafeNorm, -0.4);
+      this.root.add(terrace);
+    });
 
     this.landmarks.push({
       id: "joon_cafe",
@@ -552,6 +575,18 @@ export class SphericalPlanet {
       districtKey: "market",
     });
 
+    // Extra terrace set, harvest crates, herring cart, and tram shelter
+    this.spawnProp("/models/street/cafe-terrace-set.glb", 2.26, 0.86, 0.2, 0.90);
+    this.spawnProp("/models/street/crate-stack.glb", 2.02, 0.80, 0.7, 0.85);
+    this.spawnProp("/models/street/crate-stack.glb", 2.12, 0.91, -0.2, 0.85);
+    this.spawnProp("/models/street/herring-cart.glb", 1.98, 0.86, 0.8, 0.90);
+    this.spawnProp("/models/street/tram-stop-shelter.glb", 2.00, 0.74, 1.6, 0.95);
+
+    // Market square bollards
+    this.spawnProp("/models/street/amsterdammertje.glb", 2.06, 0.76, 0, 0.85);
+    this.spawnProp("/models/street/amsterdammertje.glb", 2.14, 0.75, 0, 0.85);
+    this.spawnProp("/models/street/amsterdammertje.glb", 2.22, 0.76, 0, 0.85);
+
     // Material Pickups in Market: Silk Ribbon & Syrup Base
     this.spawnPickup("silk-ribbon-spool", 2.08, 0.72, "Silk Ribbon Spool · 실크 리본", "node_market_ribbon_1");
     this.spawnPickup("syrup-glass-vial", 2.18, 0.88, "Syrup Base Vial · 시럽 베이스", "node_market_syrup_1");
@@ -559,12 +594,15 @@ export class SphericalPlanet {
     // -----------------------------------------------------------------------
     // DISTRICT 3: TULIP MEADOW (θ=3.4, φ=0.8)
     // -----------------------------------------------------------------------
-    // Greenhouse Conservatory
+    // Oma Truus's Tulip Greenhouse (3D Blender greenhouse-glass)
     const { pos: ghPos, norm: ghNorm } = this.getSphericalPoint(3.38, 0.74, 0.02);
-    const greenhouse = this.createStylizedGreenhouse();
-    greenhouse.position.copy(ghPos);
-    this.orientToNormal(greenhouse, ghNorm, 0.2);
-    this.root.add(greenhouse);
+    this.loader.load("/models/architecture/greenhouse-glass.glb", (gltf) => {
+      const gh = gltf.scene;
+      gh.position.copy(ghPos);
+      gh.scale.setScalar(1.0);
+      this.orientToNormal(gh, ghNorm, 0.2);
+      this.root.add(gh);
+    });
 
     this.landmarks.push({
       id: "greenhouse",
@@ -576,7 +614,7 @@ export class SphericalPlanet {
       districtKey: "meadow",
     });
 
-    // Flower Patches & Wind Chime (§5.1 greenhouse-wind-chime)
+    // Flower Patches, Tulip Rows & Wind Chime (§5.1 greenhouse-wind-chime)
     const { pos: chimePos, norm: chimeNorm } = this.getSphericalPoint(3.48, 0.86, 0.02);
     this.loader.load("/models/discoveries/greenhouse-wind-chime.glb", (gltf) => {
       const chime = gltf.scene;
@@ -596,6 +634,12 @@ export class SphericalPlanet {
       districtKey: "meadow",
     });
 
+    // Tulip Field Rows & Planters
+    this.spawnProp("/models/street/tulip-field-rows.glb", 3.28, 0.84, 0.5, 1.0);
+    this.spawnProp("/models/street/tulip-field-rows.glb", 3.46, 0.82, -0.2, 1.0);
+    this.spawnProp("/models/street/street-planter-tulips.glb", 3.32, 0.72, 0.1, 0.85);
+    this.spawnProp("/models/discoveries/picnic-blanket.glb", 3.55, 0.76, 0.8, 0.95);
+
     // Material Pickups in Meadow: Daisy Sprig & Sakura Petal
     this.spawnPickup("daisy-sprig", 3.32, 0.82, "Daisy Sprig · 데이지", "node_meadow_daisy_1");
     this.spawnPickup("sakura-petal-bundle", 3.45, 0.78, "Meadow Sakura Petal · 벚꽃잎", "node_meadow_sakura_1");
@@ -608,10 +652,9 @@ export class SphericalPlanet {
     this.loader.load("/models/world/windmill-de-gooyer.glb", (gltf) => {
       const mill = gltf.scene;
       mill.position.copy(millPos);
-      mill.scale.setScalar(0.70); // 14m real height -> ~9.8m landmark in-game
+      mill.scale.setScalar(0.70);
       this.orientToNormal(mill, millNorm, 1.2);
 
-      // Find rotating sails
       mill.traverse((c) => {
         if (c.name === "windmill_Sails" || c.name.toLowerCase().includes("sail") || c.name.toLowerCase().includes("blade")) {
           this.windmillBlades = c;
@@ -630,24 +673,13 @@ export class SphericalPlanet {
       districtKey: "windmill",
     });
 
-    // Linden Tree (§5.1 linden-tree) & Poplar Tree (§5.1 poplar-tree)
-    const { pos: ltPos, norm: ltNorm } = this.getSphericalPoint(4.82, 0.86, 0);
-    this.loader.load("/models/discoveries/linden-tree.glb", (gltf) => {
-      const lt = gltf.scene;
-      lt.position.copy(ltPos);
-      lt.scale.setScalar(0.90);
-      this.orientToNormal(lt, ltNorm, 0.5);
-      this.root.add(lt);
-    });
-
-    const { pos: poplarPos, norm: poplarNorm } = this.getSphericalPoint(4.58, 0.74, 0);
-    this.loader.load("/models/discoveries/poplar-tree.glb", (gltf) => {
-      const poplar = gltf.scene;
-      poplar.position.copy(poplarPos);
-      poplar.scale.setScalar(0.95);
-      this.orientToNormal(poplar, poplarNorm, 0.2);
-      this.root.add(poplar);
-    });
+    // Trees & Hill dressing
+    this.spawnProp("/models/discoveries/poplar-tree.glb", 4.58, 0.74, 0.2, 0.95);
+    this.spawnProp("/models/discoveries/poplar-tree.glb", 4.85, 0.72, 0.6, 0.90);
+    this.spawnProp("/models/discoveries/linden-tree.glb", 4.82, 0.86, 0.5, 0.90);
+    this.spawnProp("/models/discoveries/linden-tree.glb", 4.62, 0.88, 1.1, 0.85);
+    this.spawnProp("/models/street/canal-bench.glb", 4.75, 0.85, 0.4, 0.85);
+    this.spawnProp("/models/discoveries/painter-easel-canal.glb", 4.66, 0.82, 0.9, 0.90);
 
     // Material Pickups in Windmill: Chrome Droplets & Aurora Crystals
     this.spawnPickup("chrome-droplet", 4.65, 0.84, "Chrome Droplet · 크롬 방울", "node_windmill_chrome_1");
@@ -676,26 +708,38 @@ export class SphericalPlanet {
       districtKey: "harbour",
     });
 
-    // Harbour Dock Jetty
-    const { pos: dockPos, norm: dockNorm } = this.getSphericalPoint(5.82, 1.02, 0.02);
-    const dockJetty = this.createStylizedHarbourDock();
-    dockJetty.position.copy(dockPos);
-    this.orientToNormal(dockJetty, dockNorm, 0.6);
-    this.root.add(dockJetty);
-
-    // Mooring Bollards
-    const { pos: bolPos, norm: bolNorm } = this.getSphericalPoint(5.85, 1.08, 0.02);
-    this.loader.load("/models/street/cast-iron-mooring-bollard.glb", (gltf) => {
-      const bol = gltf.scene;
-      bol.position.copy(bolPos);
-      bol.scale.setScalar(0.7);
-      this.orientToNormal(bol, bolNorm, 0);
-      this.root.add(bol);
-    });
+    // 3D Blender Wooden Jetty (replaces procedural dock)
+    this.spawnProp("/models/architecture/wooden-jetty.glb", 5.82, 1.02, 0.6, 1.0);
+    // 7m Historic Dock Crane
+    this.spawnProp("/models/architecture/harbour-crane.glb", 5.76, 1.06, 0.8, 0.90);
+    // Moored rowboats and dock bollards
+    this.spawnProp("/models/street/rowboat-moored.glb", 5.84, 1.12, 1.4, 0.95, -0.02);
+    this.spawnProp("/models/street/rowboat-moored.glb", 5.78, 0.98, 0.3, 0.95, -0.02);
+    this.spawnProp("/models/street/cast-iron-mooring-bollard.glb", 5.85, 1.08, 0, 0.7);
+    this.spawnProp("/models/street/cast-iron-mooring-bollard.glb", 5.80, 1.00, 0, 0.7);
+    // Duck family swimming in harbour
+    this.spawnProp("/models/discoveries/duck-family.glb", 5.88, 1.10, 2.1, 0.90, -0.03);
 
     // Material Pickups in Harbour: Gold Leaf & Aurora Crystal
     this.spawnPickup("gold-leaf-flake", 5.86, 0.98, "Gold Leaf Flake · 금박", "node_harbour_gold_1");
     this.spawnPickup("aurora-crystal-shard", 5.98, 1.12, "Harbour Aurora Crystal · 오로라 크리스탈", "node_harbour_aurora_1");
+
+    // -----------------------------------------------------------------------
+    // INTER-DISTRICT GAP MOMENTS (§5.3)
+    // -----------------------------------------------------------------------
+    // Gap 1: Canal ➔ Market Square (θ ~ 1.4 - 1.6)
+    this.spawnProp("/models/street/heart-lock-railing.glb", 1.45, 0.78, 0.8, 0.90);
+    this.spawnProp("/models/discoveries/cat-on-crate.glb", 1.52, 0.82, 0.3, 0.90);
+
+    // Gap 2: Market Square ➔ Tulip Meadow (θ ~ 2.7 - 2.9)
+    this.spawnProp("/models/street/ice-cream-cart.glb", 2.75, 0.80, 0.6, 0.90);
+    this.spawnProp("/models/discoveries/pigeon-pair.glb", 2.82, 0.84, 1.2, 0.90);
+
+    // Gap 3: Tulip Meadow ➔ Windmill Hill (θ ~ 4.0 - 4.2)
+    this.spawnProp("/models/discoveries/book-crate-sale.glb", 4.08, 0.82, 0.4, 0.90);
+
+    // Gap 4: Windmill Hill ➔ Harbour (θ ~ 5.3 - 5.5)
+    this.spawnProp("/models/architecture/canal-house-narrow-c.glb", 5.35, 0.92, 0.8, 0.95);
   }
 
   // =========================================================================

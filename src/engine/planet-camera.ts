@@ -7,11 +7,12 @@ export class PlanetCamera {
   public camera: THREE.PerspectiveCamera;
   public mode: GameViewMode = "overworld";
 
-  // Section 8 Specs: Lower, closer camera (-25% dist, 20-22° pitch, FOV 50)
-  public distance: number = 7.5;
-  public baseDistance: number = 7.5;
+  // Section 8 & World Rebuild §6.3 Specs: Diorama pitch 40°, dist 9.0, key [V] toggle
+  public distance: number = 9.0;
+  public baseDistance: number = 9.0;
   public zoomMin: number = 4.8;
-  public zoomMax: number = 11.0;
+  public zoomMax: number = 14.0;
+  public isDioramaPitch: boolean = true; // 40° diorama view vs 21° horizon view
 
   public back: THREE.Vector3 = new THREE.Vector3(0, 0, 1);
   public lastNormal: THREE.Vector3 = new THREE.Vector3(0, 1, 0);
@@ -26,6 +27,16 @@ export class PlanetCamera {
     this.camera.updateProjectionMatrix();
 
     this.setupScrollZoom();
+    this.setupViewToggle();
+  }
+
+  private setupViewToggle() {
+    window.addEventListener("keydown", (e) => {
+      if (e.code === "KeyV" && !e.repeat) {
+        this.isDioramaPitch = !this.isDioramaPitch;
+        this.baseDistance = this.isDioramaPitch ? 9.0 : 7.5;
+      }
+    });
   }
 
   private setupScrollZoom() {
@@ -79,10 +90,10 @@ export class PlanetCamera {
     this.back.applyQuaternion(qNorm).projectOnPlane(playerNormal).normalize();
     this.lastNormal.copy(playerNormal);
 
-    // Camera follow distance & height (Spec §8: pitch ~20-22°)
-    // tan(21°) ≈ 0.384 -> height ≈ distance * 0.38
+    // Camera follow distance & height (Spec §6.3: pitch 40° diorama view vs 21° horizon view)
     const targetDist = isBike ? this.baseDistance * 1.25 : this.baseDistance;
-    const targetHeight = targetDist * 0.38; // 21° pitch
+    const targetPitch = this.isDioramaPitch ? 40 : 21;
+    const targetHeight = targetDist * Math.tan(THREE.MathUtils.degToRad(targetPitch));
     this.distance = THREE.MathUtils.lerp(this.distance, targetDist, delta * 4.5);
 
     // Smoothly orbit camera behind character when moving

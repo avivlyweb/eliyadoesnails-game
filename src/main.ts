@@ -148,25 +148,26 @@ class EliyaCanalWorldGame {
   }
 
   private setupLighting() {
-    const ambient = new THREE.AmbientLight(0xfff5ed, 1.3);
+    // Soft hemisphere fill and warm golden sunlight for Dutch pastel diorama (Spec §6.4)
+    const ambient = new THREE.AmbientLight(0xfff7f0, 1.1);
     this.scene.add(ambient);
 
-    // Golden hour sunlight
-    const sun = new THREE.DirectionalLight(0xffedd5, 2.4);
+    // Warm sun
+    const sun = new THREE.DirectionalLight(0xfff1dc, 2.6);
     sun.position.set(30, 50, 35);
     sun.castShadow = true;
     sun.shadow.mapSize.width = 2048;
     sun.shadow.mapSize.height = 2048;
     sun.shadow.camera.near = 0.5;
-    sun.shadow.camera.far = 120;
-    sun.shadow.camera.left = -40;
-    sun.shadow.camera.right = 40;
-    sun.shadow.camera.top = 40;
-    sun.shadow.camera.bottom = -40;
-    sun.shadow.bias = -0.0005;
+    sun.shadow.camera.far = 130;
+    sun.shadow.camera.left = -45;
+    sun.shadow.camera.right = 45;
+    sun.shadow.camera.top = 45;
+    sun.shadow.camera.bottom = -45;
+    sun.shadow.bias = -0.0003;
     this.scene.add(sun);
 
-    const hemi = new THREE.HemisphereLight(0xfff0e6, 0x6e5e54, 0.65);
+    const hemi = new THREE.HemisphereLight(0xfff3ea, 0x826f63, 0.85);
     this.scene.add(hemi);
   }
 
