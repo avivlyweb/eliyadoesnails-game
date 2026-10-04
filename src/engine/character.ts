@@ -112,6 +112,17 @@ export class SphericalCharacter {
         this.model = gltf.scene;
         this.model.scale.setScalar(modelScale);
 
+        // Blender scene helpers (studio backdrop planes, preview cameras/targets)
+        // must never come into the world: the bunny export ships an 8x8 m backdrop.
+        const helpers: THREE.Object3D[] = [];
+        this.model.traverse((child) => {
+          const mat = (child as THREE.Mesh).material as THREE.Material | undefined;
+          if (/backdrop|cam_target/i.test(child.name) || (mat && /backdrop/i.test(mat.name || ""))) {
+            helpers.push(child);
+          }
+        });
+        helpers.forEach((h) => h.parent?.remove(h));
+
         this.model.traverse((child) => {
           if ((child as THREE.Mesh).isMesh) {
             child.castShadow = true;
