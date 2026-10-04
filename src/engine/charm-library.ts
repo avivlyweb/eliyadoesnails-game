@@ -243,6 +243,20 @@ export const CHARMS: CharmDef[] = [
   { id: "saturn-orbital-charm", name: "Saturn", icon: "🪐", src: "/models/high-detail/charms/saturn-orbital-charm.glb", matches: ["Saturn Orbital Charm"] },
   { id: "charm-y2k-cyber-stars", name: "Y2K Stars", icon: "✦", src: "/models/high-detail/charms/charm-y2k-cyber-stars.glb" },
   { id: "charm-chrome-monkey", name: "Chrome Monkey", icon: "🐒", src: "/models/high-detail/charms/charm-chrome-monkey.glb" },
+
+  // --- Batch B 3D Blender charms (07-CHARMS-BLENDER.md §4) ---
+  { id: "charm-mini-windmill", name: "Mini Windmill", icon: "💨", src: "/models/charms/charm-mini-windmill.glb", matches: ["Mini Windmill Charm", "Windmill Hill Keepsake"] },
+  { id: "charm-stroopwafel", name: "Stroopwafel", icon: "🧇", src: "/models/charms/charm-stroopwafel.glb", matches: ["Stroopwafel Charm", "Gouda Caramel Cookie"] },
+  { id: "charm-omafiets", name: "Omafiets Bike", icon: "🚲", src: "/models/charms/charm-omafiets.glb", matches: ["Omafiets Charm", "Amsterdam Bicycle Charm"] },
+  { id: "charm-canal-house", name: "Canal House", icon: "🏛️", src: "/models/charms/charm-canal-house.glb", matches: ["Canal House Charm", "Stepped Gable Charm"] },
+  { id: "charm-clog", name: "Wooden Clog", icon: "👡", src: "/models/charms/charm-clog.glb", matches: ["Wooden Clog Charm", "Yellow Klomp Charm"] },
+  { id: "charm-mochi-bunny", name: "Mochi Bunny", icon: "🐰", src: "/models/charms/charm-mochi-bunny.glb", matches: ["Mochi Bunny Charm", "Peach Bunny Face"] },
+  { id: "charm-strawberry", name: "Glossy Strawberry", icon: "🍓", src: "/models/charms/charm-strawberry.glb", matches: ["Strawberry Charm", "Glossy Berry Charm"] },
+  { id: "charm-butterfly", name: "Pastel Butterfly", icon: "🦋", src: "/models/charms/charm-butterfly.glb", matches: ["Butterfly Charm", "Lavender Butterfly"] },
+  { id: "charm-moon", name: "Crescent Moon", icon: "🌙", src: "/models/charms/charm-moon.glb", matches: ["Crescent Moon Charm", "Gold Moon Charm"] },
+  { id: "charm-cloud", name: "Smiling Cloud", icon: "☁️", src: "/models/charms/charm-cloud.glb", matches: ["Cloud Charm", "Smiling Cloud Charm"] },
+  { id: "charm-shell", name: "Scallop Shell", icon: "🐚", src: "/models/charms/charm-shell.glb", matches: ["Scallop Shell Charm", "Nacre Shell Charm"] },
+  { id: "charm-cherry", name: "Cherry Pair", icon: "🍒", src: "/models/charms/charm-cherry.glb", matches: ["Cherry Pair Charm", "Glossy Cherry Charm"] },
 ];
 
 export function getCharm(id: string): CharmDef | undefined {

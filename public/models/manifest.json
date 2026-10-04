@@ -1933,5 +1933,113 @@
     "bytes": 662052,
     "instanced": false,
     "nodes": []
+  },
+  {
+    "id": "charm-mini-windmill",
+    "path": "/models/charms/charm-mini-windmill.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 38136,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-stroopwafel",
+    "path": "/models/charms/charm-stroopwafel.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 33456,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-omafiets",
+    "path": "/models/charms/charm-omafiets.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 70000,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-canal-house",
+    "path": "/models/charms/charm-canal-house.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 23300,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-clog",
+    "path": "/models/charms/charm-clog.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 70524,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-mochi-bunny",
+    "path": "/models/charms/charm-mochi-bunny.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 146704,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-strawberry",
+    "path": "/models/charms/charm-strawberry.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 88452,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-butterfly",
+    "path": "/models/charms/charm-butterfly.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 126352,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-moon",
+    "path": "/models/charms/charm-moon.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 28572,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-cloud",
+    "path": "/models/charms/charm-cloud.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 120320,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-shell",
+    "path": "/models/charms/charm-shell.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 99320,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-cherry",
+    "path": "/models/charms/charm-cherry.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 66428,
+    "instanced": false,
+    "nodes": []
   }
 ]
