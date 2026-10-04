@@ -1,5 +1,7 @@
 import { gameConvex } from "../net/convex";
 import { sound } from "./audio";
+import { NailDecorator } from "./nail-decorator";
+import { CHARMS, charmForRequest } from "./charm-library";
 import { questSystem, ClientTicket } from "./game-quest";
 
 export interface MinigameScores {
@@ -10,7 +12,9 @@ export interface MinigameScores {
 
 export class NailStudioMinigameController {
   private overlay: HTMLElement | null = null;
-  private currentStep: 1 | 2 | 3 | 4 = 1; // 1: Base Fill, 2: Art Detail, 3: UV Cure, 4: Result
+  private currentStep: 1 | 2 | 3 | 4 | 5 = 1; // 1: Base Fill, 2: Art Detail, 3: Charms, 4: UV Cure, 5: Result
+  private charmScore = 0;
+  private charmDecorator: NailDecorator | null = null;
   private ticket: ClientTicket | null = null;
   private scores: MinigameScores = { base: 95, art: 96, finish: 98 };
 
@@ -48,7 +52,7 @@ export class NailStudioMinigameController {
 
     window.addEventListener("keydown", (e) => {
       if (this.overlay && this.overlay.style.display === "flex") {
-        if (e.code === "Space" && this.currentStep === 3) {
+        if (e.code === "Space" && this.currentStep === 4) {
           e.preventDefault();
           this.triggerCurePulse();
         }
@@ -62,6 +66,7 @@ export class NailStudioMinigameController {
     this.nailFillPercentages = [0, 0, 0, 0, 0];
     this.cureHits = 0;
     this.scores = { base: 0, art: 0, finish: 0 };
+    this.charmScore = 0;
 
     if (!this.overlay) {
       this.overlay = document.getElementById("nail-minigame-overlay");
@@ -86,6 +91,8 @@ export class NailStudioMinigameController {
   }
 
   public close() {
+    this.charmDecorator?.dispose();
+    this.charmDecorator = null;
     if (this.cureAnimFrame) cancelAnimationFrame(this.cureAnimFrame);
     if (this.overlay) this.overlay.style.display = "none";
   }
@@ -100,7 +107,7 @@ export class NailStudioMinigameController {
   }
 
   private updateStepPills() {
-    for (let s = 1; s <= 3; s++) {
+    for (let s = 1; s <= 4; s++) {
       const pill = document.getElementById(`step-pill-${s}`);
       if (pill) {
         pill.classList.toggle("active", this.currentStep === s);
@@ -284,7 +291,7 @@ export class NailStudioMinigameController {
       nextBtn.addEventListener("click", () => {
         this.scores.art = this.artAccuracy;
         sound.playTeaPour();
-        this.renderStep3UVCure();
+        this.renderStepCharms();
       });
     }
   }
@@ -292,15 +299,96 @@ export class NailStudioMinigameController {
   // -------------------------------------------------------------------------
   // STEP 3: UV TUNNEL LAMP CURING STEP
   // -------------------------------------------------------------------------
-  private renderStep3UVCure() {
+  // -------------------------------------------------------------------------
+  // STEP 3: PLACE THE CLIENT'S CHARM (3D)
+  // -------------------------------------------------------------------------
+  private renderStepCharms() {
     this.currentStep = 3;
+    this.updateStepPills();
+    const stage = document.getElementById("minigame-interactive-stage");
+    if (!stage || !this.ticket) return;
+
+    const wanted = charmForRequest(this.ticket.requestedCharm);
+    // Offer the requested charm plus three others, shuffled
+    const others = CHARMS.filter((c) => c.id !== wanted?.id).sort(() => Math.random() - 0.5).slice(0, wanted ? 3 : 4);
+    const offer = (wanted ? [wanted, ...others] : others).sort(() => Math.random() - 0.5);
+
+    stage.innerHTML = `
+      <div class="minigame-step-title">Step 3: Place the Charm</div>
+      <div class="minigame-step-instruction">
+        ${this.ticket.clientName} asked for <strong>${wanted ? wanted.icon + " " + wanted.name : this.ticket.requestedCharm}</strong>.
+        Pick it, then tap a nail. Extra charms are welcome; tap one to remove it.
+      </div>
+      <div class="charm-step-layout">
+        <div id="charm-step-3d" class="charm-step-3d"></div>
+        <div class="charm-step-tray" id="charm-step-tray">
+          ${offer
+            .map(
+              (c) => `<button class="charm-step-pick" data-charm="${c.id}"><span>${c.icon}</span><small>${c.name}</small></button>`
+            )
+            .join("")}
+        </div>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;">
+        <span id="charm-step-status" style="font-size:12px;color:var(--text-muted);">No charm placed yet</span>
+        <button id="btn-next-step-charm" class="btn-dock active" style="padding: 7px 18px; display: none;">
+          <span>Next: UV Cure ➔</span>
+        </button>
+      </div>
+    `;
+
+    const holder = document.getElementById("charm-step-3d")!;
+    this.charmDecorator?.dispose();
+    const deco = new NailDecorator(holder);
+    this.charmDecorator = deco;
+    const setSrc = this.ticket.baseModelPath.includes("/high-detail/")
+      ? this.ticket.baseModelPath
+      : this.ticket.baseModelPath.replace("/models/", "/models/high-detail/");
+    deco.loadSet(setSrc).catch(() => deco.loadSet(this.ticket!.baseModelPath));
+
+    const statusEl = document.getElementById("charm-step-status");
+    const nextBtn = document.getElementById("btn-next-step-charm");
+    deco.onChange = (placed) => {
+      const hasWanted = !!wanted && placed.some((p) => p.charmId === wanted.id);
+      // 100 with the requested charm, a little extra for a fuller design (max 2 extras count)
+      this.charmScore = placed.length === 0 ? 0 : hasWanted ? 92 + Math.min(2, placed.length - 1) * 4 : 65;
+      if (statusEl) {
+        statusEl.innerHTML = placed.length === 0
+          ? "No charm placed yet"
+          : hasWanted
+          ? `<span style="color:#2e7d32;font-weight:600;">✓ ${wanted!.name} placed${placed.length > 1 ? ` + ${placed.length - 1} extra` : ""}</span>`
+          : `${placed.length} placed · ${this.ticket!.clientName} still wants the ${wanted ? wanted.name : "requested charm"}`;
+      }
+      if (nextBtn) nextBtn.style.display = placed.length ? "inline-flex" : "none";
+    };
+
+    stage.querySelectorAll<HTMLButtonElement>(".charm-step-pick").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const on = !btn.classList.contains("active");
+        stage.querySelectorAll(".charm-step-pick").forEach((b) => b.classList.remove("active"));
+        if (on) btn.classList.add("active");
+        deco.selectCharm(on ? btn.dataset.charm! : null);
+        sound.playMagneticShimmer();
+      });
+    });
+    // Pre-select the requested one: one tap on a nail is enough
+    if (wanted) (stage.querySelector(`[data-charm="${wanted.id}"]`) as HTMLButtonElement | null)?.click();
+
+    nextBtn?.addEventListener("click", () => {
+      sound.playTeaPour();
+      this.renderStep3UVCure();
+    });
+  }
+
+  private renderStep3UVCure() {
+    this.currentStep = 4;
     this.updateStepPills();
 
     const stage = document.getElementById("minigame-interactive-stage");
     if (!stage) return;
 
     stage.innerHTML = `
-      <div class="minigame-step-title">Step 3: UV Tunnel Lamp Cure</div>
+      <div class="minigame-step-title">Step 4: UV Tunnel Lamp Cure</div>
       <div class="minigame-step-instruction">Press <strong>[Space]</strong> or click <strong>Cure Now</strong> when the purple sweep beam enters the green cure zone!</div>
 
       <div class="uv-cure-chamber">
@@ -364,7 +452,7 @@ export class NailStudioMinigameController {
         needle.style.left = `${this.cureProgress}%`;
       }
 
-      if (this.currentStep === 3) {
+      if (this.currentStep === 4) {
         this.cureAnimFrame = requestAnimationFrame(loop);
       }
     };
@@ -374,7 +462,7 @@ export class NailStudioMinigameController {
   }
 
   private triggerCurePulse() {
-    if (this.currentStep !== 3 || this.cureHits >= this.cureTargetHits) return;
+    if (this.currentStep !== 4 || this.cureHits >= this.cureTargetHits) return;
 
     sound.playUVLampCure();
 
@@ -403,10 +491,10 @@ export class NailStudioMinigameController {
   // STEP 4: RESULT CELEBRATION & PACKING
   // -------------------------------------------------------------------------
   private async finishMinigame() {
-    this.currentStep = 4;
+    this.currentStep = 5;
     if (this.cureAnimFrame) cancelAnimationFrame(this.cureAnimFrame);
 
-    const avg = Math.round((this.scores.base + this.scores.art + this.scores.finish) / 3);
+    const avg = Math.round((this.scores.base + this.scores.art + this.scores.finish + this.charmScore) / 4);
     const stars = avg >= 85 ? 3 : avg >= 60 ? 2 : 1;
 
     // Sync with Convex studio.finishDesign
@@ -448,6 +536,10 @@ export class NailStudioMinigameController {
           <div class="result-stat-box">
             <span class="stat-label">Artisan Detailing</span>
             <span class="stat-val">${this.scores.art}%</span>
+          </div>
+          <div class="result-stat-box">
+            <span class="stat-label">Charm Styling</span>
+            <span class="stat-val">${this.charmScore}%</span>
           </div>
           <div class="result-stat-box">
             <span class="stat-label">UV Lamp Cure</span>

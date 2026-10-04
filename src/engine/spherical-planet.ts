@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { addAtelierSignage, swayAtelierSign } from "./atelier-signage";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import {
   DISTRICTS,
@@ -37,6 +38,7 @@ export class SphericalPlanet {
   public loader: GLTFLoader;
 
   public landmarks: PlanetLandmark[] = [];
+  private atelierHouse: THREE.Object3D | null = null;
   public npcs: THREE.Group[] = [];
 
   // Material Pickups tracking
@@ -394,14 +396,9 @@ export class SphericalPlanet {
       house.scale.setScalar(1.15);
       this.orientToNormal(house, atNorm, 0.2);
 
-      // Pink Petal Awning
-      const awning = new THREE.Mesh(
-        new THREE.BoxGeometry(1.6, 0.08, 0.75),
-        new THREE.MeshStandardMaterial({ color: 0xa8505e, roughness: 0.5 })
-      );
-      awning.position.set(0, 2.4, 0.8);
-      awning.rotation.x = 0.2;
-      house.add(awning);
+      // Shop front: name board, hanging logo sign, window decal and awning (on the street side, local -Z)
+      addAtelierSignage(house);
+      this.atelierHouse = house;
       this.root.add(house);
     });
 
@@ -1177,6 +1174,7 @@ export class SphericalPlanet {
   // =========================================================================
   public update(delta: number) {
     this.windUniforms.uTime.value += delta;
+    swayAtelierSign(this.atelierHouse, this.windUniforms.uTime.value);
 
     // Rotate windmill blades
     if (this.windmillBlades) {
