@@ -63,8 +63,8 @@ export const buyItem = mutation({
       throw new Error("ALREADY_OWNED");
     }
 
-    // Discount if player has null-signal pet active
-    if (player.activePetKey === "null-signal") {
+    // Discount if player has pearl-crab (or legacy null-signal) pet active
+    if (player.activePetKey === "pearl-crab" || player.activePetKey === "null-signal") {
       price = Math.round(price * 0.9);
     }
 
@@ -159,10 +159,14 @@ export const setActivePet = mutation({
   handler: async (ctx, args) => {
     const player = await getPlayer(ctx, args.guestToken);
 
-    if (args.petKey) {
+    let targetPetKey = args.petKey;
+    if (targetPetKey === "codex") targetPetKey = "matcha-moth";
+    if (targetPetKey === "null-signal") targetPetKey = "pearl-crab";
+
+    if (targetPetKey) {
       const pet = await ctx.db
         .query("pets")
-        .withIndex("by_key", (q) => q.eq("key", args.petKey!))
+        .withIndex("by_key", (q) => q.eq("key", targetPetKey!))
         .unique();
 
       if (!pet) throw new Error("PET_NOT_FOUND");
@@ -182,12 +186,30 @@ export const setActivePet = mutation({
     }
 
     await ctx.db.patch(player._id, {
-      activePetKey: args.petKey,
+      activePetKey: targetPetKey,
     });
 
     return {
       success: true,
-      activePetKey: args.petKey,
+      activePetKey: targetPetKey,
     };
+  },
+});
+
+export const migratePetKeys = mutation({
+  args: {},
+  handler: async (ctx) => {
+    const players = await ctx.db.query("players").collect();
+    let migratedCount = 0;
+    for (const player of players) {
+      if (player.activePetKey === "codex") {
+        await ctx.db.patch(player._id, { activePetKey: "matcha-moth" });
+        migratedCount++;
+      } else if (player.activePetKey === "null-signal") {
+        await ctx.db.patch(player._id, { activePetKey: "pearl-crab" });
+        migratedCount++;
+      }
+    }
+    return { success: true, migratedCount };
   },
 });

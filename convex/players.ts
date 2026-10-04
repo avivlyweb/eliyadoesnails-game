@@ -26,8 +26,15 @@ async function getFullPlayerState(
       .collect(),
   ]);
 
+  let activePlayer = player;
+  if (player.activePetKey === "codex") {
+    activePlayer = { ...player, activePetKey: "matcha-moth" };
+  } else if (player.activePetKey === "null-signal") {
+    activePlayer = { ...player, activePetKey: "pearl-crab" };
+  }
+
   return {
-    player,
+    player: activePlayer,
     inventory,
     quests,
     friendships,

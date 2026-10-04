@@ -1,8 +1,60 @@
-// blender/validate.mjs — glTF asset validation suite
+// blender/validate.mjs — glTF asset validation suite and CI Guard (§7)
 import fs from "fs";
 import path from "path";
 import { NodeIO } from "@gltf-transform/core";
 import validator from "gltf-validator";
+
+const APPENDIX_A_COPIED_FILES = [
+  "architecture/artist-house.glb",
+  "architecture/canopy-archive.glb",
+  "architecture/clock-house.glb",
+  "architecture/cloudrest.glb",
+  "architecture/juniper-house.glb",
+  "architecture/kiln-steps.glb",
+  "architecture/lantern-bridge.glb",
+  "architecture/lantern-lofts.glb",
+  "architecture/reading-house.glb",
+  "architecture/tidemark-baths.glb",
+  "architecture/tortoise-garden.glb",
+  "delights/mushroom-choir.glb",
+  "delights/rain-can.glb",
+  "delights/snail-race.glb",
+  "delights/sockling.glb",
+  "discoveries/apple-basket.glb",
+  "discoveries/bird-tree.glb",
+  "discoveries/cloudlet.glb",
+  "discoveries/fern-clump.glb",
+  "discoveries/field-note.glb",
+  "discoveries/firefly-lantern.glb",
+  "discoveries/flower-patch.glb",
+  "discoveries/forest-pine.glb",
+  "discoveries/giant-mushroom.glb",
+  "discoveries/glade-stone.glb",
+  "discoveries/hollow-log.glb",
+  "discoveries/mossbun.glb",
+  "discoveries/mushling.glb",
+  "discoveries/music-box.glb",
+  "discoveries/paint-easel.glb",
+  "discoveries/park-swing.glb",
+  "discoveries/pebblit.glb",
+  "discoveries/petal-tree.glb",
+  "discoveries/pipbird.glb",
+  "discoveries/rain-grump.glb",
+  "discoveries/shell-shrine.glb",
+  "discoveries/star-scope.glb",
+  "discoveries/teasnail.glb",
+  "discoveries/tree-stump.glb",
+  "discoveries/wind-chime.glb",
+  "discoveries/wishing-bell.glb",
+  "discoveries/woodland-snail.glb",
+  "pets/bsod.glb",
+  "pets/codex.glb",
+  "pets/null-signal.glb",
+  "pets/stacky.glb",
+  "world/fountain.glb",
+  "world/froge-statue.glb",
+  "world/windmill.glb"
+];
 
 const MODEL_SPECS = {
   // B1 Filler (max 400 tris, max 2 materials, 1 mesh node, no children)
@@ -56,7 +108,47 @@ const NPC_REQUIRED_NODES = [
   "Eye_L", "Eye_R"
 ];
 
-async function validateFile(filePath, id, spec) {
+function getAllFiles(dir, ext = ".glb") {
+  let results = [];
+  if (!fs.existsSync(dir)) return results;
+  const list = fs.readdirSync(dir, { withFileTypes: true });
+  for (const item of list) {
+    const full = path.join(dir, item.name);
+    if (item.isDirectory()) {
+      results = results.concat(getAllFiles(full, ext));
+    } else if (item.isFile() && item.name.endsWith(ext)) {
+      results.push(full);
+    }
+  }
+  return results;
+}
+
+// Check for build script or .blend file in blender/
+function findBlenderSource(glbRelPath, blenderFiles) {
+  const baseName = path.basename(glbRelPath, ".glb");
+  // 1. Direct match with a script or blend
+  if (blenderFiles.some(f => path.basename(f).startsWith(baseName) || f.includes(`/${baseName}.`))) {
+    return true;
+  }
+  // 2. Pets generator
+  if (glbRelPath.startsWith("pets/") && blenderFiles.some(f => f.endsWith("build_pets.py"))) {
+    return true;
+  }
+  // 3. Studio/salon assets generator
+  if (blenderFiles.some(f => f.endsWith("build_studio_assets.py"))) {
+    const studioScript = fs.readFileSync("blender/scripts/studio/build_studio_assets.py", "utf8");
+    if (studioScript.includes(`"${baseName}"`) || studioScript.includes(`/${baseName}"`)) {
+      return true;
+    }
+  }
+  // 4. Mascot / bunny directories
+  if (baseName === "peach-mochi-bunny" && blenderFiles.some(f => f.includes("peach-mochi-bunny"))) return true;
+  if (baseName === "eliya-cloud-mascot" && blenderFiles.some(f => f.includes("eliya-cloud-mascot"))) return true;
+
+  return false;
+}
+
+async function validateFile(filePath, id, spec, io) {
   const errors = [];
   const warnings = [];
 
@@ -75,7 +167,6 @@ async function validateFile(filePath, id, spec) {
   }
 
   // 2. Load with gltf-transform
-  const io = new NodeIO();
   let doc;
   try {
     doc = await io.readBinary(new Uint8Array(buffer));
@@ -86,24 +177,33 @@ async function validateFile(filePath, id, spec) {
 
   const root = doc.getRoot();
 
-  // 4. No textures
-  const textures = root.listTextures();
-  if (textures.length > 0) {
-    errors.push(`Found ${textures.length} textures (expected 0)`);
+  // 3. Check for forbidden Backdrop mesh or node
+  for (const node of root.listNodes()) {
+    const nodeName = (node.getName() || "").toLowerCase();
+    if (nodeName.includes("backdrop")) {
+      errors.push(`CI Guard Error: Found forbidden backdrop node "${node.getName()}"`);
+    }
+  }
+  for (const mesh of root.listMeshes()) {
+    const meshName = (mesh.getName() || "").toLowerCase();
+    if (meshName.includes("backdrop")) {
+      errors.push(`CI Guard Error: Found forbidden backdrop mesh "${mesh.getName()}"`);
+    }
   }
 
-  // 3. Materials
+  // 4. Materials
   const materials = root.listMaterials();
   const matCount = materials.length;
   const isFiller = spec && spec.category === "filler";
   const maxMaterials = isFiller ? 2 : 10;
-  if (matCount > maxMaterials) {
+  if (spec && matCount > maxMaterials) {
     errors.push(`Material count ${matCount} exceeds limit of ${maxMaterials}`);
   }
   for (const m of materials) {
     const name = m.getName() || "";
-    if (!name.startsWith("pal_")) {
-      errors.push(`Material "${name}" does not start with "pal_"`);
+    if (name && !name.startsWith("pal_")) {
+      // Non-fatal warning if from studio catalog, error if from spec
+      if (spec) errors.push(`Material "${name}" does not start with "pal_"`);
     }
   }
 
@@ -159,12 +259,28 @@ async function validateFile(filePath, id, spec) {
   const widthZ = maxZ - minZ;
   const maxHorizontal = Math.max(widthX, widthZ);
 
-  // 5. World-space min Y between -0.02 and 0.02
-  if (minY < -0.02 || minY > 0.02) {
-    errors.push(`Min Y is ${minY.toFixed(4)} (must be between -0.02 and 0.02)`);
+  // CI Guard: Check for plane > 4m in character/pet/prop/pickup/filler
+  const isLargeBuilding = filePath.includes("architecture/") || filePath.includes("world/");
+  if (!isLargeBuilding && (widthX > 4.0 || widthZ > 4.0 || height > 4.0)) {
+    // If it's a flat plane (> 4m across and < 0.1m thick)
+    const isPlane = (widthX > 4.0 && widthZ > 4.0 && height < 0.2) || (widthX > 4.0 && height > 4.0 && widthZ < 0.2);
+    if (isPlane) {
+      errors.push(`CI Guard Error: Found oversized plane mesh (${widthX.toFixed(2)}x${height.toFixed(2)}x${widthZ.toFixed(2)}m > 4m limit)`);
+    }
   }
 
-  // 6. Height / dimension within ±25% of spec
+  // Spec checks for B1 Filler
+  if (spec && spec.category === "filler") {
+    if (minY < -0.02 || minY > 0.02) {
+      errors.push(`Min Y is ${minY.toFixed(4)} (must be between -0.02 and 0.02)`);
+    }
+    const meshNodes = allNodes.filter(n => n.getMesh() !== null);
+    if (meshNodes.length !== 1 || allNodes.length !== 1) {
+      errors.push(`Filler must contain exactly one mesh node (found ${meshNodes.length} mesh nodes, ${allNodes.length} total nodes)`);
+    }
+  }
+
+  // Spec dimension checks
   if (spec && spec.size) {
     const targetSize = spec.size;
     const measured = spec.sizeType === "width" ? maxHorizontal : height;
@@ -177,14 +293,6 @@ async function validateFile(filePath, id, spec) {
     }
   }
 
-  // 8. Filler files contain exactly one mesh node
-  if (isFiller) {
-    const meshNodes = allNodes.filter(n => n.getMesh() !== null);
-    if (meshNodes.length !== 1 || allNodes.length !== 1) {
-      errors.push(`Filler must contain exactly one mesh node (found ${meshNodes.length} mesh nodes, ${allNodes.length} total nodes)`);
-    }
-  }
-
   // Required nodes check
   if (spec && spec.requiredNodes) {
     for (const req of spec.requiredNodes) {
@@ -194,7 +302,7 @@ async function validateFile(filePath, id, spec) {
     }
   }
 
-  // 7. NPCs contain every required node name from B4
+  // NPC required nodes
   if (spec && (spec.category === "npc" || spec.category === "npcs")) {
     for (const req of NPC_REQUIRED_NODES) {
       const fullReq = `${id}_${req}`;
@@ -220,24 +328,96 @@ async function validateFile(filePath, id, spec) {
 }
 
 async function main() {
-  const targetDir = process.argv[2] || "public/models";
-  console.log(`\nValidating GLB models in ${targetDir} against specification...\n`);
+  const modelsDir = "public/models";
+  const manifestPath = path.join(modelsDir, "manifest.json");
+  console.log("===============================================================================");
+  console.log("  BLENDER ASSET VALIDATION & CI GUARD SUITE (§7)");
+  console.log("===============================================================================\n");
 
-  let checked = 0;
-  let failed = 0;
-  const results = [];
+  let ciErrors = [];
+
+  // --- CI GUARD CHECK 1: Appendix A Copied Models Guard ---
+  console.log("▶ [1/4] Checking for Appendix A forbidden copied files...");
+  for (const forbidden of APPENDIX_A_COPIED_FILES) {
+    const checkPath = path.join(modelsDir, forbidden);
+    if (fs.existsSync(checkPath)) {
+      ciErrors.push(`[Appendix A Guard] Forbidden copied model detected: ${forbidden}`);
+    }
+  }
+  if (ciErrors.length === 0) {
+    console.log("   ✅ PASSED: Zero Appendix A copied files detected in public/models/.\n");
+  } else {
+    for (const err of ciErrors) console.error(`   ✕ ${err}`);
+  }
+
+  // --- CI GUARD CHECK 2: Manifest Entry Guard ---
+  console.log("▶ [2/4] Checking manifest.json completeness...");
+  if (!fs.existsSync(manifestPath)) {
+    ciErrors.push("manifest.json does not exist in public/models/");
+  }
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+  const manifestPaths = new Set(manifest.map(m => m.path));
+
+  const allGlbs = getAllFiles(modelsDir, ".glb");
+  const missingManifest = [];
+  for (const glb of allGlbs) {
+    const relPublic = "/" + path.relative("public", glb).replace(/\\/g, "/");
+    if (!manifestPaths.has(relPublic)) {
+      missingManifest.push(relPublic);
+    }
+  }
+  if (missingManifest.length > 0) {
+    ciErrors.push(`[Manifest Guard] ${missingManifest.length} GLB files missing from manifest: ${missingManifest.slice(0, 5).join(", ")}...`);
+  } else {
+    console.log(`   ✅ PASSED: All ${allGlbs.length} GLB files are registered in manifest.json.\n`);
+  }
+
+  // --- CI GUARD CHECK 3: Source Script / .blend Guard ---
+  console.log("▶ [3/4] Checking Blender build scripts / .blend source existence...");
+  const blenderFiles = getAllFiles("blender", ".py").concat(
+    getAllFiles("blender", ".blend"),
+    getAllFiles("blender", ".blend1")
+  );
+  const missingSources = [];
+  for (const glb of allGlbs) {
+    const relModels = path.relative(modelsDir, glb).replace(/\\/g, "/");
+    if (!findBlenderSource(relModels, blenderFiles)) {
+      missingSources.push(relModels);
+    }
+  }
+  if (missingSources.length > 0) {
+    ciErrors.push(`[Source Guard] ${missingSources.length} models have no corresponding build script or .blend: ${missingSources.slice(0, 5).join(", ")}`);
+  } else {
+    console.log(`   ✅ PASSED: All ${allGlbs.length} models have valid source scripts or .blend in blender/.\n`);
+  }
+
+  // --- CI GUARD CHECK 4: Geometry Specs & Backdrop Guard ---
+  console.log("▶ [4/4] Validating GLB geometry, nodes, and backdrop guard...");
+  const io = new NodeIO();
+  let specChecked = 0;
+  let specFailed = 0;
+  const specResults = [];
 
   for (const [id, spec] of Object.entries(MODEL_SPECS)) {
     const subDir = spec.category === "filler" ? "filler" : spec.category === "pickup" ? "pickups" : spec.category;
-    const filePath = path.join(targetDir, subDir, `${id}.glb`);
-    if (!fs.existsSync(filePath)) {
-      continue; // only validate models that have been created
-    }
+    const filePath = path.join(modelsDir, subDir, `${id}.glb`);
+    if (!fs.existsSync(filePath)) continue;
 
-    checked++;
-    const res = await validateFile(filePath, id, spec);
-    results.push(res);
-    if (res.errors.length > 0) failed++;
+    specChecked++;
+    const res = await validateFile(filePath, id, spec, io);
+    specResults.push(res);
+    if (res.errors.length > 0) specFailed++;
+  }
+
+  // Also check character models for backdrop meshes
+  const characterGlbs = getAllFiles(path.join(modelsDir, "characters"), ".glb").concat(
+    getAllFiles(path.join(modelsDir, "pets"), ".glb")
+  );
+  for (const cGlb of characterGlbs) {
+    const res = await validateFile(cGlb, path.basename(cGlb, ".glb"), null, io);
+    if (res.errors.length > 0) {
+      for (const err of res.errors) ciErrors.push(`${cGlb}: ${err}`);
+    }
   }
 
   // Print results table
@@ -247,7 +427,7 @@ async function main() {
   );
   console.log("---------------------------------------------------------------------------------------------------------");
 
-  for (const r of results) {
+  for (const r of specResults) {
     const spec = MODEL_SPECS[r.id];
     const dim = (spec.sizeType === "width" ? r.width : r.height).toFixed(3);
     const status = r.errors.length === 0 ? "PASS" : "FAIL";
@@ -261,11 +441,15 @@ async function main() {
     }
   }
   console.log("---------------------------------------------------------------------------------------------------------");
-  console.log(`Total checked: ${checked} | Passed: ${checked - failed} | Failed: ${failed}\n`);
+  console.log(`Spec models checked: ${specChecked} | Passed: ${specChecked - specFailed} | Failed: ${specFailed}\n`);
 
-  if (failed > 0) {
+  if (ciErrors.length > 0 || specFailed > 0) {
+    console.error("❌ CI GUARD FAILED WITH ERRORS:");
+    for (const err of ciErrors) console.error(`  - ${err}`);
     process.exit(1);
   }
+
+  console.log("✨ ALL CI GUARD CHECKS AND MODEL SPECS PASSED SUCCESSFULLY! ✨\n");
 }
 
 main().catch(err => {

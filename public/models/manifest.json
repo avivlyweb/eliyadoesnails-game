@@ -1,611 +1,1559 @@
 [
   {
-    "id": "clover-patch",
-    "path": "/models/filler/clover-patch.glb",
-    "category": "filler",
-    "tris": 144,
-    "bytes": 13108,
-    "instanced": true,
-    "nodes": [
-      "clover-patch"
-    ]
+    "id": "amsterdam-canal-bridge",
+    "path": "/models/eliyadoesnails/amsterdam-canal-bridge.glb",
+    "category": "eliyadoesnails",
+    "tris": 0,
+    "bytes": 14148,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "cobble-edge-stone",
-    "path": "/models/filler/cobble-edge-stone.glb",
-    "category": "filler",
-    "tris": 44,
-    "bytes": 4592,
-    "instanced": true,
-    "nodes": [
-      "cobble-edge-stone"
-    ]
+    "id": "amsterdam-lantern-post",
+    "path": "/models/high-detail/street/amsterdam-lantern-post.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 53588,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "fallen-petals",
-    "path": "/models/filler/fallen-petals.glb",
-    "category": "filler",
-    "tris": 96,
-    "bytes": 8972,
-    "instanced": true,
-    "nodes": [
-      "fallen-petals"
-    ]
+    "id": "amsterdam-lantern-post",
+    "path": "/models/street/amsterdam-lantern-post.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 53588,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "grass-tuft-a",
-    "path": "/models/filler/grass-tuft-a.glb",
-    "category": "filler",
-    "tris": 84,
-    "bytes": 8096,
-    "instanced": true,
-    "nodes": [
-      "grass-tuft-a"
-    ]
+    "id": "ar-hand-mannequin-pedestal",
+    "path": "/models/furniture/ar-hand-mannequin-pedestal.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 63884,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "grass-tuft-b",
-    "path": "/models/filler/grass-tuft-b.glb",
-    "category": "filler",
-    "tris": 72,
-    "bytes": 7248,
-    "instanced": true,
-    "nodes": [
-      "grass-tuft-b"
-    ]
+    "id": "ar-hand-mannequin-pedestal",
+    "path": "/models/high-detail/furniture/ar-hand-mannequin-pedestal.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 63884,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "grass-tuft-c",
-    "path": "/models/filler/grass-tuft-c.glb",
-    "category": "filler",
-    "tris": 96,
-    "bytes": 8932,
-    "instanced": true,
-    "nodes": [
-      "grass-tuft-c"
-    ]
+    "id": "arched-brick-canal-bridge",
+    "path": "/models/architecture/arched-brick-canal-bridge.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 61704,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "lily-pad-set",
-    "path": "/models/filler/lily-pad-set.glb",
-    "category": "filler",
-    "tris": 160,
-    "bytes": 11764,
-    "instanced": true,
-    "nodes": [
-      "lily-pad-set"
-    ]
+    "id": "arched-brick-canal-bridge",
+    "path": "/models/high-detail/architecture/arched-brick-canal-bridge.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 61704,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "mushroom-pair",
-    "path": "/models/filler/mushroom-pair.glb",
-    "category": "filler",
-    "tris": 80,
-    "bytes": 6300,
-    "instanced": true,
-    "nodes": [
-      "mushroom-pair"
-    ]
+    "id": "artist-lookbook-catalog",
+    "path": "/models/high-detail/station/artist-lookbook-catalog.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 15108,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "pebble-set",
-    "path": "/models/filler/pebble-set.glb",
-    "category": "filler",
-    "tris": 60,
-    "bytes": 4716,
-    "instanced": true,
-    "nodes": [
-      "pebble-set"
-    ]
+    "id": "artist-lookbook-catalog",
+    "path": "/models/station/artist-lookbook-catalog.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 15108,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "reed-clump",
-    "path": "/models/filler/reed-clump.glb",
-    "category": "filler",
-    "tris": 156,
-    "bytes": 12772,
-    "instanced": true,
-    "nodes": [
-      "reed-clump"
-    ]
-  },
-  {
-    "id": "round-bush-large",
-    "path": "/models/filler/round-bush-large.glb",
-    "category": "filler",
-    "tris": 80,
-    "bytes": 5496,
-    "instanced": true,
-    "nodes": [
-      "round-bush-large"
-    ]
-  },
-  {
-    "id": "round-bush-small",
-    "path": "/models/filler/round-bush-small.glb",
-    "category": "filler",
-    "tris": 80,
+    "id": "atelier-building",
+    "path": "/models/eliyadoesnails/atelier-building.glb",
+    "category": "eliyadoesnails",
+    "tris": 0,
     "bytes": 5504,
-    "instanced": true,
-    "nodes": [
-      "round-bush-small"
-    ]
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "tulip-cluster-pink",
-    "path": "/models/filler/tulip-cluster-pink.glb",
-    "category": "filler",
-    "tris": 324,
-    "bytes": 15020,
-    "instanced": true,
-    "nodes": [
-      "tulip-cluster-pink"
-    ]
+    "id": "aura-micro-diffusion-airbrush",
+    "path": "/models/high-detail/tools/aura-micro-diffusion-airbrush.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 23928,
+    "instanced": false,
+    "nodes": []
   },
   {
-    "id": "tulip-cluster-red",
-    "path": "/models/filler/tulip-cluster-red.glb",
-    "category": "filler",
-    "tris": 324,
-    "bytes": 15020,
-    "instanced": true,
-    "nodes": [
-      "tulip-cluster-red"
-    ]
-  },
-  {
-    "id": "tulip-cluster-white",
-    "path": "/models/filler/tulip-cluster-white.glb",
-    "category": "filler",
-    "tris": 324,
-    "bytes": 15020,
-    "instanced": true,
-    "nodes": [
-      "tulip-cluster-white"
-    ]
-  },
-  {
-    "id": "tulip-cluster-yellow",
-    "path": "/models/filler/tulip-cluster-yellow.glb",
-    "category": "filler",
-    "tris": 324,
-    "bytes": 15024,
-    "instanced": true,
-    "nodes": [
-      "tulip-cluster-yellow"
-    ]
+    "id": "aura-micro-diffusion-airbrush",
+    "path": "/models/tools/aura-micro-diffusion-airbrush.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 23928,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "aurora-crystal-shard",
     "path": "/models/pickups/aurora-crystal-shard.glb",
-    "category": "pickup",
-    "tris": 216,
+    "category": "pickups",
+    "tris": 0,
     "bytes": 20148,
     "instanced": false,
-    "nodes": [
-      "crystal_BaseCluster",
-      "crystal_Glow",
-      "crystal_Shard1_Body",
-      "crystal_Shard1_Tip",
-      "crystal_Shard2_Body",
-      "crystal_Shard2_Tip",
-      "crystal_Shard3_Body",
-      "crystal_Shard3_Tip",
-      "crystal_Root"
-    ]
+    "nodes": []
   },
   {
-    "id": "chrome-droplet",
-    "path": "/models/pickups/chrome-droplet.glb",
-    "category": "pickup",
-    "tris": 564,
-    "bytes": 22352,
+    "id": "barbed-wire-cyber-heart",
+    "path": "/models/charms/barbed-wire-cyber-heart.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 148668,
     "instanced": false,
-    "nodes": [
-      "chrome_DropBase",
-      "chrome_DropTip",
-      "chrome_Glow",
-      "chrome_SplashRing",
-      "chrome_Root"
-    ]
+    "nodes": []
   },
   {
-    "id": "daisy-sprig",
-    "path": "/models/pickups/daisy-sprig.glb",
-    "category": "pickup",
-    "tris": 368,
-    "bytes": 31556,
+    "id": "barbed-wire-cyber-heart",
+    "path": "/models/high-detail/charms/barbed-wire-cyber-heart.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 148668,
     "instanced": false,
-    "nodes": [
-      "daisy_Branch1",
-      "daisy_Branch2",
-      "daisy_FlowerLeft_Center",
-      "daisy_FlowerLeft_Petals",
-      "daisy_FlowerRight_Center",
-      "daisy_FlowerRight_Petals",
-      "daisy_FlowerTop_Center",
-      "daisy_FlowerTop_Petals",
-      "daisy_Glow",
-      "daisy_MainStem",
-      "daisy_Root"
-    ]
+    "nodes": []
   },
   {
-    "id": "freshwater-pearl-oyster",
-    "path": "/models/pickups/freshwater-pearl-oyster.glb",
-    "category": "pickup",
-    "tris": 1084,
-    "bytes": 32932,
+    "id": "baroque-nacre-pearl",
+    "path": "/models/charms/baroque-nacre-pearl.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 91388,
     "instanced": false,
-    "nodes": [
-      "pearl_Glow",
-      "pearl_Pearl",
-      "pearl_ShellBottom",
-      "pearl_ShellTop",
-      "pearl_Root"
-    ]
+    "nodes": []
   },
   {
-    "id": "gold-leaf-flake",
-    "path": "/models/pickups/gold-leaf-flake.glb",
-    "category": "pickup",
-    "tris": 724,
-    "bytes": 56448,
+    "id": "baroque-nacre-pearl",
+    "path": "/models/high-detail/charms/baroque-nacre-pearl.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 91388,
     "instanced": false,
-    "nodes": [
-      "gold_Flake1_a",
-      "gold_Flake1_b",
-      "gold_Flake2_a",
-      "gold_Flake2_b",
-      "gold_Flake3_a",
-      "gold_Flake3_b",
-      "gold_Glow",
-      "gold_Root"
-    ]
-  },
-  {
-    "id": "sakura-petal-bundle",
-    "path": "/models/pickups/sakura-petal-bundle.glb",
-    "category": "pickup",
-    "tris": 1368,
-    "bytes": 47280,
-    "instanced": false,
-    "nodes": [
-      "sakura_Glow",
-      "sakura_Petal_0",
-      "sakura_Petal_1",
-      "sakura_Petal_2",
-      "sakura_Petal_3",
-      "sakura_Petal_4",
-      "sakura_Tie",
-      "sakura_Root"
-    ]
-  },
-  {
-    "id": "silk-ribbon-spool",
-    "path": "/models/pickups/silk-ribbon-spool.glb",
-    "category": "pickup",
-    "tris": 1112,
-    "bytes": 74876,
-    "instanced": false,
-    "nodes": [
-      "spool_FlangeBottom",
-      "spool_FlangeTop",
-      "spool_Glow",
-      "spool_Knob",
-      "spool_Ribbon",
-      "spool_Tail_0",
-      "spool_Tail_1",
-      "spool_Tail_2",
-      "spool_Tail_3",
-      "spool_Root"
-    ]
-  },
-  {
-    "id": "syrup-glass-vial",
-    "path": "/models/pickups/syrup-glass-vial.glb",
-    "category": "pickup",
-    "tris": 420,
-    "bytes": 26372,
-    "instanced": false,
-    "nodes": [
-      "vial_Cork",
-      "vial_GlassBody",
-      "vial_GlassNeck",
-      "vial_GlassRim",
-      "vial_Glow",
-      "vial_Liquid",
-      "vial_Root"
-    ]
-  },
-  {
-    "id": "delivery-parcel",
-    "path": "/models/ui/delivery-parcel.glb",
-    "category": "ui",
-    "tris": 392,
-    "bytes": 21480,
-    "instanced": false,
-    "nodes": [
-      "parcel_Box",
-      "parcel_Knot",
-      "parcel_LoopL",
-      "parcel_LoopR",
-      "parcel_RibbonX",
-      "parcel_RibbonY",
-      "parcel_Root"
-    ]
-  },
-  {
-    "id": "material-basket",
-    "path": "/models/ui/material-basket.glb",
-    "category": "ui",
-    "tris": 332,
-    "bytes": 12528,
-    "instanced": false,
-    "nodes": [
-      "basket_Body",
-      "basket_Handle",
-      "basket_Rim",
-      "basket_Root"
-    ]
-  },
-  {
-    "id": "quest-marker",
-    "path": "/models/ui/quest-marker.glb",
-    "category": "ui",
-    "tris": 28,
-    "bytes": 4332,
-    "instanced": false,
-    "nodes": [
-      "marker_Gem"
-    ]
+    "nodes": []
   },
   {
     "id": "bea-houseboat",
     "path": "/models/npcs/bea-houseboat.glb",
     "category": "npcs",
-    "tris": 3164,
+    "tris": 0,
     "bytes": 132568,
     "instanced": false,
-    "nodes": [
-      "bea-houseboat_TraySocket",
-      "bea-houseboat_Body",
-      "bea-houseboat_Eye_L",
-      "bea-houseboat_Eye_R",
-      "bea-houseboat_HatBrim",
-      "bea-houseboat_HatCrown",
-      "bea-houseboat_Head",
-      "bea-houseboat_Hips",
-      "bea-houseboat_LeftHand",
-      "bea-houseboat_LeftHandSocket",
-      "bea-houseboat_LeftArm",
-      "bea-houseboat_LeftLeg",
-      "bea-houseboat_LeftShoe",
-      "bea-houseboat_Neck",
-      "bea-houseboat_RightHand",
-      "bea-houseboat_RightHandSocket",
-      "bea-houseboat_RightArm",
-      "bea-houseboat_RightLeg",
-      "bea-houseboat_RightShoe",
-      "bea-houseboat_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "blossom-tree-canal",
+    "path": "/models/discoveries/blossom-tree-canal.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 57648,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "blush-glaze-coquette-set",
+    "path": "/models/high-detail/sets/blush-glaze-coquette-set.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 169896,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "blush-glaze-coquette-set",
+    "path": "/models/sets/blush-glaze-coquette-set.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 169896,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "brass-arc-floor-lamp",
+    "path": "/models/furniture/brass-arc-floor-lamp.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 96752,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "brass-arc-floor-lamp",
+    "path": "/models/high-detail/furniture/brass-arc-floor-lamp.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 96752,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-bell-gable",
+    "path": "/models/architecture/canal-house-bell-gable.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 95068,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-bell-gable",
+    "path": "/models/high-detail/architecture/canal-house-bell-gable.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 95068,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-neck-gable",
+    "path": "/models/architecture/canal-house-neck-gable.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 89972,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-neck-gable",
+    "path": "/models/high-detail/architecture/canal-house-neck-gable.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 89972,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-stepped-gable",
+    "path": "/models/architecture/canal-house-stepped-gable.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 96224,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "canal-house-stepped-gable",
+    "path": "/models/high-detail/architecture/canal-house-stepped-gable.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 96224,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cast-iron-mooring-bollard",
+    "path": "/models/high-detail/street/cast-iron-mooring-bollard.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 67144,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cast-iron-mooring-bollard",
+    "path": "/models/street/cast-iron-mooring-bollard.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 67144,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "celadon-tea-ceremony-set",
+    "path": "/models/high-detail/station/celadon-tea-ceremony-set.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 85256,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "celadon-tea-ceremony-set",
+    "path": "/models/station/celadon-tea-ceremony-set.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 85256,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-chrome-monkey",
+    "path": "/models/charms/charm-chrome-monkey.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 142648,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-chrome-monkey",
+    "path": "/models/high-detail/charms/charm-chrome-monkey.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 142648,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-molten-chrome-drops",
+    "path": "/models/charms/charm-molten-chrome-drops.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 80780,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-molten-chrome-drops",
+    "path": "/models/high-detail/charms/charm-molten-chrome-drops.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 80780,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-sculpted-ribbon-bow",
+    "path": "/models/charms/charm-sculpted-ribbon-bow.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 95172,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-sculpted-ribbon-bow",
+    "path": "/models/high-detail/charms/charm-sculpted-ribbon-bow.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 95172,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-y2k-cyber-stars",
+    "path": "/models/charms/charm-y2k-cyber-stars.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 37972,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "charm-y2k-cyber-stars",
+    "path": "/models/high-detail/charms/charm-y2k-cyber-stars.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 37972,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "chrome-burnishing-sponge-pen",
+    "path": "/models/high-detail/tools/chrome-burnishing-sponge-pen.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 53060,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "chrome-burnishing-sponge-pen",
+    "path": "/models/tools/chrome-burnishing-sponge-pen.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 53060,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "chrome-droplet",
+    "path": "/models/pickups/chrome-droplet.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 22352,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "client-boucle-chair",
+    "path": "/models/furniture/client-boucle-chair.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 46832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "client-boucle-chair",
+    "path": "/models/high-detail/furniture/client-boucle-chair.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 46832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "client-boucle-tub-chair",
+    "path": "/models/furniture/client-boucle-tub-chair.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 46832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "client-boucle-tub-chair",
+    "path": "/models/high-detail/furniture/client-boucle-tub-chair.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 46832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "client-wish-journal",
+    "path": "/models/high-detail/station/client-wish-journal.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 14772,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "client-wish-journal",
+    "path": "/models/station/client-wish-journal.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 14772,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cloud-ergonomic-hand-rest",
+    "path": "/models/high-detail/station/cloud-ergonomic-hand-rest.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 73024,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cloud-ergonomic-hand-rest",
+    "path": "/models/station/cloud-ergonomic-hand-rest.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 73024,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "clover-patch",
+    "path": "/models/filler/clover-patch.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 13108,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "cobble-edge-stone",
+    "path": "/models/filler/cobble-edge-stone.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 4592,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "cobblestone-quay-tree-grate",
+    "path": "/models/high-detail/street/cobblestone-quay-tree-grate.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 19400,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cobblestone-quay-tree-grate",
+    "path": "/models/street/cobblestone-quay-tree-grate.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 19400,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "couture-press-on-drawer-box",
+    "path": "/models/high-detail/station/couture-press-on-drawer-box.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 13024,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "couture-press-on-drawer-box",
+    "path": "/models/station/couture-press-on-drawer-box.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 13024,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cuticle-serum-dropper",
+    "path": "/models/high-detail/tools/cuticle-serum-dropper.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 61452,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cuticle-serum-dropper",
+    "path": "/models/tools/cuticle-serum-dropper.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 61452,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cyberpunk-liquid-chrome-set",
+    "path": "/models/high-detail/sets/cyberpunk-liquid-chrome-set.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 67360,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "cyberpunk-liquid-chrome-set",
+    "path": "/models/sets/cyberpunk-liquid-chrome-set.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 67360,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "czech-glass-nail-file",
+    "path": "/models/high-detail/tools/czech-glass-nail-file.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 19968,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "czech-glass-nail-file",
+    "path": "/models/tools/czech-glass-nail-file.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 19968,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "daisy-sprig",
+    "path": "/models/pickups/daisy-sprig.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 31556,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "delivery-parcel",
+    "path": "/models/ui/delivery-parcel.glb",
+    "category": "ui",
+    "tris": 0,
+    "bytes": 21480,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "desktop-uv-tunnel-lamp",
+    "path": "/models/high-detail/station/desktop-uv-tunnel-lamp.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 72564,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "desktop-uv-tunnel-lamp",
+    "path": "/models/station/desktop-uv-tunnel-lamp.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 72564,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "dewey",
+    "path": "/models/pets/dewey.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 108224,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "eliya-artisan",
+    "path": "/models/eliyadoesnails/eliya-artisan.glb",
+    "category": "eliyadoesnails",
+    "tris": 0,
+    "bytes": 259580,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "eliya-cloud-mascot",
+    "path": "/models/characters/eliya-cloud-mascot.glb",
+    "category": "characters",
+    "tris": 0,
+    "bytes": 5572836,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "faceted-aurora-teardrop-gem",
+    "path": "/models/charms/faceted-aurora-teardrop-gem.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 15584,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "faceted-aurora-teardrop-gem",
+    "path": "/models/high-detail/charms/faceted-aurora-teardrop-gem.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 15584,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "fallen-petals",
+    "path": "/models/filler/fallen-petals.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 8972,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "fireball",
+    "path": "/models/pets/fireball.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 51452,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "floating-lacquer-display",
+    "path": "/models/furniture/floating-lacquer-display.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 138720,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "floating-lacquer-display",
+    "path": "/models/high-detail/furniture/floating-lacquer-display.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 138720,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "florist-flower-cart",
+    "path": "/models/high-detail/street/florist-flower-cart.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 136608,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "florist-flower-cart",
+    "path": "/models/street/florist-flower-cart.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 136608,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "freshwater-pearl-oyster",
+    "path": "/models/pickups/freshwater-pearl-oyster.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 32932,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "glass-syrup-swatch-discs",
+    "path": "/models/high-detail/tools/glass-syrup-swatch-discs.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 62616,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "glass-syrup-swatch-discs",
+    "path": "/models/tools/glass-syrup-swatch-discs.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 62616,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "gold-leaf-flake",
+    "path": "/models/pickups/gold-leaf-flake.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 56448,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "grass-tuft-a",
+    "path": "/models/filler/grass-tuft-a.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 8096,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "grass-tuft-b",
+    "path": "/models/filler/grass-tuft-b.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 7248,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "grass-tuft-c",
+    "path": "/models/filler/grass-tuft-c.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 8932,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "greenhouse-wind-chime",
+    "path": "/models/discoveries/greenhouse-wind-chime.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 26044,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "heavy-glass-dappen-dish",
+    "path": "/models/high-detail/station/heavy-glass-dappen-dish.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 26100,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "heavy-glass-dappen-dish",
+    "path": "/models/station/heavy-glass-dappen-dish.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 26100,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "hinoki-incense-burner",
+    "path": "/models/high-detail/station/hinoki-incense-burner.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 48432,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "hinoki-incense-burner",
+    "path": "/models/station/hinoki-incense-burner.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 48432,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "hoots",
+    "path": "/models/pets/hoots.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 110832,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "joon-barista",
     "path": "/models/npcs/joon-barista.glb",
     "category": "npcs",
-    "tris": 3408,
+    "tris": 0,
     "bytes": 135936,
     "instanced": false,
-    "nodes": [
-      "joon-barista_Apron",
-      "joon-barista_TraySocket",
-      "joon-barista_Body",
-      "joon-barista_Eye_L",
-      "joon-barista_Eye_R",
-      "joon-barista_GlassL",
-      "joon-barista_GlassR",
-      "joon-barista_Hair",
-      "joon-barista_Head",
-      "joon-barista_Hips",
-      "joon-barista_LeftHand",
-      "joon-barista_LeftHandSocket",
-      "joon-barista_LeftArm",
-      "joon-barista_LeftLeg",
-      "joon-barista_LeftShoe",
-      "joon-barista_Neck",
-      "joon-barista_RightHand",
-      "joon-barista_RightHandSocket",
-      "joon-barista_RightArm",
-      "joon-barista_RightLeg",
-      "joon-barista_RightShoe",
-      "joon-barista_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "life4cuts-photo-strip",
+    "path": "/models/high-detail/station/life4cuts-photo-strip.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 37196,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "life4cuts-photo-strip",
+    "path": "/models/station/life4cuts-photo-strip.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 37196,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "lily-pad-set",
+    "path": "/models/filler/lily-pad-set.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 11764,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "linden-tree",
+    "path": "/models/discoveries/linden-tree.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 58384,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "linen-velvet-hand-pillow",
+    "path": "/models/high-detail/station/linen-velvet-hand-pillow.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 169188,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "linen-velvet-hand-pillow",
+    "path": "/models/station/linen-velvet-hand-pillow.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 169188,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "lotte-junior",
     "path": "/models/npcs/lotte-junior.glb",
     "category": "npcs",
-    "tris": 3304,
+    "tris": 0,
     "bytes": 134708,
     "instanced": false,
-    "nodes": [
-      "lotte-junior_Backpack",
-      "lotte-junior_TraySocket",
-      "lotte-junior_Body",
-      "lotte-junior_Eye_L",
-      "lotte-junior_Eye_R",
-      "lotte-junior_Hair",
-      "lotte-junior_PigtailL",
-      "lotte-junior_PigtailR",
-      "lotte-junior_Head",
-      "lotte-junior_Hips",
-      "lotte-junior_LeftHand",
-      "lotte-junior_LeftHandSocket",
-      "lotte-junior_LeftArm",
-      "lotte-junior_LeftLeg",
-      "lotte-junior_LeftShoe",
-      "lotte-junior_Neck",
-      "lotte-junior_RightHand",
-      "lotte-junior_RightHandSocket",
-      "lotte-junior_RightArm",
-      "lotte-junior_RightLeg",
-      "lotte-junior_RightShoe",
-      "lotte-junior_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "magnetic-cat-eye-wand",
+    "path": "/models/high-detail/tools/magnetic-cat-eye-wand.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 54920,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "magnetic-cat-eye-wand",
+    "path": "/models/tools/magnetic-cat-eye-wand.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 54920,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "manicure-station",
+    "path": "/models/eliyadoesnails/manicure-station.glb",
+    "category": "eliyadoesnails",
+    "tris": 0,
+    "bytes": 73836,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "manicure-station",
+    "path": "/models/manicure-station.glb",
+    "category": "props",
+    "tris": 0,
+    "bytes": 79080,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "manicure-station-deluxe",
+    "path": "/models/furniture/manicure-station-deluxe.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 161652,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "manicure-station-deluxe",
+    "path": "/models/high-detail/furniture/manicure-station-deluxe.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 161652,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "matcha-moth",
+    "path": "/models/pets/matcha-moth.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 66064,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "material-basket",
+    "path": "/models/ui/material-basket.glb",
+    "category": "ui",
+    "tris": 0,
+    "bytes": 12528,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "micro-liner-brush",
+    "path": "/models/high-detail/tools/micro-liner-brush.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 46564,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "micro-liner-brush",
+    "path": "/models/tools/micro-liner-brush.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 46564,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "mira-florist",
     "path": "/models/npcs/mira-florist.glb",
     "category": "npcs",
-    "tris": 5168,
+    "tris": 0,
     "bytes": 167924,
     "instanced": false,
-    "nodes": [
-      "mira-florist_Apron",
-      "mira-florist_TraySocket",
-      "mira-florist_Body",
-      "mira-florist_Eye_L",
-      "mira-florist_Eye_R",
-      "mira-florist_Flower",
-      "mira-florist_HairBun",
-      "mira-florist_HairTop",
-      "mira-florist_Head",
-      "mira-florist_Hips",
-      "mira-florist_LeftHand",
-      "mira-florist_LeftHandSocket",
-      "mira-florist_LeftArm",
-      "mira-florist_LeftLeg",
-      "mira-florist_LeftShoe",
-      "mira-florist_Neck",
-      "mira-florist_RightHand",
-      "mira-florist_RightHandSocket",
-      "mira-florist_RightArm",
-      "mira-florist_RightLeg",
-      "mira-florist_RightShoe",
-      "mira-florist_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "molten-chrome-drops",
+    "path": "/models/charms/molten-chrome-drops.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 80780,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "molten-chrome-drops",
+    "path": "/models/high-detail/charms/molten-chrome-drops.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 80780,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "moored-wooden-salon-boat",
+    "path": "/models/architecture/moored-wooden-salon-boat.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 224248,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "moored-wooden-salon-boat",
+    "path": "/models/high-detail/architecture/moored-wooden-salon-boat.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 224248,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "mushroom-pair",
+    "path": "/models/filler/mushroom-pair.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 6300,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "nail-sizing-kit-wheel",
+    "path": "/models/high-detail/tools/nail-sizing-kit-wheel.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 83004,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "nail-sizing-kit-wheel",
+    "path": "/models/tools/nail-sizing-kit-wheel.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 83004,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "nell-potter",
     "path": "/models/npcs/nell-potter.glb",
     "category": "npcs",
-    "tris": 3248,
+    "tris": 0,
     "bytes": 136060,
     "instanced": false,
-    "nodes": [
-      "nell-potter_Apron",
-      "nell-potter_TraySocket",
-      "nell-potter_Body",
-      "nell-potter_Eye_L",
-      "nell-potter_Eye_R",
-      "nell-potter_Hair",
-      "nell-potter_Head",
-      "nell-potter_Hips",
-      "nell-potter_LeftHand",
-      "nell-potter_LeftHandSocket",
-      "nell-potter_LeftArm",
-      "nell-potter_LeftLeg",
-      "nell-potter_LeftShoe",
-      "nell-potter_Neck",
-      "nell-potter_RightHand",
-      "nell-potter_RightHandSocket",
-      "nell-potter_RightArm",
-      "nell-potter_RightLeg",
-      "nell-potter_RightShoe",
-      "nell-potter_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "peach-mochi-bunny",
+    "path": "/models/characters/peach-mochi-bunny.glb",
+    "category": "characters",
+    "tris": 0,
+    "bytes": 295664,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "pearl-crab",
+    "path": "/models/pets/pearl-crab.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 73620,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "pebble-set",
+    "path": "/models/filler/pebble-set.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 4716,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "photobooth-kiosk",
+    "path": "/models/architecture/photobooth-kiosk.glb",
+    "category": "architecture",
+    "tris": 0,
+    "bytes": 25404,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "photobooth-kiosk",
+    "path": "/models/high-detail/architecture/photobooth-kiosk.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 25404,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "pip-photo",
     "path": "/models/npcs/pip-photo.glb",
     "category": "npcs",
-    "tris": 3276,
+    "tris": 0,
     "bytes": 132948,
     "instanced": false,
-    "nodes": [
-      "pip-photo_TraySocket",
-      "pip-photo_Body",
-      "pip-photo_Eye_L",
-      "pip-photo_Eye_R",
-      "pip-photo_Hair",
-      "pip-photo_Head",
-      "pip-photo_Hips",
-      "pip-photo_LeftHand",
-      "pip-photo_LeftHandSocket",
-      "pip-photo_LeftArm",
-      "pip-photo_LeftLeg",
-      "pip-photo_LeftShoe",
-      "pip-photo_Neck",
-      "pip-photo_Lens",
-      "pip-photo_Camera",
-      "pip-photo_RightHand",
-      "pip-photo_RightHandSocket",
-      "pip-photo_RightArm",
-      "pip-photo_RightLeg",
-      "pip-photo_RightShoe",
-      "pip-photo_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "poplar-tree",
+    "path": "/models/discoveries/poplar-tree.glb",
+    "category": "discoveries",
+    "tris": 0,
+    "bytes": 33516,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "potted-fiddle-leaf-fig",
+    "path": "/models/furniture/potted-fiddle-leaf-fig.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 67036,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "potted-fiddle-leaf-fig",
+    "path": "/models/high-detail/furniture/potted-fiddle-leaf-fig.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 67036,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "precision-angled-tweezers",
+    "path": "/models/high-detail/tools/precision-angled-tweezers.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 29832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "precision-angled-tweezers",
+    "path": "/models/tools/precision-angled-tweezers.glb",
+    "category": "tools",
+    "tris": 0,
+    "bytes": 29832,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "press-on-giftbox",
+    "path": "/models/eliyadoesnails/press-on-giftbox.glb",
+    "category": "eliyadoesnails",
+    "tris": 0,
+    "bytes": 12360,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "quest-marker",
+    "path": "/models/ui/quest-marker.glb",
+    "category": "ui",
+    "tris": 0,
+    "bytes": 4332,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "reed-clump",
+    "path": "/models/filler/reed-clump.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 12772,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "rocky",
+    "path": "/models/pets/rocky.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 54672,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "rolling-treatment-cart",
+    "path": "/models/furniture/rolling-treatment-cart.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 52932,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "rolling-treatment-cart",
+    "path": "/models/high-detail/furniture/rolling-treatment-cart.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 52932,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "round-bush-large",
+    "path": "/models/filler/round-bush-large.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 5496,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "round-bush-small",
+    "path": "/models/filler/round-bush-small.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 5504,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "sakura-petal-bundle",
+    "path": "/models/pickups/sakura-petal-bundle.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 47280,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "sanne-stall",
     "path": "/models/npcs/sanne-stall.glb",
     "category": "npcs",
-    "tris": 4208,
+    "tris": 0,
     "bytes": 149648,
     "instanced": false,
-    "nodes": [
-      "sanne-stall_Apron",
-      "sanne-stall_TraySocket",
-      "sanne-stall_Body",
-      "sanne-stall_Eye_L",
-      "sanne-stall_Eye_R",
-      "sanne-stall_Scarf",
-      "sanne-stall_ScarfKnot",
-      "sanne-stall_Head",
-      "sanne-stall_Hips",
-      "sanne-stall_LeftHand",
-      "sanne-stall_LeftHandSocket",
-      "sanne-stall_LeftArm",
-      "sanne-stall_LeftLeg",
-      "sanne-stall_LeftShoe",
-      "sanne-stall_Neck",
-      "sanne-stall_RightHand",
-      "sanne-stall_RightHandSocket",
-      "sanne-stall_RightArm",
-      "sanne-stall_RightLeg",
-      "sanne-stall_RightShoe",
-      "sanne-stall_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "saturn-orbital-charm",
+    "path": "/models/charms/saturn-orbital-charm.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 134812,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "saturn-orbital-charm",
+    "path": "/models/high-detail/charms/saturn-orbital-charm.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 134812,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "scalloped-ceramic-charm-palette",
+    "path": "/models/high-detail/station/scalloped-ceramic-charm-palette.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 169824,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "scalloped-ceramic-charm-palette",
+    "path": "/models/station/scalloped-ceramic-charm-palette.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 169824,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "sculpted-ribbon-bow",
+    "path": "/models/charms/sculpted-ribbon-bow.glb",
+    "category": "charms",
+    "tris": 0,
+    "bytes": 95172,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "sculpted-ribbon-bow",
+    "path": "/models/high-detail/charms/sculpted-ribbon-bow.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 95172,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "seedy",
+    "path": "/models/pets/seedy.glb",
+    "category": "pets",
+    "tris": 0,
+    "bytes": 98184,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-apricot-pearl",
+    "path": "/models/high-detail/sets/set-apricot-pearl.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 145568,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-apricot-pearl",
+    "path": "/models/sets/set-apricot-pearl.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 145568,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-cherry-blossom",
+    "path": "/models/high-detail/sets/set-cherry-blossom.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 90460,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-cherry-blossom",
+    "path": "/models/sets/set-cherry-blossom.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 90460,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-matcha-glaze",
+    "path": "/models/high-detail/sets/set-matcha-glaze.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 145588,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-matcha-glaze",
+    "path": "/models/sets/set-matcha-glaze.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 145588,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-moonlight-cateye",
+    "path": "/models/high-detail/sets/set-moonlight-cateye.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 70024,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-moonlight-cateye",
+    "path": "/models/sets/set-moonlight-cateye.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 70024,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-rose-quartz-french",
+    "path": "/models/high-detail/sets/set-rose-quartz-french.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 66964,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "set-rose-quartz-french",
+    "path": "/models/sets/set-rose-quartz-french.glb",
+    "category": "sets",
+    "tris": 0,
+    "bytes": 66964,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "silk-ribbon-spool",
+    "path": "/models/pickups/silk-ribbon-spool.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 74876,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "steaming-ceramic-matcha-mug",
+    "path": "/models/high-detail/station/steaming-ceramic-matcha-mug.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 86416,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "steaming-ceramic-matcha-mug",
+    "path": "/models/station/steaming-ceramic-matcha-mug.glb",
+    "category": "station",
+    "tris": 0,
+    "bytes": 86416,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "stylist-swivel-stool",
+    "path": "/models/furniture/stylist-swivel-stool.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 49572,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "stylist-swivel-stool",
+    "path": "/models/high-detail/furniture/stylist-swivel-stool.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 49572,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "syrup-glass-vial",
+    "path": "/models/pickups/syrup-glass-vial.glb",
+    "category": "pickups",
+    "tris": 0,
+    "bytes": 26372,
+    "instanced": false,
+    "nodes": []
   },
   {
     "id": "truus-tulips",
     "path": "/models/npcs/truus-tulips.glb",
     "category": "npcs",
-    "tris": 4100,
+    "tris": 0,
     "bytes": 140652,
     "instanced": false,
-    "nodes": [
-      "truus-tulips_TraySocket",
-      "truus-tulips_Body",
-      "truus-tulips_Eye_L",
-      "truus-tulips_Eye_R",
-      "truus-tulips_HairBun",
-      "truus-tulips_HairTop",
-      "truus-tulips_Head",
-      "truus-tulips_Hips",
-      "truus-tulips_LeftHand",
-      "truus-tulips_LeftHandSocket",
-      "truus-tulips_LeftArm",
-      "truus-tulips_LeftLeg",
-      "truus-tulips_LeftShoe",
-      "truus-tulips_Neck",
-      "truus-tulips_RightHand",
-      "truus-tulips_RightHandSocket",
-      "truus-tulips_RightArm",
-      "truus-tulips_RightLeg",
-      "truus-tulips_RightShoe",
-      "truus-tulips_Root"
-    ]
+    "nodes": []
+  },
+  {
+    "id": "tulip-cluster-pink",
+    "path": "/models/filler/tulip-cluster-pink.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 15020,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "tulip-cluster-red",
+    "path": "/models/filler/tulip-cluster-red.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 15020,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "tulip-cluster-white",
+    "path": "/models/filler/tulip-cluster-white.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 15020,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "tulip-cluster-yellow",
+    "path": "/models/filler/tulip-cluster-yellow.glb",
+    "category": "filler",
+    "tris": 0,
+    "bytes": 15024,
+    "instanced": true,
+    "nodes": []
+  },
+  {
+    "id": "vintage-bicycle-eliya",
+    "path": "/models/high-detail/street/vintage-bicycle-eliya.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 309236,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "vintage-bicycle-eliya",
+    "path": "/models/street/vintage-bicycle-eliya.glb",
+    "category": "street",
+    "tris": 0,
+    "bytes": 309236,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "washi-folding-screen",
+    "path": "/models/furniture/washi-folding-screen.glb",
+    "category": "furniture",
+    "tris": 0,
+    "bytes": 18448,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "washi-folding-screen",
+    "path": "/models/high-detail/furniture/washi-folding-screen.glb",
+    "category": "high-detail",
+    "tris": 0,
+    "bytes": 18448,
+    "instanced": false,
+    "nodes": []
+  },
+  {
+    "id": "windmill-de-gooyer",
+    "path": "/models/world/windmill-de-gooyer.glb",
+    "category": "world",
+    "tris": 0,
+    "bytes": 64576,
+    "instanced": false,
+    "nodes": []
   }
 ]

@@ -1138,17 +1138,17 @@
       "unlockFriendship": 3
     },
     {
-      "key": "codex",
-      "name": "Codex",
-      "modelId": "codex",
+      "key": "matcha-moth",
+      "name": "Matcha Moth",
+      "modelId": "matcha-moth",
       "ability": "The minimap shows the nearest ready node",
       "unlockNpcKey": "pip",
       "unlockFriendship": 3
     },
     {
-      "key": "null-signal",
-      "name": "Null-Signal",
-      "modelId": "null-signal",
+      "key": "pearl-crab",
+      "name": "Pearl Crab",
+      "modelId": "pearl-crab",
       "ability": "10% shop discount",
       "unlockNpcKey": "sanne",
       "unlockFriendship": 3

@@ -1,7 +1,7 @@
 [
   {
     "key": "hoots",
-    "name": "Hoots",
+    "name": "Hoots (Tulip Owl)",
     "modelId": "hoots",
     "ability": "+1 Sakura Petal per harvest",
     "unlockNpcKey": "mira",
@@ -9,7 +9,7 @@
   },
   {
     "key": "dewey",
-    "name": "Dewey",
+    "name": "Dewey (Canal Duckling)",
     "modelId": "dewey",
     "ability": "+1 Freshwater Pearl per harvest",
     "unlockNpcKey": "bea",
@@ -17,7 +17,7 @@
   },
   {
     "key": "rocky",
-    "name": "Rocky",
+    "name": "Rocky (Chrome Hedgehog)",
     "modelId": "rocky",
     "ability": "+1 Chrome Drop per harvest",
     "unlockNpcKey": "nell",
@@ -25,7 +25,7 @@
   },
   {
     "key": "seedy",
-    "name": "Seedy",
+    "name": "Seedy (Daisy Sprout)",
     "modelId": "seedy",
     "ability": "+1 Daisy Sprig per harvest",
     "unlockNpcKey": "truus",
@@ -33,24 +33,24 @@
   },
   {
     "key": "fireball",
-    "name": "Fireball",
+    "name": "Fireball (Bike-Bell Bird)",
     "modelId": "fireball",
     "ability": "Bike speed +15%",
     "unlockNpcKey": "joon",
     "unlockFriendship": 3
   },
   {
-    "key": "codex",
-    "name": "Codex",
-    "modelId": "codex",
+    "key": "matcha-moth",
+    "name": "Matcha Moth",
+    "modelId": "matcha-moth",
     "ability": "The minimap shows the nearest ready node",
     "unlockNpcKey": "pip",
     "unlockFriendship": 3
   },
   {
-    "key": "null-signal",
-    "name": "Null-Signal",
-    "modelId": "null-signal",
+    "key": "pearl-crab",
+    "name": "Pearl Crab",
+    "modelId": "pearl-crab",
     "ability": "10% shop discount",
     "unlockNpcKey": "sanne",
     "unlockFriendship": 3

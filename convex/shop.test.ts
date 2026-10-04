@@ -39,4 +39,39 @@ describe("Convex Shop & Pets API", () => {
       })
     ).rejects.toThrowError("LEVEL_TOO_LOW");
   });
+
+  it("handles pet migration and pearl-crab shop discount", async () => {
+    const t = convexTest(schema, modules);
+    await t.mutation(internal.seed.run, {});
+
+    const guestToken = "test-pet-token-" + Date.now();
+    await t.mutation(api.players.bootstrap, { guestToken, name: "Pet Tester" });
+
+    // Set friendship with sanne to level 3 so pearl-crab can be equipped
+    const player = (await t.query(api.players.state, { guestToken }))!.player;
+    await t.run(async (ctx) => {
+      await ctx.db.insert("friendships", {
+        playerId: player._id,
+        npcKey: "sanne",
+        level: 3,
+        points: 100,
+      });
+    });
+
+    // Equip pearl-crab
+    const equipRes = await t.mutation(api.shop.setActivePet, {
+      guestToken,
+      petKey: "pearl-crab",
+    });
+    expect(equipRes.success).toBe(true);
+    expect(equipRes.activePetKey).toBe("pearl-crab");
+
+    // Equip using legacy key 'null-signal' -> should auto-migrate to pearl-crab
+    const equipLegacyRes = await t.mutation(api.shop.setActivePet, {
+      guestToken,
+      petKey: "null-signal",
+    });
+    expect(equipLegacyRes.success).toBe(true);
+    expect(equipLegacyRes.activePetKey).toBe("pearl-crab");
+  });
 });

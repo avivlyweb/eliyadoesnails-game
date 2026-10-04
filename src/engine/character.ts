@@ -413,8 +413,7 @@ export class SphericalCharacter {
       (gltf) => {
         if (this.activePetKey !== petKey) return;
         this.activePet = gltf.scene;
-        this.activePet.scale.setScalar(0.42);
-        this.activePet.position.set(0.65, 0, -0.25);
+        this.activePet.scale.setScalar(1.25);
         this.root.add(this.activePet);
       },
       undefined,
@@ -524,6 +523,15 @@ export class SphericalCharacter {
         const boxY = isBunny ? 0.58 : isCloud ? 0.72 : 0.88;
         this.carriedBoxesGroup.position.set(fwd.x * boxFwd, boxY + bounce, fwd.z * boxFwd);
       }
+    }
+
+    if (this.activePet) {
+      this.activePet.rotation.y = angleY;
+      const fwd = new THREE.Vector3(Math.sin(angleY), 0, Math.cos(angleY));
+      const right = new THREE.Vector3(Math.cos(angleY), 0, -Math.sin(angleY));
+      const isFlying = this.activePetKey === "matcha-moth" || this.activePetKey === "hoots" || this.activePetKey === "fireball";
+      const hoverY = isFlying ? 0.26 : 0.12;
+      this.activePet.position.set(-right.x * 0.44 + fwd.x * 0.18, hoverY, -right.z * 0.44 + fwd.z * 0.18);
     }
   }
 
@@ -668,6 +676,16 @@ export class SphericalCharacter {
 
       this.currentSmile = THREE.MathUtils.lerp(this.currentSmile, targetSmile, delta * 8.0);
       this.setFacialExpression(targetWinkL, targetWinkR, this.currentSmile);
+    }
+
+    // 5. COMPANION PET IDLE & HOP BOB
+    if (this.activePet) {
+      this.petHopTime += delta * (this.moving ? 7.0 : 3.5);
+      const bodyNode = this.activePet.getObjectByName("pet_Body");
+      const hopTarget = bodyNode || this.activePet;
+      const hopHeight = this.moving ? 0.08 : 0.035;
+      hopTarget.position.y = Math.abs(Math.sin(this.petHopTime)) * hopHeight;
+      hopTarget.rotation.z = Math.sin(this.petHopTime * 0.5) * 0.06;
     }
   }
 

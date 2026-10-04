@@ -232,9 +232,89 @@ export const MATERIAL_SELL_PRICES: Record<string, { name: string; nameKo: string
   gold_leaf: { name: "Gold Leaf", nameKo: "금박", price: 12, icon: "✨" },
 };
 
+export const COMPANION_PETS = [
+  {
+    key: "hoots",
+    name: "Hoots (Tulip Owl)",
+    nameKo: "튤립 부엉이 후츠",
+    icon: "🦉",
+    unlockNpcKey: "mira",
+    npcName: "Mira (Florist)",
+    unlockFriendship: 2,
+    ability: "+1 Sakura Petal per harvest",
+    description: "Tiny round tulip owl perched with soft petal feathers."
+  },
+  {
+    key: "dewey",
+    name: "Dewey (Canal Duckling)",
+    nameKo: "운하 아기오리 듀이",
+    icon: "🦆",
+    unlockNpcKey: "bea",
+    npcName: "Bea (Houseboat)",
+    unlockFriendship: 2,
+    ability: "+1 Freshwater Pearl per harvest",
+    description: "Canal duckling wearing a gleaming freshwater pearl bead."
+  },
+  {
+    key: "rocky",
+    name: "Rocky (Chrome Hedgehog)",
+    nameKo: "크롬 고슴도치 록키",
+    icon: "🦔",
+    unlockNpcKey: "nell",
+    npcName: "Nell (Potter)",
+    unlockFriendship: 2,
+    ability: "+1 Chrome Drop per harvest",
+    description: "Chrome-quilled hedgehog foraging along the cobblestones."
+  },
+  {
+    key: "seedy",
+    name: "Seedy (Daisy Sprout)",
+    nameKo: "데이지 새싹 시디",
+    icon: "🌱",
+    unlockNpcKey: "truus",
+    npcName: "Truus (Tulip Keeper)",
+    unlockFriendship: 2,
+    ability: "+1 Daisy Sprig per harvest",
+    description: "Daisy sprout creature hopping happily beside you."
+  },
+  {
+    key: "fireball",
+    name: "Fireball (Bike-Bell Bird)",
+    nameKo: "자전거 벨 파이어볼",
+    icon: "🔔",
+    unlockNpcKey: "joon",
+    npcName: "Joon (Barista)",
+    unlockFriendship: 3,
+    ability: "Bike speed +15%",
+    description: "Little red bike-bell bird perched on handlebars."
+  },
+  {
+    key: "matcha-moth",
+    name: "Matcha Moth",
+    nameKo: "말차 나방",
+    icon: "🦋",
+    unlockNpcKey: "pip",
+    npcName: "Pip (Photographer)",
+    unlockFriendship: 3,
+    ability: "Minimap highlights nearest ready node",
+    description: "Soft matcha-powder wings with delicate leaf veins."
+  },
+  {
+    key: "pearl-crab",
+    name: "Pearl Crab",
+    nameKo: "진주 게",
+    icon: "🦀",
+    unlockNpcKey: "sanne",
+    npcName: "Sanne (Market Stall)",
+    unlockFriendship: 3,
+    ability: "10% shop discount on all goods",
+    description: "Pink canal crab clutching a miniature nail gloss bottle."
+  }
+];
+
 export class MarketShopController {
   private modal: HTMLElement | null = null;
-  private currentTab: "shades" | "tools" | "decor" | "sell" = "shades";
+  private currentTab: "shades" | "tools" | "decor" | "pets" | "sell" = "shades";
 
   constructor() {
     this.modal = document.getElementById("market-shop-modal-overlay");
@@ -282,6 +362,11 @@ export class MarketShopController {
 
     if (this.currentTab === "sell") {
       this.renderSellTab(container, playerGloss);
+      return;
+    }
+
+    if (this.currentTab === "pets") {
+      this.renderPetsTab(container);
       return;
     }
 
@@ -394,6 +479,65 @@ export class MarketShopController {
           sound.playBicycleBell();
           this.showToast(`Sold ${item.qty} × ${def.name} for +${totalPayout} Gloss!`);
           this.render();
+        });
+      }
+
+      container.appendChild(card);
+    }
+  }
+
+  private renderPetsTab(container: HTMLElement) {
+    const friendships = gameConvex.currentState?.friendships || [];
+    const activePetKey = gameConvex.currentState?.player.activePetKey;
+
+    for (const pet of COMPANION_PETS) {
+      const fRecord = friendships.find((f) => f.npcKey === pet.unlockNpcKey);
+      const currentLevel = fRecord?.level ?? 1;
+      const isUnlocked = currentLevel >= pet.unlockFriendship;
+      const isEquipped = activePetKey === pet.key;
+
+      const card = document.createElement("div");
+      card.className = "shop-card";
+      card.innerHTML = `
+        <div class="shop-card-top">
+          <span style="font-size: 24px;">${pet.icon}</span>
+          <span class="shop-card-price" style="color: ${isEquipped ? "#2e7d32" : "var(--primary-dark)"};">
+            ${isEquipped ? "Active Companion" : "Perk Companion"}
+          </span>
+        </div>
+        <div class="shop-card-name">${pet.name}</div>
+        <div class="shop-card-name-ko">${pet.nameKo}</div>
+        <div class="shop-card-desc">
+          <strong>Perk:</strong> ${pet.ability}<br/>
+          <span style="color: var(--text-muted); font-size: 11px;">${pet.description}</span>
+        </div>
+        <div class="shop-card-foot">
+          <span class="shop-card-req" style="color:${isUnlocked ? "var(--text-muted)" : "#b78103"}">
+            ${isUnlocked ? `Friend: ${pet.npcName} Lv.${pet.unlockFriendship} ✓` : `🔒 Reach ${pet.npcName} Lv.${pet.unlockFriendship}`}
+          </span>
+          <button class="shop-buy-btn ${isEquipped ? "owned" : ""}" ${!isUnlocked && !isEquipped ? "disabled" : ""}>
+            ${isEquipped ? "Equipped ✓" : isUnlocked ? "Equip Pet" : "Locked"}
+          </button>
+        </div>
+      `;
+
+      const actionBtn = card.querySelector(".shop-buy-btn");
+      if (actionBtn && (isUnlocked || isEquipped)) {
+        actionBtn.addEventListener("click", async () => {
+          try {
+            const nextPetKey = isEquipped ? undefined : pet.key;
+            await gameConvex.setActivePet(nextPetKey);
+            const g = (window as any).gameInstance;
+            if (g && g.player) {
+              g.player.setCompanionPet(nextPetKey || null);
+            }
+            sound.playTeaPour();
+            this.showToast(nextPetKey ? `🐾 Equipped ${pet.name} as active companion!` : `🐾 Rested companion pet.`);
+            this.render();
+          } catch (err: any) {
+            console.warn("Set active pet err:", err);
+            this.showToast(`Could not change pet: ${err?.message || "Error"}`);
+          }
         });
       }
 

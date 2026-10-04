@@ -27,7 +27,10 @@ _Last updated by: Lead · 2026-09-27_
 - 2026-09-27: Phase 3 completed: 8 NPC 3D characters placed in districts with animated bobbing quest diamond markers, full Convex quest board, distance-checked delivery, XP/Gloss/Friendship progression, and multi-level-up unlocks.
 - 2026-09-27: Phase 4 completed: 3-step Nail Studio minigame (Base Coat Syrup Fill coverage tracking, Micro-Liner art tracing, UV Tunnel Lamp sweep timing cure) resulting in star score and packaging into Couture Delivery Box.
 - 2026-09-27: Phase 5 & 6 completed: Sanne's Market Trading Stall opened (`[S]` key / interaction), 7 Companion Pets (`dewey`, `fireball`, `hoots`, `null-signal`, `rocky`, `seedy`, `codex`) following Eliya on tangent plane with perk bonuses, and direct real-world Amsterdam Atelier booking link integration.
-- 2026-10-04: Approved and initiated `06-WORLD-REBUILD.md`: Original models, genuine mochi bunny rebuild, replacement of copied assets, district densification, and CI validation. Step 0 (bunny backdrop patch) applied and verified.
+- 2026-10-04: Step 0 completed: Applied `eliyadoesnails-bunny-backdrop-fix.patch` removing 8x8m backdrop plane from main.
+- 2026-10-04: Step 1 completed: Created `blender/MODELING-RULES.md`, rebuilt 3D Peach Mochi Bunny matching reference art with full `eliya_*` contract and shape keys, in-game screenshots verified.
+- 2026-10-04: Step 2 completed: §5.1 original replacements built (`windmill-de-gooyer`, `blossom-tree-canal`, `linden-tree`, `poplar-tree`, `greenhouse-wind-chime`) and wired into `src/engine/spherical-planet.ts` with rotating windmill sails.
+- 2026-10-04: Step 3 completed: Deleted 54 copied Little Ritual files (Appendix A), built 7 original companion pets with `pet_Body` node (`hoots`, `dewey`, `rocky`, `seedy`, `fireball`, `matcha-moth`, `pearl-crab`), migrated keys (`codex` -> `matcha-moth`, `null-signal` -> `pearl-crab`), added Sanne shop Companion Pets UI, implemented §7 CI guard in `blender/validate.mjs`, all 14 tests passing. Screenshots in `blender/previews/pets/`.
 
 ---
 
